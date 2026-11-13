@@ -1,0 +1,59 @@
+{
+ "launchers": [
+  {
+   "id": "rideshare",
+   "name": "Xe Buýt SSO",
+   "incl": "SSO",
+   "hMin": 480,
+   "hMax": 600,
+   "price": {
+    "baseKusd": 350,
+    "baseKg": 50,
+    "perKgKusd": 7
+   },
+   "planesPerLaunch": 1,
+   "tag": "NG"
+  },
+  {
+   "id": "iss",
+   "name": "Thang Máy ISS",
+   "incl": 51.6,
+   "hFixed": 400,
+   "maxChassis": "6U",
+   "pricePerSatKusd": 250,
+   "planesMax": 1,
+   "tag": "GA"
+  },
+  {
+   "id": "dedicated",
+   "name": "Tên Lửa Riêng",
+   "incl": "any",
+   "pricePerLaunchKusd": 7500,
+   "planesPerLaunch": 1,
+   "tag": "NG"
+  }
+ ],
+ "presets": [
+  {
+   "id": "sso",
+   "name": "SSO",
+   "incl": "SSO"
+  },
+  {
+   "id": "iss",
+   "name": "ISS 51,6°",
+   "incl": 51.6,
+   "h": 400
+  },
+  {
+   "id": "low20",
+   "name": "Thấp 20°",
+   "incl": 20
+  },
+  {
+   "id": "leo53",
+   "name": "LEO 53°",
+   "incl": 53
+  }
+ ]
+}

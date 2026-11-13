@@ -1,0 +1,223 @@
+{
+ "_provenance": "[GA] game-balance values; cross-check NASA Small Spacecraft SOA 2026",
+ "chassis": [
+  {
+   "id": "3U",
+   "cells": 6,
+   "cols": 3,
+   "baseKg": 0.6,
+   "limitKg": 6,
+   "kusd": 80,
+   "months": 2,
+   "areaM2": 0.156
+  },
+  {
+   "id": "6U",
+   "cells": 12,
+   "cols": 4,
+   "baseKg": 1.2,
+   "limitKg": 12,
+   "kusd": 150,
+   "months": 3,
+   "areaM2": 0.267
+  },
+  {
+   "id": "12U",
+   "cells": 24,
+   "cols": 6,
+   "baseKg": 2.4,
+   "limitKg": 24,
+   "kusd": 280,
+   "months": 4,
+   "areaM2": 0.41
+  }
+ ],
+ "wings": {
+  "kg": 0.6,
+  "kusd": 60,
+  "months": 3,
+  "areaM2": 0.136,
+  "orientation": 0.5
+ },
+ "envTest": {
+  "kusd": 30,
+  "months": 1
+ },
+ "parts": [
+  {
+   "id": "obc",
+   "cat": "bus",
+   "name": "OBC cơ bản",
+   "cells": 1,
+   "kg": 0.1,
+   "w": 0.4,
+   "kusd": 15,
+   "months": 2
+  },
+  {
+   "id": "obc2",
+   "cat": "bus",
+   "name": "OBC xử lý biên",
+   "cells": 1,
+   "kg": 0.15,
+   "w": 2.0,
+   "kusd": 45,
+   "months": 4,
+   "cameraDataFactor": 0.4
+  },
+  {
+   "id": "eps",
+   "cat": "pow",
+   "name": "EPS + pin 20 Wh",
+   "cells": 1,
+   "kg": 0.3,
+   "w": 0.2,
+   "kusd": 25,
+   "months": 2,
+   "wh": 20
+  },
+  {
+   "id": "bat",
+   "cat": "pow",
+   "name": "Pin bổ sung +40 Wh",
+   "cells": 1,
+   "kg": 0.35,
+   "w": 0,
+   "kusd": 20,
+   "months": 1,
+   "wh": 40
+  },
+  {
+   "id": "adcs",
+   "cat": "bus",
+   "name": "ADCS cơ bản",
+   "cells": 1,
+   "kg": 0.2,
+   "w": 0.6,
+   "kusd": 20,
+   "months": 2,
+   "pointingDeg": 10
+  },
+  {
+   "id": "adcs2",
+   "cat": "bus",
+   "name": "ADCS chính xác",
+   "cells": 2,
+   "kg": 0.8,
+   "w": 4.0,
+   "kusd": 120,
+   "months": 6,
+   "pointingDeg": 0.1
+  },
+  {
+   "id": "uhf",
+   "cat": "com",
+   "name": "UHF 437 MHz · 9,6 kbps",
+   "cells": 1,
+   "kg": 0.1,
+   "w": 0,
+   "kusd": 10,
+   "months": 1,
+   "txW": 1.5,
+   "band": "uhf",
+   "rbps": 9600
+  },
+  {
+   "id": "sband",
+   "cat": "com",
+   "name": "S-band 2,2 GHz · 2 Mbps",
+   "cells": 1,
+   "kg": 0.25,
+   "w": 0,
+   "kusd": 60,
+   "months": 4,
+   "txW": 6,
+   "band": "s",
+   "rbps": 2000000
+  },
+  {
+   "id": "xband",
+   "cat": "com",
+   "name": "X-band ~8 GHz · 50 Mbps",
+   "cells": 2,
+   "kg": 0.5,
+   "w": 0,
+   "kusd": 180,
+   "months": 6,
+   "txW": 15,
+   "band": "x",
+   "rbps": 50000000,
+   "needsPreciseAdcs": true
+  },
+  {
+   "id": "sos",
+   "cat": "pay",
+   "name": "Payload SOS",
+   "cells": 1,
+   "kg": 0.2,
+   "w": 2.0,
+   "kusd": 40,
+   "months": 3,
+   "mbPerDay": 5,
+   "required": true
+  },
+  {
+   "id": "ais",
+   "cat": "pay",
+   "name": "Máy thu AIS",
+   "cells": 1,
+   "kg": 0.15,
+   "w": 1.0,
+   "kusd": 30,
+   "months": 2,
+   "mbPerDay": 20
+  },
+  {
+   "id": "cam",
+   "cat": "pay",
+   "name": "Camera quang học 5 m",
+   "cells": 2,
+   "kg": 0.8,
+   "w": 0.5,
+   "kusd": 150,
+   "months": 5,
+   "mbPerDay": 2000,
+   "needsPreciseAdcs": true,
+   "dutyNote": "5 W × 10 %"
+  },
+  {
+   "id": "sail",
+   "cat": "ext",
+   "name": "Cánh hãm khí quyển",
+   "cells": 1,
+   "kg": 0.3,
+   "w": 0,
+   "kusd": 20,
+   "months": 2,
+   "sailAreaM2": 0.5
+  },
+  {
+   "id": "prop",
+   "cat": "ext",
+   "name": "Động cơ điện nhỏ",
+   "cells": 2,
+   "kg": 1.0,
+   "w": 0,
+   "kusd": 150,
+   "months": 6,
+   "thrustW": 10,
+   "enablesE4A": true
+  },
+  {
+   "id": "shield",
+   "cat": "ext",
+   "name": "Che chắn bức xạ",
+   "cells": 1,
+   "kg": 0.5,
+   "w": 0,
+   "kusd": 15,
+   "months": 1,
+   "e1Immune": true
+  }
+ ]
+}

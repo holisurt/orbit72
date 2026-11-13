@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>ORBIT 72 — Go/No-Go (hi-fi)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3DD6F5}a:hover{color:#8BE9FA}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.panel{background:#0F1830;border:1px solid #26355A;border-radius:14px}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.12em;color:#9AABC7;text-transform:uppercase}
+.btnP{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 26px;border-radius:12px;background:#F5A524;color:#1A1205;font-weight:800;font-size:17px;text-decoration:none;box-shadow:0 0 30px rgba(245,165,36,.4)}
+.btnP:hover{color:#1A1205;background:#FFB938}
+.btnS{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 18px;border-radius:12px;color:#E8EEF8;font-weight:700;font-size:14px;text-decoration:none;border:1.5px solid #3A4C78}
+.btnS:hover{color:#E8EEF8;background:#16213D}
+.step{padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid #26355A;color:#7F90AE}
+.v{min-width:70px;min-height:40px;border-radius:10px;border:1.5px solid #3A4C78;font-family:inherit;font-weight:800;font-size:13px;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 1280px; height: 720px; box-sizing: border-box; background: #070D1A; color: #E8EEF8; font-family: 'Be Vietnam Pro', system-ui, sans-serif; display: flex; flex-direction: column">
+  <div style="height: 56px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1A2647">
+    <span style="font-weight: 800; letter-spacing: 0.06em">ORBIT <span style="color: #F5A524">72</span> <span style="font-weight: 600; color: #9AABC7; letter-spacing: 0">· 72 Giờ Vàng</span></span>
+    <div style="display: flex; gap: 6px">
+      <span class="step">1 Nhiệm vụ</span><span class="step">2 Ráp</span><span class="step">3 Quỹ đạo</span><span class="step" style="background: #F5A524; color: #1A1205; border-color: #F5A524">4 Go/No-Go</span><span class="step">5 Vận hành</span><span class="step">6 Báo cáo</span>
+    </div>
+    <span style="font-size: 13px; color: #9AABC7">Lượt: <strong style="color: #E8EEF8">Flight Director</strong></span>
+  </div>
+  <div style="flex: 1; display: flex; gap: 14px; padding: 14px 24px; min-height: 0">
+    <div class="panel" style="width: 470px; flex: none; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; box-sizing: border-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px"><span class="lbl">Flight Readiness · R1–R8</span><span class="mono" style="font-size: 11px; color: #9AABC7">4 MP × 1 · SSO 520 km</span></div>
+      <sc-for list="{{rows}}" as="r" hint-placeholder-count="8">
+        <div style="display: grid; grid-template-columns: 34px 1fr 128px 62px; gap: 8px; align-items: center; padding: 7px 0; border-bottom: 1px solid #1A2647">
+          <span class="mono" style="font-size: 12px; color: #F5A524; font-weight: 600">{{r.id}}</span>
+          <span style="font-size: 13px">{{r.t}}</span>
+          <span class="mono" style="font-size: 12px; color: #C9D4E8; text-align: right">{{r.v}}</span>
+          <span style="font-size: 10px; font-weight: 800; text-align: center; padding: 3px 0; border-radius: 999px; background: {{r.c}}; color: #0B1020">{{r.s}}</span>
+        </div>
+      </sc-for>
+      <div style="margin-top: auto; border-radius: 12px; background: #2A2310; border: 1px solid #6B5320; padding: 10px 12px; font-size: 13px; line-height: 1.5">
+        <span class="lbl" style="color: #FBBF24">Nút thắt cổ chai</span><br>Không có mục VƯỢT. Sát nhất: <strong>chi phí 88% ngân sách</strong> — thêm thử nghiệm môi trường (+120k) chỉ còn 8% dự phòng.
+      </div>
+    </div>
+    <div class="panel" style="flex: 1; min-width: 0; position: relative; overflow: hidden; background: radial-gradient(420px 360px at 50% 70%, #1B2A55, #0F1830)">
+      <svg width="100%" height="100%" viewBox="0 0 300 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Tên lửa trên bệ phóng chờ lệnh">
+        <path d="M0 380 H300 V420 H0Z" fill="#141F3A"></path>
+        <path d="M70 380 V150 H84 V380 M70 200 H120 M70 260 H120 M70 320 H120" stroke="#3A4C78" stroke-width="4" fill="none"></path>
+        <path d="M150 60 C170 90 176 120 176 160 V330 H124 V160 C124 120 130 90 150 60Z" fill="#E8EEF8"></path>
+        <path d="M124 300 L104 350 H124Z M176 300 L196 350 H176Z" fill="#F87171"></path>
+        <rect x="124" y="200" width="52" height="10" fill="#F5A524"></rect>
+        <circle cx="150" cy="140" r="11" fill="#3DD6F5" stroke="#1E3A8A" stroke-width="3"></circle>
+        <path d="M128 330 H172 L166 350 H134Z" fill="#5B6B8F"></path>
+        <text x="150" y="250" text-anchor="middle" font-size="10" font-weight="800" fill="#1E3A8A" font-family="Be Vietnam Pro, sans-serif" transform="rotate(-90 150 250)">RỒNG CON</text>
+      </svg>
+      <div style="position: absolute; top: 16px; left: 0; right: 0; text-align: center">
+        <div class="lbl" style="color: #F5A524">Đếm ngược tạm dừng chờ poll</div>
+        <div class="mono" style="font-size: 44px; font-weight: 600; letter-spacing: 0.04em">T−00:10</div>
+      </div>
+    </div>
+    <div class="panel" style="width: 380px; flex: none; padding: 14px 16px; display: flex; flex-direction: column; gap: 8px; box-sizing: border-box">
+      <span class="lbl">Go/No-Go poll</span>
+      <sc-for list="{{votes}}" as="p" hint-placeholder-count="4">
+        <div style="display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #1A2647">
+          <div style="width: 40px; height: 40px; border-radius: 20px; background: {{p.col}}; color: #0B1020; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 13px; flex: none">{{p.ab}}</div>
+          <div style="flex: 1; min-width: 0"><div class="mono" style="font-size: 14px; font-weight: 600">{{p.call}}</div><div style="font-size: 12px; color: #9AABC7">{{p.role}}</div></div>
+          <button class="v" style="background: {{p.gb}}; color: {{p.gf}}; border-color: {{p.gd}}" onClick="{{p.go}}">GO</button>
+          <button class="v" style="background: {{p.nb}}; color: {{p.nf}}; border-color: {{p.nd}}" onClick="{{p.no}}">NO-GO</button>
+        </div>
+      </sc-for>
+      <div style="font-size: 14px; font-weight: 700; color: {{sc}}; margin-top: 4px">{{summary}}</div>
+      <div style="display: flex; gap: 8px; margin-top: auto">
+        <a class="btnS" href="HF-Orbit.dc.html">←</a>
+        <a class="btnP" href="HF-Launch.dc.html" style="flex: 1">PHÓNG</a>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { v: ['go', 'go', 'go', 'wait'] }; }
+  renderVals() {
+    const G = ['ĐẠT', '#4ADE80'], Y = ['SÁT', '#FBBF24'];
+    const R = [
+      ['R1', 'Khoảng trống liên lạc', '3,0 / 3,5 h', Y], ['R2', 'Dữ liệu tạo / tải', '5 / 255 MB', G],
+      ['R3', 'Công suất · pin bóng tối', '3,3/9,8 W · 6,5/20 Wh', G], ['R4', 'Tuổi thọ quỹ đạo', '6,5 năm (3–8)', G],
+      ['R5', 'Tổng chi phí', '2.640 / 3.000k', Y], ['R6', 'Thời gian phát triển', '11 / 18 tháng', G],
+      ['R7', 'Biên nhỏ nhất (10°)', '8,4 dB', G], ['R8', 'Linh kiện bắt buộc', 'Đủ', G]
+    ];
+    const P = [['POWER?', 'Kỹ sư Vệ tinh', 'VT', '#4ADE80'], ['SCIENCE?', 'Nhà Khoa học', 'KH', '#F5A524'], ['BUDGET?', 'Flight Director', 'FD', '#A78BFA'], ['COMMS?', 'Kỹ sư Quỹ đạo & Liên lạc', 'QĐ', '#3DD6F5']];
+    const v = this.state.v, set = (q, x) => { const nv = v.slice(); nv[q] = x; this.setState({ v: nv }); };
+    const go = v.filter((x) => x === 'go').length, no = v.filter((x) => x === 'no').length;
+    return {
+      rows: R.map(([id, t, val, s]) => ({ id, t, v: val, s: s[0], c: s[1] })),
+      votes: P.map(([call, role, ab, col], q) => ({ call, role, ab, col,
+        gb: v[q] === 'go' ? '#4ADE80' : 'transparent', gf: v[q] === 'go' ? '#0B1020' : '#E8EEF8', gd: v[q] === 'go' ? '#4ADE80' : '#3A4C78',
+        nb: v[q] === 'no' ? '#F87171' : 'transparent', nf: v[q] === 'no' ? '#0B1020' : '#E8EEF8', nd: v[q] === 'no' ? '#F87171' : '#3A4C78',
+        go: () => set(q, 'go'), no: () => set(q, 'no') })),
+      summary: go === 4 ? '4/4 GO — Đồng thuận. Sẵn sàng phóng.' : no ? go + '/4 GO · ' + no + ' NO-GO — phóng lúc này bị trừ 10 điểm sao 4.' : go + '/4 GO — đang chờ vai còn lại.',
+      sc: go === 4 ? '#4ADE80' : no ? '#F87171' : '#FBBF24'
+    };
+  }
+}
+</script>
+</body>
+</html>

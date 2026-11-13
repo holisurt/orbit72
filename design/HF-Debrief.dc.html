@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>ORBIT 72 — Báo cáo (hi-fi)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3DD6F5}a:hover{color:#8BE9FA}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.panel{background:#0F1830;border:1px solid #26355A;border-radius:14px}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.12em;color:#9AABC7;text-transform:uppercase}
+.btnP{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 20px;border-radius:12px;background:#F5A524;color:#1A1205;font-weight:800;font-size:15px;text-decoration:none;box-shadow:0 0 24px rgba(245,165,36,.3)}
+.btnP:hover{color:#1A1205;background:#FFB938}
+.btnS{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 18px;border-radius:12px;color:#E8EEF8;font-weight:700;font-size:14px;text-decoration:none;border:1.5px solid #3A4C78}
+.btnS:hover{color:#E8EEF8;background:#16213D}
+.step{padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid #26355A;color:#7F90AE}
+</style>
+</helmet>
+<div style="width: 1280px; height: 720px; box-sizing: border-box; background: #070D1A; color: #E8EEF8; font-family: 'Be Vietnam Pro', system-ui, sans-serif; display: flex; flex-direction: column">
+  <div style="height: 56px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1A2647">
+    <span style="font-weight: 800; letter-spacing: 0.06em">ORBIT <span style="color: #F5A524">72</span> <span style="font-weight: 600; color: #9AABC7; letter-spacing: 0">· Báo cáo sứ mệnh · lần chạy 1</span></span>
+    <div style="display: flex; gap: 6px">
+      <span class="step">1 Nhiệm vụ</span><span class="step">2 Ráp</span><span class="step">3 Quỹ đạo</span><span class="step">4 Go/No-Go</span><span class="step">5 Vận hành</span><span class="step" style="background: #F5A524; color: #1A1205; border-color: #F5A524">6 Báo cáo</span>
+    </div>
+    <span class="mono" style="font-size: 13px; color: #9AABC7">KỸ SƯ · CO-OP 4</span>
+  </div>
+  <div style="margin: 14px 24px 0; padding: 14px 20px; border-radius: 16px; background: linear-gradient(90deg, #11361F, #0F1830 70%); border: 1px solid #2E6B45; display: flex; align-items: center; gap: 20px">
+    <svg width="58" height="58" viewBox="0 0 58 58" aria-hidden="true"><circle cx="29" cy="29" r="27" fill="#4ADE80"></circle><path d="M16 30 L25 39 L43 20" stroke="#0B1020" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    <div style="flex: 1"><div class="lbl" style="color: #4ADE80">Kết cục</div><div style="font-size: 28px; font-weight: 800">THÀNH CÔNG — 8/8 yêu cầu đạt</div></div>
+    <div style="text-align: right"><div class="lbl">Điểm tổng (trung bình 5 sao)</div><div class="mono" style="font-size: 34px; font-weight: 600; color: #F5A524">4,2 <span style="font-size: 16px; color: #9AABC7">/ 5</span></div></div>
+  </div>
+  <div style="flex: 1; display: flex; gap: 14px; padding: 14px 24px; min-height: 0">
+    <div class="panel" style="width: 400px; flex: none; padding: 12px 16px; display: flex; flex-direction: column; box-sizing: border-box">
+      <span class="lbl" style="margin-bottom: 4px">5 sao · GDD mục 10</span>
+      <sc-for list="{{stars}}" as="s" hint-placeholder-count="5">
+        <div style="padding: 8px 0; border-bottom: 1px solid #1A2647">
+          <div style="display: flex; justify-content: space-between; align-items: center"><span style="font-size: 14px; font-weight: 800">{{s.n}}</span><span style="font-size: 18px; letter-spacing: 2px; color: #F5A524" aria-label="{{s.aria}}">{{s.g}}</span></div>
+          <div class="mono" style="font-size: 11px; color: #9AABC7; margin-top: 2px">{{s.d}}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+      <span class="lbl">Vì sao? · Nguyên nhân → Hệ quả → Thử lần sau</span>
+      <sc-for list="{{chain}}" as="c" hint-placeholder-count="3">
+        <div class="panel" style="padding: 10px 12px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px">
+          <div style="font-size: 13px; line-height: 1.45"><span class="lbl">Nguyên nhân</span><br>{{c.a}}</div>
+          <div style="font-size: 13px; line-height: 1.45"><span class="lbl">Hệ quả</span><br>{{c.b}}</div>
+          <div style="font-size: 13px; line-height: 1.45; border-left: 2px solid #F5A524; padding-left: 10px"><span class="lbl" style="color: #F5A524">Thử lần sau</span><br>{{c.c}}</div>
+        </div>
+      </sc-for>
+      <div class="panel" style="padding: 10px 12px; font-size: 13px; line-height: 1.5; color: #C9D4E8">
+        <span class="lbl">So với nhiệm vụ thật</span><br>NanoDragon (3U, 3,8 kg, SSO ~560 km, 2021) là một vệ tinh đơn lẻ; với mô hình này, một vệ tinh SSO chỉ cho Hà Nội 3 lượt/ngày và khoảng trống ~12 giờ — lý do sứ mệnh cứu hộ cần một chòm.
+      </div>
+    </div>
+    <div style="width: 300px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div class="panel" style="padding: 12px 14px; display: flex; flex-direction: column; gap: 4px; font-size: 12px">
+        <div style="display: flex; justify-content: space-between; align-items: center"><span class="lbl" style="color: #F5A524">Spec sheet · Rồng Con</span>
+          <svg width="34" height="34" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="46" fill="#0B1F45" stroke="#F5A524" stroke-width="5"></circle><path d="M50 18 L56 44 L82 50 L56 56 L50 82 L44 56 L18 50 L44 44Z" fill="#F5A524"></path></svg>
+        </div>
+        <sc-for list="{{spec}}" as="r" hint-placeholder-count="9">
+          <div style="display: flex; justify-content: space-between; gap: 8px; padding: 3px 0; border-bottom: 1px solid #1A2647"><span style="color: #9AABC7">{{r.k}}</span><span class="mono" style="text-align: right">{{r.v}}</span></div>
+        </sc-for>
+        <a class="btnS" href="HF-Share.dc.html" style="min-height: 38px; margin-top: 6px">Xuất spec sheet (PDF)</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: auto">
+        <a class="btnS" href="HF-Build.dc.html">Sửa &amp; chạy lại (giữ thiết kế)</a>
+        <a class="btnP" href="HF-Share.dc.html">Tạo mission patch · Chia sẻ →</a>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const S = [
+      ['1 · Hiệu quả sứ mệnh', 5, 'R1–R8: 8/8 đạt → làm tròn(5 × 8/8) = 5'],
+      ['2 · Giá trị cứu hộ', 3, 'P1h_mưa sau sự cố = [48]% · trọng số mưa NASA IMERG (≥ 40% → 3 sao)'],
+      ['3 · Hiệu quả chi phí', 4, 'VFM = 48 / 2,66 = 18,0 (≥ 17 → 4 sao)'],
+      ['4 · Chất lượng quyết định', 5, '100 điểm: phóng khi 4/4 GO, E1 và E2 chọn phương án tốt nhất'],
+      ['5 · Phối hợp đội', 4, 'Thẻ ưu tiên 3/4 × 20 + 20 đồng thuận = 80 → 4 sao (3,0 h làm tròn → đạt thẻ ≤ 3,0 h)']
+    ];
+    return {
+      stars: S.map(([n, k, d]) => ({ n, d, g: '★'.repeat(k) + '☆'.repeat(5 - k), aria: k + ' trên 5 sao' })),
+      chain: [
+        { a: '4 mặt phẳng SSO, mỗi mặt phẳng 1 vệ tinh', b: 'Khoảng trống 3,0 h đạt R1, nhưng P1h chỉ 48%: gần nửa số tin SOS chờ quá 1 giờ', c: '3 mặt phẳng × 2 vệ tinh → P1h 58%, chi phí 2.910k' },
+        { a: 'Bão Mặt Trời: chọn an toàn 2 giờ cao điểm', b: 'Giữ P1h 48%; chọn an toàn 6 giờ chỉ còn 46%, khoảng trống 8,6 h', c: 'Lắp che chắn bức xạ (+15k mỗi vệ tinh) để giữ liên lạc cả cao điểm' },
+        { a: 'Thẻ ưu tiên Nhà Khoa học (P1h ≥ 55%) chưa đạt', b: 'Sao 5 còn 4 (3/4 thẻ đạt)', c: 'Thêm vệ tinh trong mỗi mặt phẳng: 3 × 2 cho P1h 58%' }
+      ],
+      spec: [
+        ['Quỹ đạo', 'SSO 520 km · i 97,5°'], ['Chòm', '4 mặt phẳng × 1'], ['Khung · khối lượng', '6U · 2,25 kg'],
+        ['Công suất sinh · dùng', '9,8 · 3,3 W'], ['Pin', '20 Wh (cần 6,5)'], ['Tải xuống', 'S-band 2,2 GHz · 2 W'],
+        ['Biên tới Hòa Lạc', '8,4 dB (10°)'], ['Tuổi thọ · tồn lưu', '6,5 · 3,5 năm'], ['Chi phí · phát triển', '2.660k · 11 tháng'], ['Quiz trước → sau', '[2 → 5] / 5']
+      ].map(([k, v]) => ({ k, v }))
+    };
+  }
+}
+</script>
+</body>
+</html>

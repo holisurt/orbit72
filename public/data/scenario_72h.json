@@ -1,0 +1,79 @@
+{
+ "id": "golden72",
+ "name": "72 Giờ Vàng",
+ "t0Local": "2024-09-07T14:00:00+07:00",
+ "hours": 72,
+ "target": {
+  "name": "Hà Nội / Hòa Lạc",
+  "lat": 21.03,
+  "lon": 105.85
+ },
+ "partnerStation": {
+  "name": "TP.HCM",
+  "lat": 10.82,
+  "lon": 106.63
+ },
+ "rainBox": {
+  "lonMin": 103,
+  "lonMax": 108,
+  "latMin": 20,
+  "latMax": 23
+ },
+ "cloudRainThresholdMmH": 0.1,
+ "opsYears": 3,
+ "difficulty": {
+  "hoc_vien": {
+   "budget": 3500,
+   "gapMaxH": 6.0,
+   "lifetime": "avg",
+   "events": [
+    "E1",
+    "E2"
+   ],
+   "launchFail": 0
+  },
+  "ky_su": {
+   "budget": 3000,
+   "gapMaxH": 3.5,
+   "lifetime": "avg",
+   "events": [
+    "E0",
+    "E1",
+    "E2",
+    "E3"
+   ],
+   "launchFail": 0
+  },
+  "giam_doc": {
+   "budget": 2800,
+   "gapMaxH": 3.5,
+   "lifetime": "max",
+   "events": [
+    "E0",
+    "E1",
+    "E2",
+    "E3",
+    "E4"
+   ],
+   "launchFail": 0.03
+  }
+ },
+ "requirements": {
+  "devMonthsMax": 18,
+  "powerMargin": 1.1,
+  "dod": 0.3,
+  "linkMarginDb": 3,
+  "lifetimeMinY": 3,
+  "lifetimeMaxY": 8,
+  "residualMaxY": 5,
+  "elevationDeg": 10
+ },
+ "tutorial": {
+  "id": "matbien",
+  "target": {
+   "lat": 16.0,
+   "lon": 112.0
+  },
+  "minPassesPerDay": 2
+ }
+}

@@ -1,0 +1,152 @@
+{
+ "events": [
+  {
+   "id": "E0",
+   "atH": -1,
+   "onlyIf": "noEnvTest",
+   "title": "Lỗi bung ăng-ten",
+   "options": [
+    {
+     "k": "A",
+     "text": "Gửi lệnh bung lại",
+     "effect": {
+      "sat": 0,
+      "maskH": [
+       0,
+       12
+      ]
+     }
+    },
+    {
+     "k": "B",
+     "text": "Bỏ vệ tinh lỗi",
+     "effect": {
+      "sat": 0,
+      "lost": true
+     }
+    }
+   ]
+  },
+  {
+   "id": "E1",
+   "atH": 10,
+   "title": "Bão Mặt Trời mạnh",
+   "source": "NASA DONKI GST (record shown on card)",
+   "options": [
+    {
+     "k": "A",
+     "text": "Chế độ an toàn 6 giờ",
+     "effect": {
+      "maskH": [
+       10,
+       16
+      ]
+     }
+    },
+    {
+     "k": "B",
+     "text": "Tiếp tục chuyển tiếp",
+     "effect": {
+      "loseNextWindowUnless": "shield"
+     }
+    },
+    {
+     "k": "C",
+     "text": "An toàn 2 giờ cao điểm",
+     "effect": {
+      "maskH": [
+       10,
+       12
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "E2",
+   "atH": 30,
+   "title": "Trạm Hòa Lạc mất điện lưới",
+   "options": [
+    {
+     "k": "A",
+     "text": "Máy phát diesel (−20k)",
+     "effect": {
+      "costKusd": 20
+     }
+    },
+    {
+     "k": "B",
+     "text": "Chờ có điện (8 giờ)",
+     "effect": {
+      "deferDeliveryToH": 38,
+      "windowH": [
+       30,
+       38
+      ]
+     }
+    },
+    {
+     "k": "C",
+     "text": "Chuyển qua trạm đối tác TP.HCM",
+     "effect": {
+      "relayVia": "partnerStation",
+      "windowH": [
+       30,
+       38
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "E3",
+   "atH": 50,
+   "title": "Mây dày miền Bắc",
+   "options": [
+    {
+     "k": "A",
+     "text": "Ưu tiên SOS",
+     "effect": {}
+    },
+    {
+     "k": "B",
+     "text": "Vẫn chụp",
+     "effect": {
+      "imaging": 0
+     }
+    },
+    {
+     "k": "C",
+     "text": "Chụp rìa không mây",
+     "effect": {
+      "imagingFraction": 0.3
+     }
+    }
+   ]
+  },
+  {
+   "id": "E4",
+   "atH": 20,
+   "onlyIf": "giam_doc",
+   "title": "Mảnh vỡ tiếp cận",
+   "options": [
+    {
+     "k": "A",
+     "text": "Né bằng động cơ",
+     "requires": "prop",
+     "effect": {
+      "sat": 0,
+      "loseWindows": 2
+     }
+    },
+    {
+     "k": "B",
+     "text": "Không né",
+     "effect": {
+      "decisionPenalty": 20
+     }
+    }
+   ]
+  }
+ ]
+}

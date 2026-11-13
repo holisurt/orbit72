@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>ORBIT 72 — Chia sẻ (hi-fi)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3DD6F5}a:hover{color:#8BE9FA}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.panel{background:#0F1830;border:1px solid #26355A;border-radius:14px}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.12em;color:#9AABC7;text-transform:uppercase}
+.act{min-height:48px;border-radius:12px;border:1.5px solid #3A4C78;background:#16213D;color:#E8EEF8;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer}
+.actP{min-height:52px;border-radius:12px;border:0;background:#F5A524;color:#1A1205;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 0 24px rgba(245,165,36,.3)}
+.seg{min-height:36px;padding:0 12px;border-radius:9px;border:1px solid #3A4C78;font-family:inherit;font-weight:700;font-size:12px;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 1280px; height: 720px; box-sizing: border-box; background: #070D1A; color: #E8EEF8; font-family: 'Be Vietnam Pro', system-ui, sans-serif; display: flex; flex-direction: column">
+  <div style="height: 56px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1A2647">
+    <span style="font-weight: 800; letter-spacing: 0.06em">ORBIT <span style="color: #F5A524">72</span> <span style="font-weight: 600; color: #9AABC7; letter-spacing: 0">· Chia sẻ thành tích</span></span>
+    <span style="font-size: 12px; color: #7F90AE">Không chứa logo NASA · không chứa ảnh hay tên thật của người chơi</span>
+  </div>
+  <div style="flex: 1; display: flex; gap: 24px; padding: 20px 32px; min-height: 0; align-items: stretch">
+    <div style="width: 440px; flex: none; display: flex; flex-direction: column; align-items: center; gap: 12px">
+      <span class="lbl" style="align-self: flex-start">Mission patch tự sinh</span>
+      <svg width="380" height="380" viewBox="0 0 400 400" role="img" aria-label="Mission patch: ngôi sao 14 cánh mặt trống đồng, cánh sen và quỹ đạo vệ tinh">
+        <defs><path id="ring" d="M200 200 m-158 0 a158 158 0 1 1 316 0 a158 158 0 1 1 -316 0"></path></defs>
+        <circle cx="200" cy="200" r="196" fill="{{c1}}"></circle>
+        <circle cx="200" cy="200" r="186" fill="none" stroke="{{acc}}" stroke-width="4"></circle>
+        <text font-size="22" font-weight="800" fill="{{acc}}" letter-spacing="3" font-family="Be Vietnam Pro, sans-serif"><textPath href="#ring" startOffset="2%">{{team}} · 72 GIỜ VÀNG · ORBIT 72 ·</textPath></text>
+        <circle cx="200" cy="200" r="132" fill="{{c2}}" stroke="{{acc}}" stroke-width="3"></circle>
+        <circle cx="200" cy="200" r="118" fill="none" stroke="{{acc}}" stroke-opacity="0.55" stroke-width="2" stroke-dasharray="2 6"></circle>
+        <circle cx="200" cy="200" r="100" fill="none" stroke="{{acc}}" stroke-opacity="0.4" stroke-width="1.5" stroke-dasharray="10 5"></circle>
+        <polygon points="{{star}}" fill="{{acc}}"></polygon>
+        <circle cx="200" cy="200" r="16" fill="{{c2}}" stroke="{{acc}}" stroke-width="3"></circle>
+        <ellipse cx="200" cy="200" rx="150" ry="44" fill="none" stroke="#3DD6F5" stroke-width="3" transform="rotate(-20 200 200)"></ellipse>
+        <sc-for list="{{dots}}" as="d" hint-placeholder-count="4">
+          <circle cx="{{d.x}}" cy="{{d.y}}" r="7" fill="#FFFFFF" stroke="#3DD6F5" stroke-width="3"></circle>
+        </sc-for>
+        <g fill="#F9A8D4" stroke="{{c1}}" stroke-width="2">
+          <path d="M200 332 C186 312 186 292 200 276 C214 292 214 312 200 332Z"></path>
+          <path d="M200 332 C176 322 166 302 172 284 C190 290 200 310 200 332Z"></path>
+          <path d="M200 332 C224 322 234 302 228 284 C210 290 200 310 200 332Z"></path>
+        </g>
+      </svg>
+      <div style="display: flex; gap: 6px">
+        <sc-for list="{{themes}}" as="t" hint-placeholder-count="3">
+          <button class="seg" style="background: {{t.bg}}; color: {{t.fg}}" onClick="{{t.pick}}">{{t.n}}</button>
+        </sc-for>
+      </div>
+      <span style="font-size: 12px; color: #9AABC7; text-align: center">Ngôi sao 14 cánh của mặt trống đồng Đông Sơn · cánh sen · chấm trắng = số vệ tinh trong chòm</span>
+    </div>
+    <div style="flex: 1; display: flex; justify-content: center; align-items: center">
+      <div style="width: 300px; height: 533px; border-radius: 22px; padding: 22px; box-sizing: border-box; background: linear-gradient(170deg, #13224A, #070D1A 70%); border: 1px solid #3A4C78; display: flex; flex-direction: column; gap: 12px; box-shadow: 0 30px 70px rgba(0,0,0,.5)">
+        <span class="lbl" style="color: #F5A524">ORBIT 72 · Nhiệm vụ #20261114</span>
+        <span style="font-size: 26px; font-weight: 800; line-height: 1.1">72 Giờ Vàng<br><span style="color: #4ADE80; font-size: 18px">THÀNH CÔNG</span></span>
+        <div style="display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 5px">
+          <sc-for list="{{sq}}" as="q" hint-placeholder-count="6">
+            <div style="height: 30px; border-radius: 6px; background: {{q}}"></div>
+          </sc-for>
+        </div>
+        <span style="font-size: 10px; color: #7F90AE">Nhiệm vụ · Ráp · Quỹ đạo · Go/No-Go · Vận hành · Báo cáo</span>
+        <span style="font-size: 24px; letter-spacing: 3px; color: #F5A524">★★★★☆</span>
+        <div class="mono" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; font-size: 12px">
+          <div class="panel" style="padding: 8px"><span style="color: #9AABC7">P1h</span><br><span style="font-size: 20px; color: #3DD6F5">48%</span></div>
+          <div class="panel" style="padding: 8px"><span style="color: #9AABC7">Vệ tinh</span><br><span style="font-size: 20px; color: #3DD6F5">4</span></div>
+        </div>
+        <div style="flex: 1; display: flex; align-items: center; justify-content: center">
+          <svg width="96" height="96" viewBox="0 0 120 120" aria-hidden="true"><rect x="8" y="46" width="26" height="30" rx="3" fill="#1E3A8A" stroke="#3DD6F5"></rect><rect x="86" y="46" width="26" height="30" rx="3" fill="#1E3A8A" stroke="#3DD6F5"></rect><rect x="34" y="34" width="52" height="56" rx="10" fill="#F5A524"></rect><path d="M44 34 L49 22 L55 34Z M65 34 L71 22 L76 34Z" fill="#FFD27A"></path><circle cx="50" cy="56" r="7" fill="#FFFFFF"></circle><circle cx="51" cy="57" r="3.5" fill="#0B1020"></circle><circle cx="70" cy="56" r="7" fill="#FFFFFF"></circle><circle cx="71" cy="57" r="3.5" fill="#0B1020"></circle><path d="M50 74 Q60 82 70 74" stroke="#0B1020" stroke-width="3" fill="none" stroke-linecap="round"></path></svg>
+        </div>
+        <span style="font-size: 12px; font-weight: 700">Chơi thử: [link game] · #Orbit72</span>
+      </div>
+    </div>
+    <div style="width: 300px; flex: none; display: flex; flex-direction: column; gap: 10px; justify-content: center">
+      <span class="lbl">Chia sẻ</span>
+      <div class="panel mono" style="padding: 12px; font-size: 13px; line-height: 1.6">ORBIT 72 #20261114<br>■■■■■■ ★★★★☆<br>P1h 48% · 4 vệ tinh · THÀNH CÔNG</div>
+      <button class="actP" onClick="{{copy}}">{{copyText}}</button>
+      <button class="act">Tải thẻ PNG (9:16)</button>
+      <button class="act">Tải mission patch PNG</button>
+      <button class="act">Chia sẻ TikTok · Facebook · Zalo</button>
+      <a href="HF-Home.dc.html" style="text-align: center; font-weight: 700; margin-top: 6px">Chơi nhiệm vụ khác</a>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { theme: 0, copied: false }; }
+  renderVals() {
+    const TH = [['Đêm xanh', '#0B1F45', '#13285A', '#F5A524'], ['Đồng thau', '#2A1B0B', '#3B2711', '#E9B44C'], ['Sơn mài', '#3A0D12', '#56141B', '#F2C14E']];
+    const t = TH[this.state.theme];
+    let star = '';
+    for (let q = 0; q < 28; q++) { const r = q % 2 === 0 ? 96 : 30, ang = -Math.PI / 2 + q * Math.PI / 14; star += (200 + r * Math.cos(ang)).toFixed(1) + ',' + (200 + r * Math.sin(ang)).toFixed(1) + ' '; }
+    const dots = [0, 1, 2, 3].map((q) => { const ang = q * Math.PI / 2 + 0.6, x = 150 * Math.cos(ang), y = 44 * Math.sin(ang), c = Math.cos(-20 * Math.PI / 180), s = Math.sin(-20 * Math.PI / 180); return { x: (200 + x * c - y * s).toFixed(1), y: (200 + x * s + y * c).toFixed(1) }; });
+    return {
+      c1: t[1], c2: t[2], acc: t[3], star, dots, team: 'ĐỘI RỒNG CON',
+      themes: TH.map((x, q) => ({ n: x[0], bg: this.state.theme === q ? '#F5A524' : 'transparent', fg: this.state.theme === q ? '#1A1205' : '#E8EEF8', pick: () => this.setState({ theme: q }) })),
+      sq: ['#4ADE80', '#4ADE80', '#4ADE80', '#4ADE80', '#FBBF24', '#4ADE80'],
+      copy: () => this.setState({ copied: true }), copyText: this.state.copied ? 'Đã sao chép' : 'Sao chép kết quả'
+    };
+  }
+}
+</script>
+</body>
+</html>

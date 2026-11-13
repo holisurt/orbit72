@@ -1,0 +1,49 @@
+{
+ "questions": [
+  {
+   "q": "Vì sao thêm vệ tinh vào cùng một chuyến rideshare SSO gần như không rút ngắn khoảng trống liên lạc?",
+   "options": [
+    "Vì tên lửa phóng chậm",
+    "Vì chúng cùng mặt phẳng quỹ đạo nên qua Hà Nội cùng khung giờ",
+    "Vì pin không đủ"
+   ],
+   "answer": 1
+  },
+  {
+   "q": "Ở 520 km, khoảng bao nhiêu phần trăm mỗi vòng vệ tinh nằm trong bóng Trái Đất?",
+   "options": [
+    "≈ 10%",
+    "≈ 38%",
+    "≈ 70%"
+   ],
+   "answer": 1
+  },
+  {
+   "q": "Bay ở 600 km mà không có cánh hãm vi phạm điều gì?",
+   "options": [
+    "Tồn lưu sau nhiệm vụ quá 5 năm",
+    "Chi phí phóng",
+    "Không có gì"
+   ],
+   "answer": 0
+  },
+  {
+   "q": "UHF 9,6 kbps với 17 phút liên lạc mỗi ngày tải xuống được khoảng bao nhiêu?",
+   "options": [
+    "≈ 1,2 MB",
+    "≈ 120 MB",
+    "≈ 1,2 GB"
+   ],
+   "answer": 0
+  },
+  {
+   "q": "Biên đường truyền 8 dB nghĩa là gì?",
+   "options": [
+    "Mất 8% dữ liệu",
+    "Tín hiệu mạnh hơn mức tối thiểu khoảng 6 lần",
+    "Cần thêm 8 W"
+   ],
+   "answer": 1
+  }
+ ]
+}

@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>ORBIT 72 — Phóng (hi-fi)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3DD6F5}a:hover{color:#8BE9FA}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.panel{background:#0F1830;border:1px solid #26355A;border-radius:14px}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.12em;color:#9AABC7;text-transform:uppercase}
+.btnP{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 24px;border-radius:12px;background:#F5A524;color:#1A1205;font-weight:800;font-size:15px;text-decoration:none;border:0;font-family:inherit;cursor:pointer;box-shadow:0 0 24px rgba(245,165,36,.3)}
+.btnP:hover{color:#1A1205;background:#FFB938}
+.btnS{min-height:50px;padding:0 18px;border-radius:12px;border:1.5px solid #3A4C78;background:transparent;color:#E8EEF8;font-family:inherit;font-weight:700;font-size:14px;cursor:pointer}
+</style>
+</helmet>
+<div style="width: 1280px; height: 720px; box-sizing: border-box; color: #E8EEF8; font-family: 'Be Vietnam Pro', system-ui, sans-serif; display: flex; flex-direction: column; background: linear-gradient(180deg, {{sky1}} 0%, {{sky2}} 100%)">
+  <div style="height: 56px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.08)">
+    <span style="font-weight: 800; letter-spacing: 0.06em">ORBIT <span style="color: #F5A524">72</span> <span style="font-weight: 600; color: #9AABC7; letter-spacing: 0">· Phóng · chuyến 1/4 · mặt phẳng 1</span></span>
+    <span class="mono" style="font-size: 13px; color: #9AABC7">XE BUÝT SSO · 520 km</span>
+  </div>
+  <div style="flex: 1; display: flex; gap: 20px; padding: 16px 24px; min-height: 0">
+    <div style="flex: 1; min-width: 0; position: relative; display: flex; align-items: flex-end; justify-content: center; overflow: hidden">
+      <svg width="420" height="560" viewBox="0 0 300 400" role="img" aria-label="Tên lửa đang phóng">
+        <g transform="translate(0 {{lift}})">
+          <path d="M150 40 C170 70 176 100 176 140 V300 H124 V140 C124 100 130 70 150 40Z" fill="#E8EEF8"></path>
+          <path d="M124 270 L102 320 H124Z M176 270 L198 320 H176Z" fill="#F87171"></path>
+          <rect x="124" y="180" width="52" height="8" fill="#F5A524"></rect>
+          <circle cx="150" cy="120" r="10" fill="#3DD6F5" stroke="#1E3A8A" stroke-width="3"></circle>
+          <path d="M128 300 H172 L166 318 H134Z" fill="#5B6B8F"></path>
+          <sc-if value="{{fire}}" hint-placeholder-val="{{ true }}">
+            <path d="M134 318 Q150 400 166 318Z" fill="#F5A524"></path>
+            <path d="M140 318 Q150 370 160 318Z" fill="#FFF3C4"></path>
+          </sc-if>
+        </g>
+        <sc-if value="{{onPad}}" hint-placeholder-val="{{ true }}">
+          <path d="M60 330 V120 H72 V330 M60 160 H118 M60 220 H118 M60 280 H118" stroke="#3A4C78" stroke-width="4" fill="none"></path>
+        </sc-if>
+        <path d="M0 330 H300 V400 H0Z" fill="#0B1428"></path>
+      </svg>
+      <div style="position: absolute; top: 8px; left: 0; right: 0; text-align: center">
+        <div class="lbl" style="color: #F5A524">{{phase}}</div>
+        <div class="mono" style="font-size: 64px; font-weight: 600; line-height: 1.1">{{clock}}</div>
+      </div>
+    </div>
+    <div style="width: 400px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <span class="lbl">Các mốc phóng · thời gian minh họa, tùy tên lửa</span>
+      <sc-for list="{{stages}}" as="s" hint-placeholder-count="6">
+        <div class="panel" style="padding: 9px 12px; display: flex; align-items: center; gap: 10px; border-color: {{s.bd}}; background: {{s.bg}}">
+          <span class="mono" style="width: 78px; font-size: 12px; color: #9AABC7">{{s.t}}</span>
+          <span style="flex: 1; font-size: 13px; font-weight: 600">{{s.n}}</span>
+          <span style="font-size: 10px; font-weight: 800; padding: 2px 8px; border-radius: 999px; background: {{s.cc}}; color: #0B1020">{{s.st}}</span>
+        </div>
+      </sc-for>
+      <sc-if value="{{done}}" hint-placeholder-val="{{ false }}">
+        <div class="panel" style="padding: 12px; border-color: #4ADE80; font-size: 13px; line-height: 1.5"><strong style="color: #4ADE80">Rồng Con-1 đã vào quỹ đạo.</strong> Tín hiệu đầu tiên qua trạm Hòa Lạc. Ba chuyến còn lại cho mặt phẳng 2–4 được mô phỏng tự động.</div>
+      </sc-if>
+      <div style="font-size: 12px; color: #7F90AE; line-height: 1.5">Độ khó Giám đốc: mỗi chuyến có 3% thất bại [GA]; hỏng thì mua chuyến thay thế nếu còn ngân sách, cộng 3 tháng.</div>
+      <div style="display: flex; gap: 8px; margin-top: auto">
+        <button class="btnS" onClick="{{reset}}">Làm lại</button>
+        <button class="btnS" onClick="{{next}}" style="flex: 1">Bước tiếp</button>
+        <a class="btnP" href="HF-Ops.dc.html">Mission Control →</a>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { step: 0 }; }
+  renderVals() {
+    const S = [['T−10 s', 'Đếm ngược tiếng Việt, Go/No-Go cuối', 'T−10'], ['T+0', 'Rời bệ phóng', 'T+0'], ['T+2:30', 'Tách tầng 1', 'T+2:30'], ['T+8:40', 'Tắt động cơ tầng 2', 'T+8:40'], ['T+55:00', 'Thả vệ tinh khỏi bộ tách', 'T+55:00'], ['T+1:30:00', 'Tín hiệu đầu tiên qua Hòa Lạc', 'T+1:30:00']];
+    const k = this.state.step;
+    return {
+      clock: S[k][2], phase: S[k][1],
+      stages: S.map(([t, n], q) => ({ t, n, st: q < k ? 'XONG' : q === k ? 'ĐANG' : 'CHỜ', cc: q < k ? '#4ADE80' : q === k ? '#F5A524' : '#3A4C78', bd: q === k ? '#F5A524' : '#26355A', bg: q === k ? '#16213D' : '#0F1830' })),
+      fire: k >= 1 && k <= 3, onPad: k <= 1, lift: k === 0 ? 0 : k === 1 ? -40 : -900,
+      sky1: k >= 2 ? '#030612' : '#0B1B3D', sky2: k >= 2 ? '#070D1A' : '#1B3A6B',
+      done: k === S.length - 1,
+      next: () => this.setState({ step: Math.min(k + 1, S.length - 1) }), reset: () => this.setState({ step: 0 })
+    };
+  }
+}
+</script>
+</body>
+</html>

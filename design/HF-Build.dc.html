@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>ORBIT 72 — Ráp vệ tinh (hi-fi)</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&amp;family=IBM+Plex+Mono:wght@500;600&amp;display=swap">
+<style>
+body{margin:0}
+a{color:#3DD6F5}a:hover{color:#8BE9FA}
+.mono{font-family:'IBM Plex Mono',ui-monospace,monospace}
+.panel{background:#0F1830;border:1px solid #26355A;border-radius:14px}
+.lbl{font-size:11px;font-weight:700;letter-spacing:.12em;color:#9AABC7;text-transform:uppercase}
+.btnP{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 22px;border-radius:12px;background:#F5A524;color:#1A1205;font-weight:800;font-size:15px;text-decoration:none;box-shadow:0 0 24px rgba(245,165,36,.3)}
+.btnP:hover{color:#1A1205;background:#FFB938}
+.btnS{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:12px;color:#E8EEF8;font-weight:700;font-size:14px;text-decoration:none;border:1.5px solid #3A4C78}
+.btnS:hover{color:#E8EEF8;background:#16213D}
+.step{padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700;border:1px solid #26355A;color:#7F90AE}
+.tab{min-height:34px;padding:0 10px;border-radius:9px;border:1px solid #3A4C78;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.add{min-width:40px;min-height:36px;border-radius:9px;border:0;background:#F5A524;color:#1A1205;font-weight:800;font-size:16px;cursor:pointer;font-family:inherit}
+.tg{min-height:40px;border-radius:10px;border:1px solid #3A4C78;font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;padding:0 10px;text-align:left}
+.x{min-width:32px;min-height:32px;border-radius:8px;border:1px solid #3A4C78;background:transparent;color:#C9D4E8;cursor:pointer;font-family:inherit}
+</style>
+</helmet>
+<div style="width: 1280px; height: 720px; box-sizing: border-box; background: #070D1A; color: #E8EEF8; font-family: 'Be Vietnam Pro', system-ui, sans-serif; display: flex; flex-direction: column; position: relative">
+  <div style="height: 56px; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #1A2647">
+    <span style="font-weight: 800; letter-spacing: 0.06em">ORBIT <span style="color: #F5A524">72</span> <span style="font-weight: 600; color: #9AABC7; letter-spacing: 0">· 72 Giờ Vàng</span></span>
+    <div style="display: flex; gap: 6px">
+      <span class="step">1 Nhiệm vụ</span><span class="step" style="background: #F5A524; color: #1A1205; border-color: #F5A524">2 Ráp</span><span class="step">3 Quỹ đạo</span><span class="step">4 Go/No-Go</span><span class="step">5 Vận hành</span><span class="step">6 Báo cáo</span>
+    </div>
+    <span style="font-size: 13px; color: #9AABC7; display: flex; align-items: center; gap: 10px">Lượt: <strong style="color: #E8EEF8">Kỹ sư Vệ tinh</strong><button class="tab" style="background: transparent; color: #F5A524; border-color: #F5A524" onClick="{{openCoach}}">Hướng dẫn</button></span>
+  </div>
+  <div style="padding: 10px 24px; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; border-bottom: 1px solid #1A2647">
+    <sc-for list="{{hud}}" as="h" hint-placeholder-count="6">
+      <div class="panel" style="padding: 8px 10px; display: flex; flex-direction: column; gap: 5px">
+        <div style="display: flex; justify-content: space-between; align-items: center"><span class="lbl">{{h.name}}</span><span style="font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 999px; background: {{h.bg}}; color: #0B1020">{{h.status}}</span></div>
+        <div style="height: 6px; border-radius: 3px; background: #1A2647; overflow: hidden"><div style="height: 6px; width: {{h.pct}}; background: {{h.bg}}"></div></div>
+        <span class="mono" style="font-size: 12px; color: #C9D4E8">{{h.text}}</span>
+      </div>
+    </sc-for>
+  </div>
+  <div style="flex: 1; display: flex; gap: 14px; padding: 12px 24px; min-height: 0">
+    <div class="panel" style="width: 290px; flex: none; padding: 12px; display: flex; flex-direction: column; gap: 8px; box-sizing: border-box">
+      <span class="lbl">Linh kiện</span>
+      <div style="display: flex; gap: 5px; flex-wrap: wrap">
+        <sc-for list="{{tabs}}" as="t" hint-placeholder-count="5">
+          <button class="tab" style="background: {{t.bg}}; color: {{t.fg}}" onClick="{{t.pick}}">{{t.name}}</button>
+        </sc-for>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 6px; overflow: auto">
+        <sc-for list="{{items}}" as="it" hint-placeholder-count="4">
+          <div style="display: flex; align-items: center; gap: 8px; padding: 8px; border-radius: 10px; background: #16213D; border-left: 4px solid {{it.col}}">
+            <div style="flex: 1; min-width: 0" onClick="{{it.sel}}">
+              <div style="font-size: 13px; font-weight: 700">{{it.name}}</div>
+              <div class="mono" style="font-size: 11px; color: #9AABC7">{{it.stats}}</div>
+            </div>
+            <button class="add" onClick="{{it.add}}" aria-label="Thêm">+</button>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div class="panel" style="flex: 1; min-width: 0; padding: 12px 16px; display: flex; flex-direction: column; gap: 10px; background: radial-gradient(500px 300px at 50% 45%, #13224A, #0F1830)">
+      <div style="display: flex; justify-content: space-between; align-items: center">
+        <span class="lbl">Khung · mỗi ô = 0,5U</span>
+        <div style="display: flex; gap: 6px">
+          <sc-for list="{{chassis}}" as="c" hint-placeholder-count="3">
+            <button class="tab" style="background: {{c.bg}}; color: {{c.fg}}" onClick="{{c.pick}}">{{c.name}}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px">
+        <sc-if value="{{wings}}" hint-placeholder-val="{{ true }}">
+          <svg width="90" height="200" viewBox="0 0 90 200" aria-hidden="true"><rect x="2" y="10" width="80" height="180" rx="4" fill="#1E3A8A" stroke="#3DD6F5"></rect><path d="M2 55 H82 M2 100 H82 M2 145 H82 M42 10 V190" stroke="#3DD6F5" stroke-width="0.8"></path><rect x="82" y="96" width="8" height="8" fill="#9AABC7"></rect></svg>
+        </sc-if>
+        <div style="border: 3px solid #5B6B8F; border-radius: 12px; padding: 10px; background: linear-gradient(145deg, #1B2847, #101A33); box-shadow: 0 0 0 1px #0A1122, 0 20px 50px rgba(0,0,0,.45); display: grid; grid-template-columns: {{cols}}; gap: 6px; width: {{gw}}">
+          <sc-for list="{{cells}}" as="c" hint-placeholder-count="12">
+            <div style="height: 54px; border-radius: 7px; border: 1.5px {{c.bs}} {{c.bc}}; background: {{c.bg}}; color: #0B1020; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800">{{c.label}}</div>
+          </sc-for>
+        </div>
+        <sc-if value="{{wings}}" hint-placeholder-val="{{ true }}">
+          <svg width="90" height="200" viewBox="0 0 90 200" aria-hidden="true"><rect x="8" y="10" width="80" height="180" rx="4" fill="#1E3A8A" stroke="#3DD6F5"></rect><path d="M8 55 H88 M8 100 H88 M8 145 H88 M48 10 V190" stroke="#3DD6F5" stroke-width="0.8"></path><rect x="0" y="96" width="8" height="8" fill="#9AABC7"></rect></svg>
+        </sc-if>
+      </div>
+      <div style="display: flex; gap: 8px; align-items: center">
+        <button class="tg" style="background: {{wBg}}; color: {{wFg}}" onClick="{{tw}}">Cánh pin mở {{wTxt}}</button>
+        <button class="tg" style="background: {{tBg}}; color: {{tFg}}" onClick="{{tt}}">Thử nghiệm môi trường {{tTxt}}</button>
+        <span style="flex: 1; font-size: 12px; color: {{msgCol}}; text-align: right">{{msg}}</span>
+      </div>
+    </div>
+    <div style="width: 300px; flex: none; display: flex; flex-direction: column; gap: 10px">
+      <div class="panel" style="padding: 12px 14px">
+        <span class="lbl" style="color: #F5A524">Chi tiết</span>
+        <div style="font-size: 17px; font-weight: 800; margin-top: 4px">{{sel.name}}</div>
+        <div class="mono" style="font-size: 11px; color: #9AABC7; margin-top: 2px">{{sel.stats}}</div>
+        <p style="margin: 8px 0 0; font-size: 13px; line-height: 1.5; color: #C9D4E8">{{sel.why}}</p>
+      </div>
+      <div class="panel" style="padding: 10px 12px; flex: 1; display: flex; flex-direction: column; gap: 4px; overflow: auto">
+        <span class="lbl">Đã lắp · {{count}}</span>
+        <sc-for list="{{placed}}" as="p" hint-placeholder-count="6">
+          <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; padding: 3px 0; border-bottom: 1px solid #1A2647">
+            <span style="width: 8px; height: 8px; border-radius: 4px; background: {{p.col}}"></span><span style="flex: 1">{{p.name}}</span>
+            <button class="x" onClick="{{p.rm}}" aria-label="Gỡ">×</button>
+          </div>
+        </sc-for>
+      </div>
+      <div style="display: flex; gap: 8px">
+        <a class="btnS" href="HF-Brief.dc.html">←</a>
+        <a class="btnP" href="HF-Orbit.dc.html" style="flex: 1">Chọn quỹ đạo →</a>
+      </div>
+    </div>
+  </div>
+  <sc-if value="{{coach}}" hint-placeholder-val="{{ true }}">
+    <div style="position: absolute; inset: 0; pointer-events: none">
+      <div style="position: absolute; left: 20px; top: 132px; width: 298px; height: 536px; border: 3px solid #F5A524; border-radius: 16px; box-shadow: 0 0 0 4000px rgba(4,8,18,.62)"></div>
+      <div style="position: absolute; left: 340px; top: 210px; width: 380px; pointer-events: auto; background: #0F1830; border: 1.5px solid #F5A524; border-radius: 16px; padding: 18px 20px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 20px 60px rgba(0,0,0,.5)">
+        <div style="display: flex; justify-content: space-between"><span class="lbl" style="color: #F5A524">Tutorial · bước {{coachStep}}/7</span><span style="font-size: 22px">←</span></div>
+        <div style="font-size: 18px; font-weight: 800">{{coachTitle}}</div>
+        <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #C9D4E8">{{coachText}}</p>
+        <div style="display: flex; gap: 8px; justify-content: flex-end"><button class="tab" style="background: transparent; color: #E8EEF8" onClick="{{closeCoach}}">Bỏ qua</button><button class="tab" style="background: #F5A524; color: #1A1205; border-color: #F5A524" onClick="{{closeCoach}}">Đã hiểu</button></div>
+      </div>
+    </div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":720}}'>
+class Component extends DCLogic {
+  constructor(props) { super(props); this.state = { tab: 'com', ch: 1, placed: ['obc', 'eps', 'adcs', 'uhf', 'sos'], wings: false, test: false, sel: 'uhf', msg: '', coach: true }; }
+  renderVals() {
+    const COL = { bus: '#3DD6F5', pow: '#4ADE80', com: '#A78BFA', pay: '#F5A524', ext: '#94A3B8' };
+    const P = [
+      { id: 'obc', tab: 'bus', name: 'OBC cơ bản', ab: 'OBC', c: 1, kg: 0.10, w: 0.4, k: 15, mo: 2, why: 'Máy tính chính: chạy phần mềm bay, lưu tin SOS chờ tải xuống.' },
+      { id: 'obc2', tab: 'bus', name: 'OBC xử lý biên', ab: 'AI', c: 1, kg: 0.15, w: 2.0, k: 45, mo: 4, why: 'Xử lý ảnh ngay trên vệ tinh: dữ liệu camera còn 40%.' },
+      { id: 'adcs', tab: 'bus', name: 'ADCS cơ bản', ab: 'ADC', c: 1, kg: 0.20, w: 0.6, k: 20, mo: 2, why: 'Giữ hướng bằng từ trường Trái Đất, trỏ khoảng 10° — đủ cho UHF, S-band, SOS.' },
+      { id: 'adcs2', tab: 'bus', name: 'ADCS chính xác', ab: 'ADC+', c: 2, kg: 0.80, w: 4.0, k: 120, mo: 6, why: 'Trỏ dưới 0,1°; bắt buộc nếu có camera hoặc X-band.' },
+      { id: 'eps', tab: 'pow', name: 'EPS + pin 20 Wh', ab: 'EPS', c: 1, kg: 0.30, w: 0.2, k: 25, mo: 2, wh: 20, why: 'Quản lý điện và nuôi vệ tinh khoảng 36 phút trong bóng Trái Đất mỗi vòng.' },
+      { id: 'bat', tab: 'pow', name: 'Pin bổ sung +40 Wh', ab: 'BAT', c: 1, kg: 0.35, w: 0, k: 20, mo: 1, wh: 40, why: 'Thêm dung lượng khi tải lớn.' },
+      { id: 'uhf', tab: 'com', name: 'UHF 437 MHz · 9,6 kbps', ab: 'UHF', c: 1, kg: 0.10, w: 1.5, k: 10, mo: 1, tx: 1.5, rb: 9.6e3, m: 9.7, why: 'Phát 1 W, dipole 0 dBi. Biên tới Hòa Lạc 9,7 dB ở góc ngẩng 10° — thông, nhưng chỉ ~1,2 MB/ngày.' },
+      { id: 'sb', tab: 'com', name: 'S-band 2,2 GHz · 2 Mbps', ab: 'S', c: 1, kg: 0.25, w: 6, k: 60, mo: 4, tx: 6, rb: 2e6, m: 8.4, why: 'Phát 2 W, patch 6 dBi; trạm dùng chảo 3 m. Biên 8,4 dB; ~255 MB/ngày với 17 phút liên lạc.' },
+      { id: 'xb', tab: 'com', name: 'X-band ~8 GHz · 50 Mbps', ab: 'X', c: 2, kg: 0.50, w: 15, k: 180, mo: 6, tx: 15, rb: 5e7, m: null, why: 'Rất nhanh, cần ADCS chính xác. Link budget chỉ có ở Sandbox.' },
+      { id: 'sos', tab: 'pay', name: 'Payload SOS', ab: 'SOS', c: 1, kg: 0.20, w: 2.0, k: 40, mo: 3, mb: 5, why: 'Nhận tin 300 bps từ máy cầm tay 0,5 W (biên 9,3 dB). Tạo 5 MB/ngày.' },
+      { id: 'ais', tab: 'pay', name: 'Máy thu AIS', ab: 'AIS', c: 1, kg: 0.15, w: 1.0, k: 30, mo: 2, mb: 20, why: 'Theo dõi tàu cá trên biển — như NanoDragon.' },
+      { id: 'cam', tab: 'pay', name: 'Camera quang học 5 m', ab: 'CAM', c: 2, kg: 0.80, w: 0.5, k: 150, mo: 5, mb: 2000, why: '5 W khi chụp, 10% thời gian. 2.000 MB/ngày; vô dụng khi mây dày.' },
+      { id: 'sail', tab: 'ext', name: 'Cánh hãm khí quyển', ab: 'SAIL', c: 1, kg: 0.30, w: 0, k: 20, mo: 2, why: 'Bung 0,5 m² khi hết nhiệm vụ: tồn lưu = (L − 3) × 0,047 / 0,547.' },
+      { id: 'prop', tab: 'ext', name: 'Động cơ điện nhỏ', ab: 'PRP', c: 2, kg: 1.0, w: 0, k: 150, mo: 6, why: 'Né mảnh vỡ (sự cố E4); 10 W chỉ khi đẩy.' },
+      { id: 'sh', tab: 'ext', name: 'Che chắn bức xạ', ab: 'SH', c: 1, kg: 0.50, w: 0, k: 15, mo: 1, why: 'Miễn nhiễm mất lượt do bão Mặt Trời (E1-B).' }
+    ];
+    const CH = [{ n: '3U', cells: 6, cols: 3, base: 0.6, lim: 6, k: 80, mo: 2, gen: 5.7, gw: '300px' }, { n: '6U', cells: 12, cols: 4, base: 1.2, lim: 12, k: 150, mo: 3, gen: 9.8, gw: '380px' }, { n: '12U', cells: 24, cols: 6, base: 2.4, lim: 24, k: 280, mo: 4, gen: 15.0, gw: '470px' }];
+    const f = (x, d) => x.toFixed(d).replace('.', ',');
+    const st = this.state, ch = CH[st.ch], get = (id) => P.find((p) => p.id === id), parts = st.placed.map(get);
+    const used = parts.reduce((a, p) => a + p.c, 0), has = (id) => st.placed.includes(id);
+    const kg = ch.base + parts.reduce((a, p) => a + p.kg, 0) + (st.wings ? 0.6 : 0);
+    const gen = ch.gen + (st.wings ? 12.1 : 0);
+    const use = parts.reduce((a, p) => a + (p.tx ? p.tx * 17 / 1440 : p.w), 0);
+    const wh = parts.reduce((a, p) => a + (p.wh || 0), 0), need = use * 0.595 / 0.3;
+    const k = ch.k + parts.reduce((a, p) => a + p.k, 0) + (st.wings ? 60 : 0) + (st.test ? 30 : 0);
+    const rb = Math.max(0, ...parts.map((p) => p.rb || 0)), down = rb * 17 * 60 / 8 / 1e6;
+    const made = parts.reduce((a, p) => a + (p.mb || 0) * (p.id === 'cam' && has('obc2') ? 0.4 : 1), 0);
+    const mo = ch.mo + Math.max(0, ...parts.map((p) => p.mo), st.wings ? 3 : 0) + 4 + (st.test ? 1 : 0);
+    const est = 4 * k + 4 * 350;
+    const bar = (name, r, text) => { const s = r <= 0.8 ? ['ĐẠT', '#4ADE80'] : r <= 1 ? ['SÁT', '#FBBF24'] : ['VƯỢT', '#F87171']; return { name, text, status: s[0], bg: s[1], pct: Math.round(Math.min(r, 1) * 100) + '%' }; };
+    const miss = [['obc', 'obc2', 'OBC'], ['eps', 'eps', 'EPS'], ['adcs', 'adcs2', 'ADCS'], ['uhf', 'sb', 'bộ phát'], ['sos', 'sos', 'payload SOS']].filter(([a, b]) => !has(a) && !has(b) && !(a === 'uhf' && has('xb'))).map((x) => x[2]);
+    const cells = [];
+    parts.forEach((p) => { for (let i = 0; i < p.c; i++) cells.push({ label: p.ab, bg: COL[p.tab], bc: COL[p.tab], bs: 'solid' }); });
+    while (cells.length < ch.cells) cells.push({ label: '', bg: 'transparent', bc: '#3A4C78', bs: 'dashed' });
+    const stats = (p) => p.c + ' ô · ' + f(p.kg, 2) + ' kg · ' + (p.tx ? p.tx + ' W khi phát' : f(p.w, 1) + ' W') + ' · ' + p.k + 'k · ' + p.mo + ' th';
+    const sp = get(st.sel);
+    let msg = st.msg, msgCol = '#FBBF24';
+    if (!msg) { msg = miss.length ? 'Thiếu: ' + miss.join(', ') + ' (R8)' : 'Đủ linh kiện bắt buộc (R8 ĐẠT)'; msgCol = miss.length ? '#F87171' : '#4ADE80'; }
+    const on = (b) => ({ bg: b ? '#F5A524' : 'transparent', fg: b ? '#1A1205' : '#E8EEF8' });
+    return {
+      coach: st.coach, closeCoach: () => this.setState({ coach: false }), openCoach: () => this.setState({ coach: true }),
+      coachStep: has('sb') ? 3 : 2,
+      coachTitle: has('sb') ? 'Chuẩn! Thanh Dữ liệu đã ĐẠT' : 'Thanh Dữ liệu đang VƯỢT',
+      coachText: has('sb') ? 'S-band tải ~255 MB/ngày, đủ cho 5 MB dữ liệu SOS. Bộ phát chỉ tốn điện khi liên lạc, nên thanh Công suất gần như không đổi. Tiếp theo: bấm “Chọn quỹ đạo”.' : 'UHF chỉ tải xuống ~1,2 MB/ngày, ít hơn 5 MB tin SOS tạo ra. Mở tab Liên lạc và bấm + ở “S-band 2,2 GHz”.',
+      hud: [
+        bar('Khối lượng', kg / ch.lim, f(kg, 2) + ' / ' + ch.lim + ' kg'),
+        bar('Công suất', use * 1.1 / gen, f(use, 2) + ' / ' + f(gen, 1) + ' W'),
+        bar('Pin bóng tối', wh ? need / wh : 9, 'cần ' + f(need, 1) + ' / ' + wh + ' Wh'),
+        bar('Dữ liệu', down ? made / down : 9, f(made, 0) + ' / ' + f(down, down < 10 ? 2 : 0) + ' MB/ngày'),
+        bar('Chi phí (ước tính 4 VT)', est / 3000, k + 'k × 4 + phóng = ' + est + 'k'),
+        bar('Thời gian', mo / 18, mo + ' / 18 tháng')
+      ],
+      tabs: [['bus', 'Máy tính'], ['pow', 'Nguồn'], ['com', 'Liên lạc'], ['pay', 'Payload'], ['ext', 'Phụ trợ']].map(([id, n]) => ({ name: n, ...on(st.tab === id), pick: () => this.setState({ tab: id }) })),
+      items: P.filter((p) => p.tab === st.tab).map((p) => ({ name: p.name, stats: stats(p), col: COL[p.tab], sel: () => this.setState({ sel: p.id }),
+        add: () => used + p.c > ch.cells ? this.setState({ sel: p.id, msg: 'Không đủ chỗ: ' + p.name + ' cần ' + p.c + ' ô' }) : this.setState({ placed: st.placed.concat(p.id), sel: p.id, msg: '' }) })),
+      chassis: CH.map((c, i) => ({ name: c.n, ...on(st.ch === i), pick: () => used > c.cells ? this.setState({ msg: 'Khung ' + c.n + ' chỉ có ' + c.cells + ' ô' }) : this.setState({ ch: i, msg: '' }) })),
+      cols: 'repeat(' + ch.cols + ', minmax(0, 1fr))', gw: ch.gw, cells,
+      wings: st.wings, wBg: on(st.wings).bg, wFg: on(st.wings).fg, wTxt: st.wings ? '· BẬT (+12,1 W)' : '· TẮT', tw: () => this.setState({ wings: !st.wings }),
+      tBg: on(st.test).bg, tFg: on(st.test).fg, tTxt: st.test ? '· CÓ (+30k, +1 th)' : '· KHÔNG', tt: () => this.setState({ test: !st.test }),
+      msg, msgCol,
+      sel: { name: sp.name, stats: stats(sp), why: sp.why },
+      count: used + '/' + ch.cells + ' ô',
+      placed: st.placed.map((id, i) => ({ name: get(id).name, col: COL[get(id).tab], rm: () => this.setState({ placed: st.placed.filter((_, j) => j !== i), msg: '' }) }))
+    };
+  }
+}
+</script>
+</body>
+</html>
