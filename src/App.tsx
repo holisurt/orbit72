@@ -13,6 +13,7 @@ import { Debrief } from './screens/Debrief';
 import { Share } from './screens/Share';
 import { Quiz } from './screens/Quiz';
 import { Guide } from './screens/Guide';
+import { SettingsProvider } from './state/settings';
 
 export const APP_TITLE = 'ORBIT 72 - Bắt Sóng Cứu Hộ';
 
@@ -52,10 +53,12 @@ function Router() {
 
 export function App() {
   return (
-    <DataProvider>
-      <StoreProvider>
-        <Router />
-      </StoreProvider>
-    </DataProvider>
+    <SettingsProvider>
+      <DataProvider>
+        <StoreProvider>
+          <Router />
+        </StoreProvider>
+      </DataProvider>
+    </SettingsProvider>
   );
 }

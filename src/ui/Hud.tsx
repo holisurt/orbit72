@@ -32,7 +32,7 @@ export function Hud({ bars }: { bars: HudBar[] }) {
             >
               <div style={{ width: `${pct}%`, background: STATUS_COLOR[status] }} />
             </div>
-            <span className="mono" style={{ fontSize: 12, color: '#C9D4E8' }}>
+            <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)' }}>
               {b.text}
             </span>
           </div>

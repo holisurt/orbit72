@@ -9,6 +9,7 @@ import { fmt, missionOfDay } from '../ui/format';
 import { Patch, PATCH_THEMES } from '../ui/Patch';
 import { starGlyphs } from './Debrief';
 import { HeaderTools } from '../ui/HeaderTools';
+import { useT } from '../ui/i18n';
 
 const C: Record<Status, string> = { DAT: '#4ADE80', SAT: '#FBBF24', VUOT: '#F87171' };
 const EMOJI: Record<Status, string> = { DAT: '🟩', SAT: '🟨', VUOT: '🟥' };
@@ -22,6 +23,7 @@ function worst(list: Status[]): Status {
 export function Share() {
   const data = useGameData();
   const { state, dispatch } = useStore();
+  const t = useT();
   const run = useRun();
   const [theme, setTheme] = useState(0);
   const [msg, setMsg] = useState('');
@@ -78,7 +80,7 @@ export function Share() {
         <span className="brand">
           ORBIT <span className="amber">72</span> <span className="sub">· Chia sẻ thành tích</span>
         </span>
-        <span style={{ fontSize: 12, color: '#7F90AE' }}>Không chứa logo NASA · không chứa ảnh hay tên thật của người chơi</span>
+        <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--dim)' }}>Không chứa logo NASA · không chứa ảnh hay tên thật của người chơi</span>
         <HeaderTools />
       </header>
       <main className="body share-body">
@@ -94,7 +96,7 @@ export function Share() {
               </button>
             ))}
           </div>
-          <span style={{ fontSize: 12, color: 'var(--muted)', textAlign: 'center' }}>
+          <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)', textAlign: 'center' }}>
             Ngôi sao 14 cánh của mặt trống đồng Đông Sơn · cánh sen · chấm trắng = số vệ tinh trong chòm
           </span>
         </div>
@@ -160,33 +162,33 @@ export function Share() {
 
         <div className="col" style={{ gap: 10, justifyContent: 'center' }}>
           <span className="lbl">Chia sẻ</span>
-          <pre className="panel mono" style={{ padding: 12, fontSize: 13, lineHeight: 1.6, margin: 0, whiteSpace: 'pre-wrap' }}>
+          <pre className="panel mono" style={{ padding: 12, fontSize: 'calc(13rem / 16)', lineHeight: 1.6, margin: 0, whiteSpace: 'pre-wrap' }}>
             {shareText}
           </pre>
           <button className="btn-p" onClick={copy}>
-            Sao chép kết quả
+            {t('copy')}
           </button>
           <button className="btn-s" onClick={() => exportSvg(cardRef.current, `orbit72-${no}-the.png`, false)}>
-            Tải thẻ PNG (9:16)
+            {t('dlCard')}
           </button>
           <button className="btn-s" onClick={() => exportSvg(patchRef.current, `orbit72-${no}-patch.png`, false)}>
-            Tải mission patch PNG
+            {t('dlPatch')}
           </button>
           <button className="btn-s" onClick={() => exportSvg(cardRef.current, `orbit72-${no}-the.png`, true)}>
-            Chia sẻ TikTok · Facebook · Zalo
+            {t('shareSocial')}
           </button>
-          <span role="status" style={{ fontSize: 12, color: 'var(--muted)' }}>
+          <span role="status" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>
             {msg}
           </span>
           <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
             <button className="link-btn" onClick={() => dispatch({ type: 'go', screen: 'debrief' })}>
-              ← Báo cáo
+              ← {t('stepDebrief')}
             </button>
             <button className="link-btn" onClick={() => dispatch({ type: 'go', screen: 'home' })}>
-              Chơi nhiệm vụ khác
+              {t('playAnother')}
             </button>
           </div>
-          <span style={{ fontSize: 11, color: '#7F90AE' }}>P1h sau sự cố: {fmt(run.ops.p1h, 1)}%.</span>
+          <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--dim)' }}>P1h sau sự cố: {fmt(run.ops.p1h, 1)}%.</span>
         </div>
       </main>
     </div>

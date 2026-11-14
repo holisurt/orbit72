@@ -44,6 +44,29 @@ a {
   font-family: var(--font-mono);
 }
 
+/* Settings → Tương phản cao: brighter text and borders, darker surfaces. */
+:root[data-contrast='high'] {
+  --bg: #000000;
+  --panel: #050a14;
+  --line: #8a9cc4;
+  --text: #ffffff;
+  --muted: #dfe7f5;
+  --soft: #f2f6fc;
+  --dim: #d0dbee;
+  --amber: #ffc04d;
+  --cyan: #7ee7ff;
+}
+
+/* Settings → Giảm chuyển động (same rules as the system preference below). */
+:root[data-motion='reduce'] *,
+:root[data-motion='reduce'] *::before,
+:root[data-motion='reduce'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

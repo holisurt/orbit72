@@ -11,6 +11,7 @@ import { MapVN, projVN } from '../ui/MapVN';
 import { ictLabel, IMERG_LABEL, RATE_BINS, rainCells } from '../ui/rain';
 import { RainLegend } from '../ui/RainLegend';
 import { HeaderTools } from '../ui/HeaderTools';
+import { useT } from '../ui/i18n';
 
 const SPEEDS = [60, 360, 1440];
 const END = 72 * 60;
@@ -28,6 +29,7 @@ const triggerMin = (ev: GameEvent) => Math.max(0, ev.atH * 60);
 export function Ops() {
   const data = useGameData();
   const { state, dispatch } = useStore();
+  const t = useT();
   const run = useRun();
   const { ops, nominal, events, options, mission } = run;
   const choices = state.ops.choices;
@@ -124,9 +126,9 @@ export function Ops() {
         <span className="brand">
           MISSION CONTROL <span className="amber">· {data.scenario.name.toUpperCase()}</span>
         </span>
-        <span className="mono" style={{ fontSize: 22, fontWeight: 600 }} aria-live="off">
+        <span className="mono" style={{ fontSize: 'calc(22rem / 16)', fontWeight: 600 }} aria-live="off">
           {clockText(clock)}{' '}
-          <span style={{ fontSize: 12, color: playing ? 'var(--ok)' : 'var(--bad)' }}>● {playing ? 'ĐANG CHẠY' : 'TẠM DỪNG'}</span>
+          <span style={{ fontSize: 'calc(12rem / 16)', color: playing ? 'var(--ok)' : 'var(--bad)' }}>● {playing ? 'ĐANG CHẠY' : 'TẠM DỪNG'}</span>
         </span>
         <div className="row" style={{ gap: 6 }} role="group" aria-label="Tốc độ mô phỏng">
           <button
@@ -136,7 +138,7 @@ export function Ops() {
             onClick={() => setPlaying((p) => !p)}
             style={{ minWidth: 64 }}
           >
-            {playing ? '❚❚ Dừng' : '▶ Chạy'}
+            {playing ? `❚❚ ${t('pause')}` : `▶ ${t('run')}`}
           </button>
           {SPEEDS.map((s, q) => (
             <button key={s} className="chip" aria-pressed={speed === q} onClick={() => setSpeed(q)} style={{ minWidth: 52 }}>
@@ -160,7 +162,7 @@ export function Ops() {
           <path d={ordered.map((e) => `M${triggerMin(e) / 15} 0 V26`).join(' ')} stroke="#F5A524" strokeWidth="1.2" />
           <path d={`M${clock / 15} 0 V26`} stroke="#FFFFFF" strokeWidth="1" />
         </svg>
-        <span className="mono" style={{ fontSize: 11, color: 'var(--muted)', flex: 'none' }}>
+        <span className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)', flex: 'none' }}>
           {ordered.map((e) => e.id).join(' · ')}
         </span>
       </div>
@@ -175,7 +177,7 @@ export function Ops() {
               <div key={s.name} className="placed-row" style={{ padding: '6px 0' }}>
                 <span className="dot" style={{ background: s.color }} aria-hidden="true" />
                 <span style={{ flex: 1 }}>{s.name}</span>
-                <span className="mono" style={{ fontSize: 11, color: 'var(--muted)' }}>
+                <span className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>
                   MP{s.plane} · {s.text}
                 </span>
               </div>
@@ -184,24 +186,24 @@ export function Ops() {
           <section className="panel col" style={{ padding: '10px 12px', gap: 8 }} aria-label="Chỉ số sau sự cố">
             <span className="lbl">Chỉ số sau sự cố</span>
             <div>
-              <div style={{ fontSize: 12, color: 'var(--muted)' }}>P1h · tin SOS ≤ 1 giờ</div>
-              <div className="mono" style={{ fontSize: 26, fontWeight: 600, color: 'var(--cyan)' }}>
+              <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>P1h · tin SOS ≤ 1 giờ</div>
+              <div className="mono" style={{ fontSize: 'calc(26rem / 16)', fontWeight: 600, color: 'var(--cyan)' }}>
                 {fmt(ops.p1h, 0)}%
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 12, color: 'var(--muted)' }}>P1h_mưa · trọng số IMERG</div>
-              <div className="mono" style={{ fontSize: 20, fontWeight: 600, color: 'var(--cyan)' }}>
+              <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>P1h_mưa · trọng số IMERG</div>
+              <div className="mono" style={{ fontSize: 'calc(20rem / 16)', fontWeight: 600, color: 'var(--cyan)' }}>
                 {fmt(ops.p1hRain, 1)}%
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 12, color: 'var(--muted)' }}>Khoảng trống dài nhất</div>
-              <div className="mono" style={{ fontSize: 26, fontWeight: 600, color: ops.longestGapH <= data.scenario.difficulty[state.difficulty].gapMaxH ? 'var(--ok)' : 'var(--bad)' }}>
+              <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>Khoảng trống dài nhất</div>
+              <div className="mono" style={{ fontSize: 'calc(26rem / 16)', fontWeight: 600, color: ops.longestGapH <= data.scenario.difficulty[state.difficulty].gapMaxH ? 'var(--ok)' : 'var(--bad)' }}>
                 {fmt(ops.longestGapH, 1)} h
               </div>
             </div>
-            <span style={{ fontSize: 11, color: '#7F90AE' }}>
+            <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--dim)' }}>
               Tính lại từ mô phỏng 72 h ({mission.orbit.planes} MP × {mission.orbit.perPlane}, {mission.orbit.hKm} km) với mặt nạ sự cố. Sự cố chỉ ảnh hưởng sao 2 và sao 4;
               R1 chấm trên thiết kế danh nghĩa ({mission.coverage ? fmt(mission.coverage.longestGapH, 1) : '—'} h).
               {run.weightsSource === 'none'
@@ -266,7 +268,7 @@ export function Ops() {
               onChange={(e) => seek(Number(e.target.value))}
             />
           </div>
-          <span style={{ position: 'absolute', left: 12, bottom: 8, right: 12, fontSize: 10, color: '#7F90AE' }}>
+          <span style={{ position: 'absolute', left: 12, bottom: 8, right: 12, fontSize: 'calc(10rem / 16)', color: 'var(--dim)' }}>
             Bản đồ: Natural Earth ·{' '}
             {grid
               ? `Lớp mưa: ${IMERG_LABEL} (DOI ${data.imerg?.source?.doi ?? '10.5067/GPM/IMERG/3B-HH/07'}, lưới ${fmt(grid.step, 1)}°)`
@@ -291,15 +293,15 @@ export function Ops() {
                   {e.id} · {e.atH < 0 ? 'khi vào quỹ đạo' : `T0+${e.atH} h`}
                   {isNext ? ' · cần quyết định' : chosen ? ' · đã chọn' : ''}
                 </span>
-                <span style={{ fontSize: 14, fontWeight: 700 }}>{e.title}</span>
+                <span style={{ fontSize: 'calc(14rem / 16)', fontWeight: 700 }}>{e.title}</span>
                 {chosen && out && (
-                  <span style={{ fontSize: 12, color: '#C9D4E8' }}>
+                  <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)' }}>
                     {chosen} — {e.options.find((o) => o.k === chosen)?.text} · P1h {out.p1hDisplay}%
                   </span>
                 )}
                 {isNext && clock >= triggerMin(e) && (
                   <button className="btn-p" style={{ minHeight: 44 }} onClick={() => setModal(e.id)}>
-                    Xem thẻ sự cố
+                    {t('openEvent')}
                   </button>
                 )}
               </div>
@@ -308,7 +310,7 @@ export function Ops() {
           <div className="col" style={{ marginTop: 'auto', gap: 8 }}>
             {!allChosen && (
               <button className="btn-s" onClick={() => seek(limit)}>
-                Tua tới sự cố tiếp theo
+                {t('nextEvent')}
               </button>
             )}
             <button
@@ -316,7 +318,7 @@ export function Ops() {
               aria-disabled={!allChosen}
               onClick={() => allChosen && dispatch({ type: 'finishOps' })}
             >
-              Kết thúc 72 giờ · Báo cáo →
+              {t('endOps')} →
             </button>
           </div>
         </div>
@@ -330,7 +332,7 @@ export function Ops() {
                 Sự cố {ev.id} · {ev.atH < 0 ? 'khi vào quỹ đạo' : `T0+${ev.atH} h`}
               </span>
               <button className="chip" onClick={() => setModal(null)}>
-                Đóng
+                {t('close')}
               </button>
             </div>
             <div className="row" style={{ gap: 18, alignItems: 'center' }}>
@@ -341,15 +343,15 @@ export function Ops() {
                 </g>
               </svg>
               <div style={{ flex: 1 }}>
-                <div id="ev-title" style={{ fontSize: 24, fontWeight: 800 }}>
+                <div id="ev-title" style={{ fontSize: 'calc(24rem / 16)', fontWeight: 800 }}>
                   {ev.title}
                 </div>
-                <p style={{ margin: '6px 0 0', fontSize: 14, lineHeight: 1.55, color: '#C9D4E8' }}>
+                <p style={{ margin: '6px 0 0', fontSize: 'calc(14rem / 16)', lineHeight: 1.55, color: 'var(--soft)' }}>
                   {eventIntro(ev, { hasShield: run.hasShield, donki: data.donki })}
                 </p>
                 {ev.id === 'E1' && data.donki?.link && (
                   <a href={data.donki.link} target="_blank" rel="noopener noreferrer"
-                    style={{ fontSize: 12, color: 'var(--cyan)', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>
+                    style={{ fontSize: 'calc(12rem / 16)', color: 'var(--cyan)', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>
                     {data.donki.source ?? 'NASA DONKI'} · {data.donki.gstID ?? 'xem bản ghi'} ↗
                   </a>
                 )}
@@ -371,9 +373,9 @@ export function Ops() {
                       {o.key}
                       {o.available ? ` · ${RANK_LABEL[o.rank]}` : ' · cần động cơ'}
                     </span>
-                    <span style={{ fontSize: 15, fontWeight: 800 }}>{opt.text}</span>
-                    <span style={{ fontSize: 12, color: '#C9D4E8', lineHeight: 1.45 }}>{optionDetail(ev, o.key, run.hasShield)}</span>
-                    <span className="mono" style={{ fontSize: 12, color: 'var(--cyan)' }}>
+                    <span style={{ fontSize: 'calc(15rem / 16)', fontWeight: 800 }}>{opt.text}</span>
+                    <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)', lineHeight: 1.45 }}>{optionDetail(ev, o.key, run.hasShield)}</span>
+                    <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--cyan)' }}>
                       P1h {o.p1hDisplay}% · trống {fmt(o.longestGapH, 1)} h
                     </span>
                   </button>
@@ -381,11 +383,11 @@ export function Ops() {
               })}
             </div>
             <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 12, color: 'var(--muted)', flex: 1, minWidth: 200 }}>
+              <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)', flex: 1, minWidth: 200 }}>
                 P1h và khoảng trống tính trực tiếp trên dòng thời gian 72 giờ của chòm vệ tinh (mỗi phương án xét riêng). Phương án có P1h cao nhất được xếp “tốt”.
               </span>
               <button className="btn-p" aria-disabled={!pick} onClick={confirm}>
-                Xác nhận &amp; tiếp tục
+                {t('confirm')}
               </button>
             </div>
           </div>

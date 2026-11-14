@@ -8,6 +8,7 @@ import { quizSummary } from '../state/quiz';
 import { downloadBlob, EXPORT_FONT, EXPORT_MONO, svgToPng } from '../ui/exportPng';
 import { fmt } from '../ui/format';
 import { TopBar } from '../ui/TopBar';
+import { useT } from '../ui/i18n';
 
 const LEVEL_NAME = { hoc_vien: 'HỌC VIÊN', ky_su: 'KỸ SƯ', giam_doc: 'GIÁM ĐỐC' } as const;
 
@@ -55,6 +56,7 @@ export function specRows(run: RunView, data: GameData, extraMonths: number, quiz
 export function Debrief() {
   const data = useGameData();
   const { state, dispatch } = useStore();
+  const t = useT();
   const run = useRun();
   const { score, why, cml, cmlOnExport } = run;
   const style = OUTCOME_STYLE[score.outcome];
@@ -86,7 +88,7 @@ export function Debrief() {
         subtitle={`Báo cáo sứ mệnh · lần chạy ${state.run}`}
         step="debrief"
         right={
-          <span className="mono" style={{ fontSize: 13, color: 'var(--muted)' }}>
+          <span className="mono" style={{ fontSize: 'calc(13rem / 16)', color: 'var(--muted)' }}>
             {LEVEL_NAME[state.difficulty]} · {state.mode === 'coop' ? `CO-OP ${state.players.count}` : 'SOLO'}
           </span>
         }
@@ -111,8 +113,8 @@ export function Debrief() {
         </div>
         <div style={{ textAlign: 'right' }}>
           <div className="lbl">Điểm tổng (trung bình 5 sao)</div>
-          <div className="mono" style={{ fontSize: 34, fontWeight: 600, color: 'var(--amber)' }}>
-            {fmt(score.overall, 1)} <span style={{ fontSize: 16, color: 'var(--muted)' }}>/ 5</span>
+          <div className="mono" style={{ fontSize: 'calc(34rem / 16)', fontWeight: 600, color: 'var(--amber)' }}>
+            {fmt(score.overall, 1)} <span style={{ fontSize: 'calc(16rem / 16)', color: 'var(--muted)' }}>/ 5</span>
           </div>
         </div>
       </div>
@@ -125,14 +127,14 @@ export function Debrief() {
           {score.stars.map((s) => (
             <div key={s.n} style={{ padding: '8px 0', borderBottom: '1px solid #1A2647' }}>
               <div className="row" style={{ justifyContent: 'space-between' }}>
-                <span style={{ fontSize: 14, fontWeight: 800 }}>
+                <span style={{ fontSize: 'calc(14rem / 16)', fontWeight: 800 }}>
                   {s.n} · {s.name}
                 </span>
-                <span style={{ fontSize: 18, letterSpacing: 2, color: 'var(--amber)' }} aria-label={`${s.stars} trên 5 sao`}>
+                <span style={{ fontSize: 'calc(18rem / 16)', letterSpacing: 2, color: 'var(--amber)' }} aria-label={`${s.stars} trên 5 sao`}>
                   {starGlyphs(s.stars)}
                 </span>
               </div>
-              <div className="mono" style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>
+              <div className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)', marginTop: 2 }}>
                 {s.formula}
               </div>
             </div>
@@ -142,23 +144,23 @@ export function Debrief() {
         <div className="col">
           <span className="lbl">Vì sao? · Nguyên nhân → Hệ quả → Thử lần sau</span>
           {why.length === 0 && (
-            <div className="panel" style={{ padding: '10px 12px', fontSize: 13, color: '#C9D4E8' }}>
+            <div className="panel" style={{ padding: '10px 12px', fontSize: 'calc(13rem / 16)', color: 'var(--soft)' }}>
               Không có yêu cầu nào SÁT hay VƯỢT, và mọi quyết định sự cố đều là phương án tốt nhất.
             </div>
           )}
           {why.map((w, i) => (
             <div key={i} className="panel why-row" title={w.sentence}>
-              <div style={{ fontSize: 13, lineHeight: 1.45 }}>
+              <div style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45 }}>
                 <span className="lbl">Nguyên nhân</span>
                 <br />
                 {w.cause}
               </div>
-              <div style={{ fontSize: 13, lineHeight: 1.45 }}>
+              <div style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45 }}>
                 <span className="lbl">Hệ quả</span>
                 <br />
                 {w.effect}
               </div>
-              <div style={{ fontSize: 13, lineHeight: 1.45, borderLeft: '2px solid var(--amber)', paddingLeft: 10 }}>
+              <div style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45, borderLeft: '2px solid var(--amber)', paddingLeft: 10 }}>
                 <span className="lbl" style={{ color: 'var(--amber)' }}>
                   Thử lần sau
                 </span>
@@ -167,7 +169,7 @@ export function Debrief() {
               </div>
             </div>
           ))}
-          <div className="panel" style={{ padding: '10px 12px', fontSize: 13, lineHeight: 1.5, color: '#C9D4E8' }}>
+          <div className="panel" style={{ padding: '10px 12px', fontSize: 'calc(13rem / 16)', lineHeight: 1.5, color: 'var(--soft)' }}>
             <span className="lbl">So với nhiệm vụ thật</span>
             <br />
             NanoDragon (3U, 3,8 kg, SSO ~560 km, 2021) là một vệ tinh đơn lẻ; với mô hình này, một vệ tinh SSO chỉ cho Hà Nội 3 lượt/ngày
@@ -176,12 +178,12 @@ export function Debrief() {
         </div>
 
         <div className="col">
-          <section className="panel col" style={{ padding: '12px 14px', gap: 4, fontSize: 12 }} aria-label="Huy hiệu CML">
+          <section className="panel col" style={{ padding: '12px 14px', gap: 4, fontSize: 'calc(12rem / 16)' }} aria-label="Huy hiệu CML">
             <div className="row" style={{ justifyContent: 'space-between' }}>
               <span className="lbl" style={{ color: 'var(--amber)' }}>
                 Huy hiệu CML · JPL
               </span>
-              <span className="mono" style={{ fontSize: 18, fontWeight: 600, color: cml ? 'var(--amber)' : 'var(--muted)' }}>
+              <span className="mono" style={{ fontSize: 'calc(18rem / 16)', fontWeight: 600, color: cml ? 'var(--amber)' : 'var(--muted)' }}>
                 CML {cml}
               </span>
             </div>
@@ -197,7 +199,7 @@ export function Debrief() {
             ))}
           </section>
 
-          <section className="panel col" style={{ padding: '12px 14px', gap: 4, fontSize: 12 }} aria-label="Spec sheet">
+          <section className="panel col" style={{ padding: '12px 14px', gap: 4, fontSize: 'calc(12rem / 16)' }} aria-label="Spec sheet">
             <div className="row" style={{ justifyContent: 'space-between' }}>
               <span className="lbl" style={{ color: 'var(--amber)' }}>
                 Spec sheet · Rồng Con
@@ -216,9 +218,9 @@ export function Debrief() {
               </div>
             ))}
             <button className="btn-s" style={{ marginTop: 6 }} onClick={exportSpec}>
-              Xuất spec sheet (PNG)
+              {t('exportSpec')}
             </button>
-            <span role="status" style={{ fontSize: 11, color: 'var(--muted)' }}>
+            <span role="status" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>
               {exportMsg}
             </span>
           </section>
@@ -229,20 +231,20 @@ export function Debrief() {
             </span>
             {postPending && (
               <button className="link-btn" onClick={() => dispatch({ type: 'openPostQuiz', next: 'debrief' })}>
-                Làm quiz sau
+                {t('postQuiz')}
               </button>
             )}
           </section>
 
           <div className="col" style={{ gap: 8, marginTop: 'auto' }}>
             <button className="btn-s" onClick={() => dispatch({ type: 'rerun' })}>
-              Sửa &amp; chạy lại (giữ thiết kế)
+              {t('rerun')}
             </button>
             <button
               className="btn-p"
               onClick={() => dispatch(postPending ? { type: 'openPostQuiz', next: 'share' } : { type: 'go', screen: 'share' })}
             >
-              {postPending ? 'Quiz sau · Tạo mission patch →' : 'Tạo mission patch · Chia sẻ →'}
+              {postPending ? t('toShareQuiz') : t('toShare')} →
             </button>
           </div>
         </div>

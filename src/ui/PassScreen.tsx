@@ -26,18 +26,18 @@ export function PassScreen({ role, count, names, text, onStart }: Props) {
       </span>
       <div
         className="avatar"
-        style={{ width: 96, height: 96, borderRadius: 48, fontSize: 28, background: ROLES[group[0]].color }}
+        style={{ width: 96, height: 96, borderRadius: 48, fontSize: 'calc(28rem / 16)', background: ROLES[group[0]].color }}
         aria-hidden="true"
       >
         {ab}
       </div>
       <h2 id="pass-title">Đến lượt {r.name}</h2>
       {nick && (
-        <div style={{ fontSize: 15, color: 'var(--muted)' }}>
+        <div style={{ fontSize: 'calc(15rem / 16)', color: 'var(--muted)' }}>
           Người chơi {idx + 1} · {nick}
         </div>
       )}
-      <div style={{ fontSize: 17, color: '#C9D4E8', maxWidth: 640, lineHeight: 1.6 }}>{text}</div>
+      <div style={{ fontSize: 'calc(17rem / 16)', color: 'var(--soft)', maxWidth: 640, lineHeight: 1.6 }}>{text}</div>
       <button ref={btn} className="btn-p" style={{ minWidth: 'min(320px, 100%)' }} onClick={onStart}>
         Tôi là {r.name} — bắt đầu lượt
       </button>

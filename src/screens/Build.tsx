@@ -11,6 +11,7 @@ import { Hud, type HudBar } from '../ui/Hud';
 import { PassScreen } from '../ui/PassScreen';
 import { CAT_COLOR, CAT_TABS, PART_INFO, downlinkText, partWhy } from '../ui/parts';
 import { TopBar } from '../ui/TopBar';
+import { useT } from '../ui/i18n';
 
 const BAY_WIDTH: Record<ChassisId, string> = { '3U': '300px', '6U': '380px', '12U': '470px' };
 
@@ -22,6 +23,7 @@ export function Build() {
   const data = useGameData();
   const comp = data.components;
   const { state, dispatch } = useStore();
+  const t = useT();
   const m = useMission();
   const b = m.build;
   const design = state.design;
@@ -132,7 +134,7 @@ export function Build() {
           <span className="turn">
             Lượt: <strong>Kỹ sư Vệ tinh</strong>
             <button className="tab accent" onClick={() => dispatch({ type: 'setCoach', open: true })}>
-              Hướng dẫn
+              {t('help')}
             </button>
           </span>
         }
@@ -156,10 +158,10 @@ export function Build() {
                 return (
                   <div key={p.id} className="part-item" style={{ borderLeftColor: CAT_COLOR[p.cat] }}>
                     <button className="info" aria-pressed={sel === p.id} onClick={() => setSel(p.id)}>
-                      <div className="pname" style={{ fontSize: 13, fontWeight: 700 }}>
+                      <div className="pname" style={{ fontSize: 'calc(13rem / 16)', fontWeight: 700 }}>
                         {p.name}
                       </div>
-                      <div className="mono" style={{ fontSize: 11, color: 'var(--muted)' }}>
+                      <div className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>
                         {partStats(p)}
                       </div>
                     </button>
@@ -232,7 +234,7 @@ export function Build() {
               Thử nghiệm môi trường{' '}
               {design.envTest ? `· CÓ (+${comp.envTest.kusd}k, +${comp.envTest.months} th)` : '· KHÔNG'}
             </button>
-            <span role="status" style={{ flex: 1, minWidth: 180, fontSize: 12, color: statusLine.color, textAlign: 'right' }}>
+            <span role="status" style={{ flex: 1, minWidth: 180, fontSize: 'calc(12rem / 16)', color: statusLine.color, textAlign: 'right' }}>
               {statusLine.text}
             </span>
           </div>
@@ -243,11 +245,11 @@ export function Build() {
             <span className="lbl" style={{ color: 'var(--amber)' }}>
               Chi tiết
             </span>
-            <div style={{ fontSize: 17, fontWeight: 800, marginTop: 4 }}>{selPart.name}</div>
-            <div className="mono" style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>
+            <div style={{ fontSize: 'calc(17rem / 16)', fontWeight: 800, marginTop: 4 }}>{selPart.name}</div>
+            <div className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)', marginTop: 2 }}>
               {partStats(selPart)}
             </div>
-            <p style={{ margin: '8px 0 0', fontSize: 13, lineHeight: 1.5, color: '#C9D4E8' }}>
+            <p style={{ margin: '8px 0 0', fontSize: 'calc(13rem / 16)', lineHeight: 1.5, color: 'var(--soft)' }}>
               {partWhy(selPart, m.contactMinPerDay)}
             </p>
           </section>
@@ -273,7 +275,7 @@ export function Build() {
             ))}
           </section>
           <div className="row">
-            <button className="btn-s" aria-label="Quay lại Nhiệm vụ" onClick={() => dispatch({ type: 'go', screen: 'brief' })}>
+            <button className="btn-s" aria-label={t('back')} onClick={() => dispatch({ type: 'go', screen: 'brief' })}>
               ←
             </button>
             <button
@@ -285,7 +287,7 @@ export function Build() {
                 dispatch({ type: 'go', screen: 'orbit' });
               }}
             >
-              Chọn quỹ đạo →
+              {t('toOrbit')} →
             </button>
           </div>
         </div>
@@ -299,24 +301,24 @@ export function Build() {
               <span className="lbl" style={{ color: 'var(--amber)' }}>
                 Tutorial · bước {hasS ? 3 : 2}/7
               </span>
-              <span style={{ fontSize: 22 }} aria-hidden="true">
+              <span style={{ fontSize: 'calc(22rem / 16)' }} aria-hidden="true">
                 ←
               </span>
             </div>
-            <div id="coach-title" style={{ fontSize: 18, fontWeight: 800 }}>
+            <div id="coach-title" style={{ fontSize: 'calc(18rem / 16)', fontWeight: 800 }}>
               {hasS ? 'Chuẩn! Thanh Dữ liệu đã ĐẠT' : 'Thanh Dữ liệu đang VƯỢT'}
             </div>
-            <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: '#C9D4E8' }}>
+            <p style={{ margin: 0, fontSize: 'calc(14rem / 16)', lineHeight: 1.55, color: 'var(--soft)' }}>
               {hasS
                 ? `S-band tải ${downlinkText(rbpsOf('sband'), m.contactMinPerDay)}, đủ cho ${sosMB} MB dữ liệu SOS. Bộ phát chỉ tốn điện khi liên lạc, nên thanh Công suất gần như không đổi. Tiếp theo: bấm “Chọn quỹ đạo”.`
                 : `UHF chỉ tải xuống ${downlinkText(rbpsOf('uhf'), m.contactMinPerDay)}, ít hơn ${sosMB} MB tin SOS tạo ra. Mở tab Liên lạc và bấm + ở “S-band 2,2 GHz”.`}
             </p>
             <div className="row" style={{ justifyContent: 'flex-end' }}>
               <button className="tab" onClick={() => dispatch({ type: 'setCoach', open: false })}>
-                Bỏ qua
+                {t('skip')}
               </button>
               <button className="tab" aria-pressed={true} onClick={() => dispatch({ type: 'setCoach', open: false })}>
-                Đã hiểu
+                {t('gotIt')}
               </button>
             </div>
           </div>

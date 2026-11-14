@@ -9,6 +9,7 @@ import { fmt, missionOfDay } from '../ui/format';
 import { PassScreen } from '../ui/PassScreen';
 import { StatusChip } from '../ui/StatusChip';
 import { TopBar } from '../ui/TopBar';
+import { useT } from '../ui/i18n';
 
 /** FD calls each station (SPEC §8). */
 const CALLS: { call: string; role: RoleId }[] = [
@@ -22,6 +23,7 @@ const R_CODES: RCode[] = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8'];
 export function Review() {
   const data = useGameData();
   const { state, dispatch } = useStore();
+  const t = useT();
   const m = useMission();
   const [pass, setPass] = useState(state.mode === 'coop');
   const { votes, reasons } = state.ops;
@@ -87,17 +89,17 @@ export function Review() {
         <section className="panel col" style={{ padding: '14px 16px', gap: 4 }} aria-label="Flight Readiness">
           <div className="row" style={{ justifyContent: 'space-between', marginBottom: 4, flexWrap: 'wrap' }}>
             <span className="lbl">Flight Readiness · R1–R8</span>
-            <span className="mono" style={{ fontSize: 11, color: 'var(--muted)' }}>
+            <span className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>
               {m.orbit.planes} MP × {m.orbit.perPlane} · {m.orbit.preset === 'sso' ? 'SSO' : `${fmt(m.inclDeg, 1)}°`} {m.orbit.hKm} km
             </span>
           </div>
           {m.reqs.map((r) => (
             <div key={r.id} className="ready-row">
-              <span className="mono" style={{ fontSize: 12, color: 'var(--amber)', fontWeight: 600 }}>
+              <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--amber)', fontWeight: 600 }}>
                 {r.id}
               </span>
-              <span style={{ fontSize: 13 }}>{r.name}</span>
-              <span className="mono" style={{ fontSize: 12, color: '#C9D4E8', textAlign: 'right' }}>
+              <span style={{ fontSize: 'calc(13rem / 16)' }}>{r.name}</span>
+              <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)', textAlign: 'right' }}>
                 {r.value} <span style={{ color: 'var(--muted)' }}>({r.limit})</span>
               </span>
               <StatusChip status={r.status} />
@@ -110,7 +112,7 @@ export function Review() {
               background: vuot.length ? '#3A1518' : '#2A2310',
               border: `1px solid ${vuot.length ? '#7F2A30' : '#6B5320'}`,
               padding: '10px 12px',
-              fontSize: 13,
+              fontSize: 'calc(13rem / 16)',
               lineHeight: 1.5,
             }}
           >
@@ -147,7 +149,7 @@ export function Review() {
             <div className="lbl" style={{ color: 'var(--amber)' }}>
               {canLaunch ? 'Sẵn sàng · chờ lệnh phóng' : 'Đếm ngược tạm dừng chờ poll'}
             </div>
-            <div className="mono" style={{ fontSize: 44, fontWeight: 600, letterSpacing: '0.04em' }}>
+            <div className="mono" style={{ fontSize: 'calc(44rem / 16)', fontWeight: 600, letterSpacing: '0.04em' }}>
               T−00:10
             </div>
           </div>
@@ -161,14 +163,14 @@ export function Review() {
             return (
               <div key={role} className="col" style={{ gap: 6, padding: '8px 0', borderBottom: '1px solid #1A2647' }}>
                 <div className="row" style={{ gap: 10 }}>
-                  <div className="avatar" style={{ width: 40, height: 40, background: r.color, fontSize: 13 }} aria-hidden="true">
+                  <div className="avatar" style={{ width: 40, height: 40, background: r.color, fontSize: 'calc(13rem / 16)' }} aria-hidden="true">
                     {r.ab}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div className="mono" style={{ fontSize: 14, fontWeight: 600 }}>
+                    <div className="mono" style={{ fontSize: 'calc(14rem / 16)', fontWeight: 600 }}>
                       {call}
                     </div>
-                    <div style={{ fontSize: 12, color: 'var(--muted)' }}>{r.name}</div>
+                    <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>{r.name}</div>
                   </div>
                   <div className="row" style={{ gap: 6 }} role="group" aria-label={`${call} ${r.name}`}>
                     <button className="vote go" aria-pressed={v === 'go'} onClick={() => dispatch({ type: 'vote', role, vote: 'go' })}>
@@ -180,7 +182,7 @@ export function Review() {
                   </div>
                 </div>
                 {v === 'no' && (
-                  <label className="row" style={{ gap: 8, fontSize: 12, color: 'var(--muted)', paddingLeft: 50 }}>
+                  <label className="row" style={{ gap: 8, fontSize: 'calc(12rem / 16)', color: 'var(--muted)', paddingLeft: 50 }}>
                     Lý do
                     <select
                       className="select"
@@ -204,27 +206,27 @@ export function Review() {
               </div>
             );
           })}
-          <div role="status" style={{ fontSize: 14, fontWeight: 700, color: summary.color, marginTop: 4 }}>
+          <div role="status" style={{ fontSize: 'calc(14rem / 16)', fontWeight: 700, color: summary.color, marginTop: 4 }}>
             {summary.text}
           </div>
           {blockers.length > 0 && (
-            <ul style={{ margin: 0, paddingLeft: 18, fontSize: 12, color: 'var(--warn)', lineHeight: 1.5 }}>
+            <ul style={{ margin: 0, paddingLeft: 18, fontSize: 'calc(12rem / 16)', color: 'var(--warn)', lineHeight: 1.5 }}>
               {blockers.map((b) => (
                 <li key={b}>{b}</li>
               ))}
             </ul>
           )}
           {data.scenario.difficulty[state.difficulty].launchFail > 0 && (
-            <span style={{ fontSize: 11, color: '#7F90AE' }}>
+            <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--dim)' }}>
               Giám đốc: mỗi chuyến có {Math.round(data.scenario.difficulty[state.difficulty].launchFail * 100)}% thất bại [GA].
             </span>
           )}
           <div className="row" style={{ marginTop: 'auto' }}>
-            <button className="btn-s" aria-label="Quay lại Quỹ đạo" onClick={() => dispatch({ type: 'go', screen: 'orbit' })}>
+            <button className="btn-s" aria-label={t('back')} onClick={() => dispatch({ type: 'go', screen: 'orbit' })}>
               ←
             </button>
             <button className="btn-p big" style={{ flex: 1 }} aria-disabled={!canLaunch} onClick={doLaunch}>
-              PHÓNG
+              {t('launch')}
             </button>
           </div>
         </section>

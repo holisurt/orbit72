@@ -12,6 +12,7 @@ import { MapWorld, projWorld } from '../ui/MapWorld';
 import { PassScreen } from '../ui/PassScreen';
 import { StatusChip, STATUS_COLOR } from '../ui/StatusChip';
 import { TopBar } from '../ui/TopBar';
+import { useT } from '../ui/i18n';
 
 const PRESETS: { id: PresetId; name: string; launcher: LauncherId }[] = [
   { id: 'sso', name: 'SSO', launcher: 'rideshare' },
@@ -23,6 +24,7 @@ const PRESETS: { id: PresetId; name: string; launcher: LauncherId }[] = [
 export function Orbit() {
   const data = useGameData();
   const { state, dispatch } = useStore();
+  const t = useT();
   const m = useMission();
   const o = m.orbit;
   const [pass, setPass] = useState(state.mode === 'coop' && !state.tutorial);
@@ -141,7 +143,7 @@ export function Orbit() {
           </div>
           <label htmlFor="alt" className="lbl" style={{ marginTop: 2 }}>
             Độ cao ·{' '}
-            <span className="mono" style={{ color: 'var(--amber)', fontSize: 13 }}>
+            <span className="mono" style={{ color: 'var(--amber)', fontSize: 'calc(13rem / 16)' }}>
               {o.hKm} km
             </span>
           </label>
@@ -156,7 +158,7 @@ export function Orbit() {
             aria-valuetext={`${o.hKm} km`}
             onChange={(e) => dispatch({ type: 'setOrbit', patch: { hKm: Number(e.target.value) } })}
           />
-          {iss && <span style={{ fontSize: 11, color: 'var(--muted)' }}>ISS: cố định 400 km, 1 mặt phẳng</span>}
+          {iss && <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>ISS: cố định 400 km, 1 mặt phẳng</span>}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
             <Counter
               label="Mặt phẳng P"
@@ -187,11 +189,11 @@ export function Orbit() {
               aria-pressed={o.launcher === l.launcher.id}
               onClick={() => dispatch({ type: 'setOrbit', patch: { launcher: l.launcher.id } })}
             >
-              <span style={{ fontSize: 13, fontWeight: 800 }}>{l.launcher.name}</span>
-              <span className="mono" style={{ fontSize: 11, color: '#C9D4E8' }}>
+              <span style={{ fontSize: 'calc(13rem / 16)', fontWeight: 800 }}>{l.launcher.name}</span>
+              <span className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--soft)' }}>
                 {launcherCostText(l.launcher.id)}
               </span>
-              <span style={{ fontSize: 11, fontWeight: 700, color: l.compatible ? 'var(--ok)' : 'var(--bad)' }}>
+              <span style={{ fontSize: 'calc(11rem / 16)', fontWeight: 700, color: l.compatible ? 'var(--ok)' : 'var(--bad)' }}>
                 {l.compatible ? 'TƯƠNG THÍCH' : `KHÔNG: ${l.reason}`}
               </span>
             </button>
@@ -224,14 +226,14 @@ export function Orbit() {
                 {targetName}
               </text>
             </MapWorld>
-            <span style={{ fontSize: 10, color: '#7F90AE' }}>
+            <span style={{ fontSize: 'calc(10rem / 16)', color: 'var(--dim)' }}>
               Bản đồ: Natural Earth (public domain) · Quỹ đạo tròn, nhiễu J2, chiếu equirectangular
             </span>
           </section>
           <section className="panel col" style={{ padding: '10px 12px', gap: 6 }} aria-label="Dòng thời gian liên lạc 72 giờ">
             <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
               <span className="lbl">72 giờ sau đổ bộ · thanh sáng = {targetName} có liên lạc</span>
-              <span className="mono" style={{ fontSize: 11, color: 'var(--muted)' }}>
+              <span className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>
                 T0 → T0+72 h
               </span>
             </div>
@@ -241,7 +243,7 @@ export function Orbit() {
               <path d={bins} fill="#3DD6F5" />
               <path d="M96 0 V22 M192 0 V22" stroke="#7F90AE" strokeWidth="0.6" />
             </svg>
-            <div className="mono row" style={{ justifyContent: 'space-between', fontSize: 10, color: '#7F90AE' }}>
+            <div className="mono row" style={{ justifyContent: 'space-between', fontSize: 'calc(10rem / 16)', color: 'var(--dim)' }}>
               <span>T0</span>
               <span>+24 h</span>
               <span>+48 h</span>
@@ -257,9 +259,9 @@ export function Orbit() {
             </span>
             {rows.map((row) => (
               <div key={row.k} className="metric">
-                <span style={{ fontSize: 12, color: '#C9D4E8' }}>{row.k}</span>
+                <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)' }}>{row.k}</span>
                 <span className="row" style={{ gap: 6 }}>
-                  <span className="mono" style={{ fontSize: 12, fontWeight: 600 }}>
+                  <span className="mono" style={{ fontSize: 'calc(12rem / 16)', fontWeight: 600 }}>
                     {row.v}
                   </span>
                   {row.chip}
@@ -269,7 +271,7 @@ export function Orbit() {
           </section>
           <section className="panel" style={{ padding: '10px 12px' }} aria-label="Biên đường truyền">
             <span className="lbl">Biên đường truyền tới Hòa Lạc (10°) · R7</span>
-            <div className="mono row" style={{ justifyContent: 'space-between', fontSize: 13, marginTop: 6, flexWrap: 'wrap' }}>
+            <div className="mono row" style={{ justifyContent: 'space-between', fontSize: 'calc(13rem / 16)', marginTop: 6, flexWrap: 'wrap' }}>
               {allLinks.map((l) => {
                 const s = statusMin(l.margin, data.scenario.requirements.linkMarginDb, 1);
                 return (
@@ -281,16 +283,16 @@ export function Orbit() {
                 );
               })}
             </div>
-            <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 4 }}>
+            <div style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)', marginTop: 4 }}>
               R7 xét các đường đã lắp: <StatusChip status={r('R7').status} />
             </div>
           </section>
           <div className="row" style={{ marginTop: 'auto' }}>
-            <button className="btn-s" aria-label="Quay lại Ráp" onClick={() => dispatch({ type: 'go', screen: 'build' })}>
+            <button className="btn-s" aria-label={t('back')} onClick={() => dispatch({ type: 'go', screen: 'build' })}>
               ←
             </button>
             <button className="btn-p" style={{ flex: 1 }} onClick={() => dispatch({ type: 'go', screen: 'review' })}>
-              Họp Go/No-Go →
+              {t('toReview')} →
             </button>
           </div>
         </div>
@@ -328,7 +330,7 @@ function Counter(props: {
         <button className="sq" aria-label={props.less} disabled={props.value <= props.min} onClick={() => props.onChange(props.value - 1)}>
           −
         </button>
-        <span className="mono" style={{ fontSize: 20, width: 20, textAlign: 'center' }} aria-live="polite">
+        <span className="mono" style={{ fontSize: 'calc(20rem / 16)', width: 20, textAlign: 'center' }} aria-live="polite">
           {props.value}
         </span>
         <button className="sq" aria-label={props.more} disabled={props.value >= props.max} onClick={() => props.onChange(props.value + 1)}>

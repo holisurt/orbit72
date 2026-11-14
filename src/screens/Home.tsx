@@ -3,20 +3,22 @@ import { useStore, type Mode } from '../state/store';
 import { Globe } from '../ui/Globe';
 import { missionOfDay } from '../ui/format';
 import { HeaderTools } from '../ui/HeaderTools';
+import { useT, type TKey } from '../ui/i18n';
 
-const MODES: { id: Mode; name: string }[] = [
-  { id: 'solo', name: 'Solo' },
-  { id: 'coop', name: 'Co-op 2–4 người' },
+const MODES: { id: Mode; name: TKey }[] = [
+  { id: 'solo', name: 'solo' },
+  { id: 'coop', name: 'coop' },
 ];
 
-const LEVELS: { id: DifficultyId; name: string; note: string }[] = [
-  { id: 'hoc_vien', name: 'Học viên', note: 'Ngân sách 3.500k USD, khoảng trống ≤ 6 giờ, có gợi ý từng bước' },
-  { id: 'ky_su', name: 'Kỹ sư', note: 'Ngân sách 3.000k USD, khoảng trống ≤ 3,5 giờ, có sự cố' },
-  { id: 'giam_doc', name: 'Giám đốc', note: 'Ngân sách 2.800k USD, Mặt Trời cực đại, rủi ro phóng 3%' },
+const LEVELS: { id: DifficultyId; note: string }[] = [
+  { id: 'hoc_vien', note: 'Ngân sách 3.500k USD, khoảng trống ≤ 6 giờ, có gợi ý từng bước' },
+  { id: 'ky_su', note: 'Ngân sách 3.000k USD, khoảng trống ≤ 3,5 giờ, có sự cố' },
+  { id: 'giam_doc', note: 'Ngân sách 2.800k USD, Mặt Trời cực đại, rủi ro phóng 3%' },
 ];
 
 export function Home() {
   const { state, dispatch } = useStore();
+  const t = useT();
   const level = LEVELS.find((l) => l.id === state.difficulty) ?? LEVELS[1];
   const inProgress = state.contract.accepted;
 
@@ -30,9 +32,9 @@ export function Home() {
           </svg>
           <span style={{ fontWeight: 800, letterSpacing: '0.08em' }}>ORBIT 72</span>
         </div>
-        <nav className="row" style={{ gap: 12, fontSize: 14 }} aria-label="Liên kết">
+        <nav className="row" style={{ gap: 12, fontSize: 'calc(14rem / 16)' }} aria-label="Liên kết">
           <button className="link-btn" onClick={() => dispatch({ type: 'openGuide', tab: 2 })}>
-            Science
+            {t('science')}
           </button>
           <HeaderTools />
         </nav>
@@ -54,8 +56,8 @@ export function Home() {
             cô lập không “mất sóng” trong 72 giờ vàng.
           </p>
           <div className="col" style={{ gap: 10 }}>
-            <div className="home-opt" role="group" aria-label="Chế độ">
-              <span className="lbl">Chế độ</span>
+            <div className="home-opt" role="group" aria-label={t('mode')}>
+              <span className="lbl">{t('mode')}</span>
               {MODES.map((m) => (
                 <button
                   key={m.id}
@@ -63,12 +65,12 @@ export function Home() {
                   aria-pressed={state.mode === m.id}
                   onClick={() => dispatch({ type: 'setMode', mode: m.id })}
                 >
-                  {m.name}
+                  {t(m.name)}
                 </button>
               ))}
             </div>
-            <div className="home-opt" role="group" aria-label="Độ khó">
-              <span className="lbl">Độ khó</span>
+            <div className="home-opt" role="group" aria-label={t('difficulty')}>
+              <span className="lbl">{t('difficulty')}</span>
               {LEVELS.map((l) => (
                 <button
                   key={l.id}
@@ -76,35 +78,35 @@ export function Home() {
                   aria-pressed={state.difficulty === l.id}
                   onClick={() => dispatch({ type: 'setDifficulty', difficulty: l.id })}
                 >
-                  {l.name}
+                  {t(l.id)}
                 </button>
               ))}
             </div>
-            <span style={{ fontSize: 13, color: 'var(--muted)', paddingLeft: 80 }} aria-live="polite">
+            <span style={{ fontSize: 'calc(13rem / 16)', color: 'var(--muted)', paddingLeft: 80 }} aria-live="polite">
               {level.note}
             </span>
           </div>
           <div className="row" style={{ gap: 12, marginTop: 4, flexWrap: 'wrap' }}>
             <button className="btn-p big" onClick={() => dispatch({ type: 'startMission' })}>
-              Bắt đầu sứ mệnh →
+              {t('start')} →
             </button>
             <button className="btn-s" style={{ minHeight: 52 }} onClick={() => dispatch({ type: 'startTutorial' })}>
-              Hướng dẫn 3 phút
+              {t('tutorial')}
             </button>
           </div>
-          <div className="row" style={{ gap: 18, fontSize: 14, color: 'var(--muted)', flexWrap: 'wrap' }}>
-            <span>
-              Nhiệm vụ hôm nay{' '}
-              <strong className="mono" style={{ color: 'var(--text)' }}>
+          <div className="row" style={{ gap: 18, fontSize: 'calc(14rem / 16)', color: 'var(--muted)', flexWrap: 'wrap' }}>
+            <button className="link-btn" onClick={() => dispatch({ type: 'startMission', daily: true })}>
+              {t('daily')}{' '}
+              <span className="mono" style={{ color: 'var(--text)' }}>
                 #{missionOfDay()}
-              </strong>
-            </span>
+              </span>
+            </button>
             <button className="link-btn" onClick={() => dispatch({ type: 'startSandbox' })}>
-              Sandbox
+              {t('sandbox')}
             </button>
             {inProgress && (
               <button className="link-btn" onClick={() => dispatch({ type: 'go', screen: 'brief' })}>
-                Tiếp tục sứ mệnh
+                {t('resume')}
               </button>
             )}
           </div>

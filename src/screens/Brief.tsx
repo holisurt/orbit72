@@ -7,12 +7,14 @@ import { MapVN, projVN } from '../ui/MapVN';
 import { accumulate, IMERG_LABEL, rainCells, TOTAL_BINS } from '../ui/rain';
 import { RainLegend } from '../ui/RainLegend';
 import { TopBar } from '../ui/TopBar';
+import { useT } from '../ui/i18n';
 
 const LEVEL_NAME: Record<DifficultyId, string> = { hoc_vien: 'HỌC VIÊN', ky_su: 'KỸ SƯ', giam_doc: 'GIÁM ĐỐC' };
 
 export function Brief() {
   const data = useGameData();
   const { state, dispatch } = useStore();
+  const t = useT();
   const rules = data.scenario.difficulty[state.difficulty];
   const req = data.scenario.requirements;
   const hn = projVN(data.scenario.target.lat, data.scenario.target.lon);
@@ -39,7 +41,7 @@ export function Brief() {
       <TopBar
         step="brief"
         right={
-          <span className="mono" style={{ fontSize: 13, color: 'var(--muted)' }}>
+          <span className="mono" style={{ fontSize: 'calc(13rem / 16)', color: 'var(--muted)' }}>
             {LEVEL_NAME[state.difficulty]} · {state.mode === 'coop' ? `CO-OP ${state.players.count}` : 'SOLO'}
           </span>
         }
@@ -51,8 +53,8 @@ export function Brief() {
             <span className="lbl" style={{ color: 'var(--ok)' }}>
               Tutorial
             </span>
-            <span style={{ fontSize: 19, fontWeight: 800 }}>Mắt Biển</span>
-            <span style={{ fontSize: 13, lineHeight: 1.45, color: '#C9D4E8' }}>
+            <span style={{ fontSize: 'calc(19rem / 16)', fontWeight: 800 }}>Mắt Biển</span>
+            <span style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45, color: 'var(--soft)' }}>
               CubeSat 3U theo dõi tàu cá bằng AIS — tri ân NanoDragon (2021).
             </span>
           </button>
@@ -60,21 +62,21 @@ export function Brief() {
             <span className="lbl" style={{ color: 'var(--amber)' }}>
               Kịch bản chính
             </span>
-            <span style={{ fontSize: 19, fontWeight: 800 }}>72 Giờ Vàng</span>
-            <span style={{ fontSize: 13, lineHeight: 1.45, color: '#C9D4E8' }}>
+            <span style={{ fontSize: 'calc(19rem / 16)', fontWeight: 800 }}>72 Giờ Vàng</span>
+            <span style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45, color: 'var(--soft)' }}>
               Chòm CubeSat chuyển tiếp SOS khi siêu bão đổ bộ miền Bắc.
             </span>
           </button>
           <button className="card" disabled>
-            <span className="lbl" style={{ color: '#7F90AE' }}>
+            <span className="lbl" style={{ color: 'var(--dim)' }}>
               Sắp có
             </span>
-            <span style={{ fontSize: 19, fontWeight: 800 }}>Mùa Lũ Miền Trung</span>
-            <span style={{ fontSize: 13, lineHeight: 1.45, color: '#C9D4E8' }}>
+            <span style={{ fontSize: 'calc(19rem / 16)', fontWeight: 800 }}>Mùa Lũ Miền Trung</span>
+            <span style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45, color: 'var(--soft)' }}>
               Lập bản đồ ngập khi mây dày: quang học hay radar?
             </span>
           </button>
-          <div className="subtle" style={{ marginTop: 'auto', fontSize: 13, lineHeight: 1.5, color: '#C9D4E8' }}>
+          <div className="subtle" style={{ marginTop: 'auto', fontSize: 'calc(13rem / 16)', lineHeight: 1.5, color: 'var(--soft)' }}>
             <span className="lbl" style={{ color: 'var(--amber)' }}>
               Vì sao quan trọng
             </span>
@@ -82,7 +84,7 @@ export function Brief() {
             Bão Yagi (9/2024) làm <strong style={{ color: '#FFFFFF' }}>6.285 trạm phát sóng</strong> mất liên lạc do mất
             điện ở 15 tỉnh, thành.
             <br />
-            <span style={{ fontSize: 11, color: '#7F90AE' }}>Nguồn: Bộ TT&amp;TT qua VnEconomy, 13/9/2024</span>
+            <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--dim)' }}>Nguồn: Bộ TT&amp;TT qua VnEconomy, 13/9/2024</span>
           </div>
         </div>
 
@@ -118,7 +120,7 @@ export function Brief() {
             <span className="lbl" style={{ color: 'var(--bad)' }}>
               Siêu bão · T0 = đổ bộ
             </span>
-            <span style={{ fontSize: 22, fontWeight: 800 }}>{data.scenario.name}</span>
+            <span style={{ fontSize: 'calc(22rem / 16)', fontWeight: 800 }}>{data.scenario.name}</span>
           </div>
           <div
             style={{
@@ -130,8 +132,8 @@ export function Brief() {
               justifyContent: 'space-between',
               gap: 8,
               flexWrap: 'wrap',
-              fontSize: 11,
-              color: '#7F90AE',
+              fontSize: 'calc(11rem / 16)',
+              color: 'var(--dim)',
             }}
           >
             <span>
@@ -150,7 +152,7 @@ export function Brief() {
 
         <div className="col">
           <span className="lbl">Mục tiêu</span>
-          <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: '#C9D4E8' }}>
+          <p style={{ margin: 0, fontSize: 'calc(14rem / 16)', lineHeight: 1.55, color: 'var(--soft)' }}>
             Chuyển tiếp tin SOS từ các xã bị cô lập về trạm Hòa Lạc trong 72 giờ sau khi bão đổ bộ.
           </p>
           <span className="lbl" style={{ marginTop: 4 }}>
@@ -159,11 +161,11 @@ export function Brief() {
           <div className="panel req-list" style={{ padding: '6px 12px' }}>
             {reqs.map((r) => (
               <div key={r.id}>
-                <span className="mono" style={{ fontSize: 12, fontWeight: 600, color: 'var(--amber)', width: 22 }}>
+                <span className="mono" style={{ fontSize: 'calc(12rem / 16)', fontWeight: 600, color: 'var(--amber)', width: 22 }}>
                   {r.id}
                 </span>
-                <span style={{ flex: 1, fontSize: 13 }}>{r.t}</span>
-                <span className="mono" style={{ fontSize: 12, color: 'var(--cyan)', textAlign: 'right' }}>
+                <span style={{ flex: 1, fontSize: 'calc(13rem / 16)' }}>{r.t}</span>
+                <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--cyan)', textAlign: 'right' }}>
                   {r.v}
                 </span>
               </div>
@@ -172,23 +174,23 @@ export function Brief() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 10 }}>
             <div className="panel" style={{ padding: '10px 12px' }}>
               <span className="lbl">Ngân sách</span>
-              <div className="mono" style={{ fontSize: 22, fontWeight: 600 }}>
-                {fmt(rules.budget, 0)}k <span style={{ fontSize: 12, color: 'var(--muted)' }}>USD</span>
+              <div className="mono" style={{ fontSize: 'calc(22rem / 16)', fontWeight: 600 }}>
+                {fmt(rules.budget, 0)}k <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>USD</span>
               </div>
             </div>
             <div className="panel" style={{ padding: '10px 12px' }}>
               <span className="lbl">Hạn sẵn sàng</span>
-              <div className="mono" style={{ fontSize: 22, fontWeight: 600 }}>
-                {req.devMonthsMax} <span style={{ fontSize: 12, color: 'var(--muted)' }}>tháng</span>
+              <div className="mono" style={{ fontSize: 'calc(22rem / 16)', fontWeight: 600 }}>
+                {req.devMonthsMax} <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>tháng</span>
               </div>
             </div>
           </div>
           <div className="row" style={{ gap: 10, marginTop: 'auto' }}>
-            <button className="btn-s" onClick={back} aria-label="Quay lại">
+            <button className="btn-s" onClick={back} aria-label={t('back')}>
               ←
             </button>
             <button className="btn-p" style={{ flex: 1 }} onClick={() => dispatch({ type: 'acceptContract' })}>
-              Nhận hợp đồng · Ráp vệ tinh →
+              {t('acceptBuild')} →
             </button>
           </div>
         </div>

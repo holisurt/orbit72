@@ -3,6 +3,7 @@ import { useMission } from '../state/mission';
 import { useStore } from '../state/store';
 import { fmt } from '../ui/format';
 import { HeaderTools } from '../ui/HeaderTools';
+import { useT } from '../ui/i18n';
 
 // Stage times are illustrative (design/HF-Launch: "thời gian minh họa, tùy tên lửa").
 const STAGES: [string, string][] = [
@@ -16,6 +17,7 @@ const STAGES: [string, string][] = [
 
 export function Launch() {
   const { state, dispatch } = useStore();
+  const t = useT();
   const m = useMission();
   const rec = state.ops.launch;
   const [k, setK] = useState(0);
@@ -41,7 +43,7 @@ export function Launch() {
             · Phóng · chuyến 1/{m.launch.launches} · mặt phẳng 1
           </span>
         </span>
-        <span className="mono" style={{ fontSize: 13, color: 'var(--muted)' }}>
+        <span className="mono" style={{ fontSize: 'calc(13rem / 16)', color: 'var(--muted)' }}>
           {m.launch.launcher.name.toUpperCase()} · {m.orbit.hKm} km
         </span>
         <HeaderTools />
@@ -87,10 +89,10 @@ export function Launch() {
                   style={{ padding: '9px 12px', gap: 10, borderColor: q === k ? 'var(--amber)' : undefined, background: q === k ? '#16213D' : undefined }}
                   aria-current={q === k ? 'step' : undefined}
                 >
-                  <span className="mono" style={{ width: 78, fontSize: 12, color: 'var(--muted)' }}>
+                  <span className="mono" style={{ width: 78, fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>
                     {t}
                   </span>
-                  <span style={{ flex: 1, fontSize: 13, fontWeight: 600 }}>{n}</span>
+                  <span style={{ flex: 1, fontSize: 'calc(13rem / 16)', fontWeight: 600 }}>{n}</span>
                   <span className="status" style={{ background: q < k ? 'var(--ok)' : q === k ? 'var(--amber)' : '#3A4C78' }}>
                     {st}
                   </span>
@@ -100,7 +102,7 @@ export function Launch() {
           </ol>
 
           {k === last && rec && (
-            <div className="panel" style={{ padding: 12, borderColor: lost ? 'var(--bad)' : 'var(--ok)', fontSize: 13, lineHeight: 1.5 }} role="status">
+            <div className="panel" style={{ padding: 12, borderColor: lost ? 'var(--bad)' : 'var(--ok)', fontSize: 'calc(13rem / 16)', lineHeight: 1.5 }} role="status">
               {lost === 0 ? (
                 <>
                   <strong style={{ color: 'var(--ok)' }}>Rồng Con-1 đã vào quỹ đạo.</strong> Tín hiệu đầu tiên qua trạm Hòa Lạc.
@@ -131,18 +133,18 @@ export function Launch() {
             </div>
           )}
 
-          <div style={{ fontSize: 12, color: '#7F90AE', lineHeight: 1.5 }}>
+          <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--dim)', lineHeight: 1.5 }}>
             Độ khó Giám đốc: mỗi chuyến có 3% thất bại [GA]; hỏng thì mua chuyến thay thế nếu còn ngân sách, cộng 3 tháng.
           </div>
           <div className="row" style={{ marginTop: 'auto', flexWrap: 'wrap' }}>
             <button className="btn-s" onClick={() => setK(0)}>
-              Làm lại
+              {t('replay')}
             </button>
             <button className="btn-s" style={{ flex: 1 }} onClick={() => setK(Math.min(k + 1, last))} disabled={k === last}>
-              Bước tiếp
+              {t('nextStep')}
             </button>
             <button className="btn-p" onClick={() => dispatch({ type: 'go', screen: 'ops' })}>
-              Mission Control →
+              {t('missionControl')} →
             </button>
           </div>
         </div>

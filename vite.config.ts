@@ -8,5 +8,6 @@ export default defineConfig({
   test: {
     include: ['tests/**/*.test.ts', 'tests/**/*.test.tsx'],
     environment: 'node',
+    css: true, // lets tests read stylesheets with ?raw (a11y / settings checks)
   },
 });

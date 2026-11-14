@@ -74,7 +74,7 @@ export function Guide({ initialTab = 0 }: { initialTab?: number }) {
                 }}
                 onKeyDown={(e) => onTabKey(e, i)}
               >
-                {tb.n}
+                {t(`tab_${tb.id}`)}
               </button>
             ))}
           </div>
