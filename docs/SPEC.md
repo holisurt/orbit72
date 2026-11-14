@@ -1,12 +1,14 @@
 # ORBIT 72 — SPEC (from GDD v1.2) — for Claude Code
+**v1.1 (simplified for high-school / first-year students):** items marked *removed in v1.1* are no longer in the game; all §10 values are unchanged.
 Tags: [CT] standard physics/constant · [NG] sourced (see §11) · [GA] game assumption (show in Science tab)
 
 ## 1. Flow (state machine)
 Home → Setup (co-op only) → Quiz(pre) → Brief → Build → Orbit → Review → Launch → Ops(72 h) → Debrief → Quiz(post) → Share
 - Back allowed among Brief/Build/Orbit before launch; after launch only "Sửa & chạy lại" (Debrief → Build, keeps design+orbit, resets ops/events, run++).
 - Autosave to localStorage on every screen change; reload resumes at start of last screen.
-- Difficulty: `hoc_vien` (budget 3500, R1 ≤ 6.0 h, lifetime=avg, events E1,E2 with hints, no launch risk) ·
-  `ky_su` (3000, ≤ 3.5 h, avg, E0*,E1,E2,E3) · `giam_doc` (2800, ≤ 3.5 h, lifetime=max column, E0*,E1–E4, launch fail 3%/launch, seeded RNG). *E0 only if no environmental test. [GA]
+- Difficulty: `hoc_vien` (budget 3500, R1 ≤ 6.0 h, events E1,E2 with hints) · `ky_su` (3000, ≤ 3.5 h, E0*,E1,E2). *E0 only if no environmental test. [GA]
+  Lifetime always uses the average-Sun column. Launches always succeed.
+  ~~`giam_doc` (2800, lifetime=max column, E4, launch fail 3%/launch, seeded RNG), E3 for ky_su, Daily mission~~ — *removed in v1.1*.
 
 ## 2. Contract "72 Giờ Vàng" (ky_su)
 T0 = landfall = 2024-09-07 14:00 ICT [GA approx]. Ops window T0 → T0+72 h. Target = Hanoi (21.03°N, 105.85°E); Hoa Lac station ≈ same point (bent-pipe approx).
@@ -30,11 +32,12 @@ Formulas:
 - P_gen = 1361 [CT] × 0.29 × 0.7 × (A_surface/4) × (1 − f_ecl) × 0.85  (η, fill, loss [GA]; A/4 = mean projected area of convex body [CT]).
   Wings add 1361 × 0.29 × 0.85 × 0.136 × 0.5 × (1 − f_ecl) × 0.85 (orientation factor 0.5 [GA]).
   Check @520 km (f_ecl 0.376): 3U 5.7 W · 6U 9.8 W · 12U 15.0 W · wings +12.1 W.
-- P_use = Σ continuous loads + Σ tx_W × contact_min_per_day/1440 + camera 5 W × 0.10.
+- P_use = Σ continuous loads + Σ tx_W × contact_min_per_day/1440.
 - Battery need = P_use × t_ecl[h] / 0.3 (DoD [GA]); t_ecl = f_ecl × T.
 - Cost per sat = chassis + Σparts (+60 wings) (+30 env test). Total = N × per-sat + launches (+ event costs).
 - Dev months = chassis.mo + max(parts.mo, wings?3) + 4 integration (+1 test).
-- Data: produced = Σ payload MB/day (camera × 0.4 if edge OBC); downlink = R_b × contact_min × 60 / 8 bytes.
+- Data: produced = Σ payload MB/day; downlink = R_b × contact_min × 60 / 8 bytes (fastest transmitter).
+  ~~Camera, edge-processing OBC, X-band, AIS, propulsion, precise ADCS~~ — *removed in v1.1*. Parts: OBC, EPS + 20 Wh, extra battery, ADCS basic, UHF, S-band, SOS payload, drag sail, radiation shield (+ deployable wings, env test).
   Before an orbit is chosen use defaults f_ecl = 0.376, contact = 17 min/day.
 - Status: ĐẠT ≤ 80 % of limit · SÁT 80–100 % · VƯỢT > 100 %.
 
@@ -52,10 +55,12 @@ R⊕ 6378.14 km · μ 398600.4418 km³/s² · ω⊕ 7.2921159e-5 rad/s · J2 1.0
 - Presets: SSO (h 480–600 for rideshare) · ISS 51.6° (h 400) · Low 20° · LEO 53°.
 - Launchers: Rideshare SSO {SSO & 480≤h≤600; 350 k per launch ≤ 50 kg + 7 k/kg above [NG]; 1 plane per launch} ·
   ISS deploy {51.6°, h 400, chassis ≤ 6U; 250 k per sat [GA]; 1 plane} · Dedicated {any; 7500 k per launch [NG]}.
+  ~~Launch failure and replacement launches~~ — *removed in v1.1*.
 
 ## 5. Lifetime & link
 Lifetime table 6U, B=72.3 kg/m² [NG FACSAT-2]: h(km) → avg(120 sfu)/max(170 sfu) years:
 450 1.8/1.0 · 480 3.2/1.6 · 509 5.4/2.5 · 520 6.5/2.9 · 550 10.9/4.6 · 580 18.0/7.1 · 600 24.9/9.4.
+The game uses the avg column only (*max column removed in v1.1*).
 Interpolate log-linearly; outside 450–600 extrapolate with the end segment and label "ngoại suy".
 Drag sail (deployed at end of 3-yr ops): residual = (L − 3) × 0.047/(0.047 + 0.5) [A_body NG, A_sail GA].
 Link (per band) [CT formulas, GA station params]:
@@ -71,26 +76,26 @@ C/N0 = EIRP − FSPL − L_misc + (G_rx − 10log T_sys) + 228.6 · Eb/N0 = C/N0
 - Events (mask = minutes with no delivery): E0 (no env test) A: sat#1 masked first 12 h · B: sat#1 lost.
   E1 T0+10 h geomagnetic storm (card shows a real DONKI GST record: date, Kp) A: mask 6 h · B: if shielding none lost, else lose next visible window · C: mask 2 h.
   E2 T0+30 h Hoa Lac power cut 8 h: A generator −20 k, no loss · B: messages received in outage delivered at first Hanoi visibility after outage end · C: store-and-forward via HCMC station (10.82°N, 106.63°E): delivered at first HCMC visibility after reception.
-  E3 T0+50 h clouds: A no change · B wasted imaging (no images) · C 30 % of daylight passes in E3 window count.
-  E4 (giam_doc) T0+20 h debris: A (needs propulsion) that sat loses 2 windows · B no loss, decision penalty.
-  Rank options by resulting P1h (ties = best).
+  ~~E3 clouds, E4 debris~~ — *removed in v1.1*.
+  Rank options by resulting P1h (ties = best). An option whose cost exceeds the remaining budget is disabled (“Không đủ ngân sách: còn <x>k”).
 - IMERG weighting: R(h) = hourly mean rain over 103–108°E, 20–23°N; w(h) = 1 + R(h)/mean(R);
-  P1h_rain = Σ_m w·ok / Σ_m w. If no IMERG file: w = 1. Cloud proxy for imaging: Hanoi-cell rain ≥ 0.1 mm/h [GA].
-- Flood-imaging side goal: camera + precise ADCS; valid pass = start 06:00–18:00 ICT and not cloudy; ≥ 3 → +1 star (star 2, max 5).
+  P1h_rain = Σ_m w·ok / Σ_m w. If no IMERG file: w = 1.
+  ~~Cloud proxy, flood-imaging side goal (+1 star)~~ — *removed in v1.1*.
+- UI wording (v1.1): P1h = “Tin SOS tới nơi trong 1 giờ”; P1h_rain = “… (tính theo mưa NASA IMERG)”; VFM = “Hiệu quả chi phí”.
 
 ## 7. Scoring
-Star1 = round(5 × R_passed/8) · Star2 from P1h_rain: ≥70→5, ≥55→4, ≥40→3, ≥25→2, else 1 (+1 imaging, max 5) ·
+Star1 = round(5 × R_passed/8) · Star2 from P1h_rain: ≥70→5, ≥55→4, ≥40→3, ≥25→2, else 1 ·
 Star3 VFM = P1h_rain% / cost(million USD): ≥20→5, ≥17→4, ≥14→3, ≥10→2, else 1 ·
 Star4 = 100 − 25 (launch with any VƯỢT) − 10 (launch with NO-GO) − 10/20 per middle/worst event choice + 10 if overall > previous run; stars = ceil(score/20), min 1 ·
 Star5 co-op = 20 × priority cards met + 20 if unanimous GO; solo = 40 (env test) + 30 (power margin ≥ 20 %) + 30 (budget margin ≥ 5 %) → ceil(/20).
-Outcome: THÀNH CÔNG (8/8 and in orbit) · MỘT PHẦN (≥ 6/8) · THẤT BẠI.
+Outcome: THÀNH CÔNG (8/8) · MỘT PHẦN (≥ 6/8) · THẤT BẠI (launches cannot fail since v1.1).
 Rounding: compare thresholds using displayed values (h, %, dB, W to 1 decimal; months, kUSD integer).
 Why-chain: for each failed/near R: "[quantity] = X, threshold Y → consequence. Try: [lever]" (R1→planes/inclination, R2→S-band, R3→wings/battery, R4→altitude/sail, R5→fewer launches, R6→simpler parts, R7→band/altitude).
 
 ## 8. Co-op
 Players 4: FD · VT · KH · QĐ; 3: FD · VT+KH · QĐ; 2: FD+QĐ · VT+KH.
 Priority cards (random a/b per role): FD (a) cost ≤ 90 % budget (b) reserve ≥ 200 k · VT (a) power margin ≥ 20 % (b) env test ·
-KH (a) ≥ 2 payloads (b) P1h ≥ 55 % · QĐ (a) gap ≤ 3.0 h (b) all link margins ≥ 6 dB.
+KH (a) data produced ≤ 50 % of the daily downlink capacity (v1.1; was “≥ 2 payloads”) (b) P1h ≥ 55 % · QĐ (a) gap ≤ 3.0 h (b) all link margins ≥ 6 dB.
 Pass-the-device screen before each role's turn. Go/No-Go: FD calls POWER/SCIENCE/BUDGET/COMMS; NO-GO requires a reason (R code).
 
 ## 9. Quiz (pre & post, same 5 questions; store locally) — see public/data/quiz.json. Learning gain = post − pre.

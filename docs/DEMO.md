@@ -13,14 +13,14 @@ Trước khi lên sân khấu: mở trang chơi, bấm ⚙ **Cài đặt → Xó
 | 10–22 | Ráp vệ tinh | Chỉ vào HUD: thanh **Dữ liệu VƯỢT** vì UHF quá chậm. Tab **Liên lạc** → **+ S-band**, rồi **✕** gỡ UHF. Thanh Dữ liệu thành ĐẠT. → **Chọn quỹ đạo**. | “Mỗi linh kiện đổi ngay điện, pin, tiền, dữ liệu.” |
 | 22–35 | Quỹ đạo | Đặt **1 mặt phẳng**: khoảng trống **11,9 h**. Tăng vệ tinh mỗi mặt phẳng lên **3**: vẫn **~11 h** (cùng mặt phẳng → cùng giờ qua Hà Nội). Về 1 vệ tinh/mặt phẳng, tăng lên **4 mặt phẳng**: **3,0 h** — ĐẠT. Chi phí **2.640k**. → **Họp Go/No-Go**. | “Rải mặt phẳng mới rút ngắn khoảng trống, thêm vệ tinh cùng chuyến thì không.” |
 | 35–40 | Go/No-Go → Phóng | Bốn vai bấm **GO** (4/4 GO) → **PHÓNG** → **Mission Control →**. | “Ai NO-GO phải ghi lý do bằng mã R.” |
-| 40–50 | Mission Control | Bấm **Chạy**; khi thẻ **E1 bão từ** hiện: chỉ vào bản ghi thật NASA DONKI (10/5/2024, Kp 9) và so sánh **46 / 48 / 48 %** → chọn **B**. Các thẻ sau chọn phương án “TỐT NHẤT”. Bản đồ có lớp mưa NASA IMERG. | “Mỗi phương án có P1h tính thật trên 72 giờ.” |
+| 40–50 | Mission Control | Bấm **Chạy**; khi thẻ **E1 bão từ** hiện: chỉ vào bản ghi thật NASA DONKI (10/5/2024, Kp 9) và so sánh **46 / 48 / 48 %** → chọn **B**. Các thẻ sau chọn phương án “TỐT NHẤT”. Bản đồ có lớp mưa NASA IMERG. | “Mỗi phương án tính thật trên 72 giờ: bao nhiêu phần trăm tin SOS tới nơi trong 1 giờ.” |
 | 50–57 | Báo cáo | **THÀNH CÔNG — 8/8**. Bấm **Xuất spec sheet (PNG)** → huy hiệu **CML 4**. | “5 sao, chuỗi ‘vì sao’, và độ chín ý tưởng theo thang của JPL.” |
 | 57–60 | Chia sẻ | **Quiz sau · Tạo mission patch** (có thể Bỏ qua) → thẻ chia sẻ và mission patch ngôi sao trống đồng. | “Dữ liệu thật của NASA, vật lý thật, chơi ngay trên điện thoại.” |
 
 ## Số liệu cần nhớ
 
 - Khoảng trống dài nhất (SSO 520 km, 4 mặt phẳng × 1): **3,0 h**
-- P1h: **49,1 %** · P1h_mưa (trọng số mưa NASA IMERG): **48,1 %**
+- Tin SOS tới nơi trong 1 giờ: **49,1 %** · Tin SOS tới nơi trong 1 giờ (tính theo mưa NASA IMERG): **48,1 %**
 - Chi phí lời giải S1: **2.640k USD** (ngân sách Kỹ sư 3.000k)
 - Tuổi thọ quỹ đạo ở 520 km: **L = 6,5 năm**
 - Biên đường truyền ở 520 km, góc ngẩng 10°: **UHF 9,7 · S 8,4 · SOS 9,3 dB**
@@ -34,7 +34,7 @@ Trước khi lên sân khấu: mở trang chơi, bấm ⚙ **Cài đặt → Xó
 
 ## Nếu mất Wi-Fi
 
-1. Dùng bản offline: giải nén **orbit72-v1.0-hanoi-offline.zip** (tải ở trang Release của GitHub, nên tải sẵn vào máy từ trước).
+1. Dùng bản offline: giải nén **orbit72-v1.1-hanoi-offline.zip** (tải ở trang Release của GitHub, nên tải sẵn vào máy từ trước).
 2. Mở terminal trong thư mục vừa giải nén, chạy: `npx serve .` (hoặc `python -m http.server 8000`).
 3. Mở địa chỉ hiện ra (thường là http://localhost:3000). Không bấm đúp index.html — trình duyệt sẽ chặn dữ liệu.
 4. Font sẽ là font hệ thống khi không có mạng; game chạy giống hệt.

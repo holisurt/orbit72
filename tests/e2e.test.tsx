@@ -94,7 +94,7 @@ describe('e2e checklist walk (solo Kỹ sư)', () => {
     expect(h).toMatch(/aria-disabled="true"[^>]*>PHÓNG/);
   });
 
-  it('8 · GDD §12 #8: dev time > 18 months is unreachable with components.json (max 15) — sim path covered in ops.test', () => {
+  it('8 · GDD §12 #8: dev time > 18 months is unreachable with components.json (max 13 in v1.1) — sim path covered in ops.test', () => {
     const slow = play(s, { type: 'setChassis', chassis: '12U' }, { type: 'addPart', id: 'sband' }, { type: 'toggleEnvTest' });
     expect(mission(slow).build.devMonths).toBeLessThanOrEqual(data.scenario.requirements.devMonthsMax);
   });

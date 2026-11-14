@@ -1,6 +1,6 @@
 # Credits
 
-ORBIT 72 is not affiliated with or endorsed by NASA. No NASA logos or insignia are used.
+ORBIT 72 v1.1 (Hanoi, simplified) · Team HDMK. ORBIT 72 is not affiliated with or endorsed by NASA. No NASA logos or insignia are used.
 
 ## Data and references (docs/SPEC.md §11)
 
