@@ -204,9 +204,6 @@ export function Review() {
               </div>
             );
           })}
-          <div role="status" style={{ fontSize: 'calc(14rem / 16)', fontWeight: 700, color: summary.color, marginTop: 4 }}>
-            {summary.text}
-          </div>
           {blockers.length > 0 && (
             <ul style={{ margin: 0, paddingLeft: 18, fontSize: 'calc(12rem / 16)', color: 'var(--warn)', lineHeight: 1.5 }}>
               {blockers.map((b) => (
@@ -214,7 +211,11 @@ export function Review() {
               ))}
             </ul>
           )}
-          <div className="row" style={{ marginTop: 'auto' }}>
+          {/* Consensus banner directly above PHÓNG (same text and colour as before) */}
+          <div role="status" className="consensus-banner" style={{ color: summary.color, borderLeftColor: summary.color, marginTop: 'auto' }}>
+            {summary.text}
+          </div>
+          <div className="row">
             <button className="btn-s" aria-label={t('back')} onClick={() => dispatch({ type: 'go', screen: 'orbit' })}>
               ←
             </button>

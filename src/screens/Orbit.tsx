@@ -110,6 +110,8 @@ export function Orbit() {
     { id: 'r5', k: 'Tổng chi phí · R5', v: `${fmt(m.totalCostKusd, 0)}k`, chip: <StatusChip status={r('R5').status} /> },
   );
 
+  const HERO = ['r1', 'p1h', 'r4', 'r5'];
+
   const launcherCostText = (id: LauncherId) => {
     const l = m.launches.find((x) => x.launcher.id === id)!;
     if (id === 'iss') return `${m.satCount} vệ tinh × ${l.launcher.pricePerSatKusd}k = ${fmt(l.costKusd, 0)}k`;
@@ -268,11 +270,23 @@ export function Orbit() {
         </div>
 
         <div className="col" style={{ gap: 8 }}>
+          {/* Hero numbers: the four key metrics (same rows, same values; shown large) */}
+          <section className="hero-metrics" aria-label="Chỉ số chính">
+            {rows
+              .filter((row) => HERO.includes(row.id))
+              .map((row) => (
+                <div key={row.id} className="panel hero-metric">
+                  <span className="hero-label">{row.k}</span>
+                  <span className="hero-value mono">{row.v}</span>
+                  {row.chip && <span className="hero-chip">{row.chip}</span>}
+                </div>
+              ))}
+          </section>
           <section className="panel col" style={{ padding: '10px 12px', gap: 0 }} aria-label="Chỉ số">
             <span className="lbl" style={{ marginBottom: 4 }}>
               Chỉ số (mô hình GDD mục 6)
             </span>
-            {rows.map((row) => (
+            {rows.filter((row) => !HERO.includes(row.id)).map((row) => (
               <div key={row.id} className="metric">
                 <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)' }}>{row.k}</span>
                 <span className="row" style={{ gap: 6 }}>

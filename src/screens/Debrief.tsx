@@ -128,8 +128,12 @@ export function Debrief() {
                 <span style={{ fontSize: 'calc(14rem / 16)', fontWeight: 800 }}>
                   {s.n} · {s.name}
                 </span>
-                <span style={{ fontSize: 'calc(18rem / 16)', letterSpacing: 2, color: 'var(--amber)' }} aria-label={`${s.stars} trên 5 sao`}>
-                  {starGlyphs(s.stars)}
+                <span className="stars" role="img" aria-label={`${s.stars} trên 5 sao`}>
+                  {[...starGlyphs(s.stars)].map((g, q) => (
+                    <span key={q} aria-hidden="true" className={g === '★' ? 'star on' : 'star'}>
+                      {g}
+                    </span>
+                  ))}
                 </span>
               </div>
               <div className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)', marginTop: 2 }}>
@@ -181,13 +185,11 @@ export function Debrief() {
               <span className="lbl" style={{ color: 'var(--amber)' }}>
                 Huy hiệu <Term id="cml">CML</Term> · JPL
               </span>
-              <span className="mono" style={{ fontSize: 'calc(18rem / 16)', fontWeight: 600, color: cml ? 'var(--amber)' : 'var(--muted)' }}>
-                CML {cml}
-              </span>
+              <span className={`mono cml-pill${cml ? ' on' : ''}`}>CML {cml}</span>
             </div>
             <div className="row" style={{ gap: 4 }} aria-hidden="true">
               {[1, 2, 3, 4].map((l) => (
-                <div key={l} style={{ flex: 1, height: 8, borderRadius: 4, background: l <= cml ? 'var(--accent)' : 'var(--hairline)' }} />
+                <div key={l} className="cml-seg" style={{ background: l <= cml ? 'var(--accent)' : 'var(--hairline)' }} />
               ))}
             </div>
             {([1, 2, 3, 4] as const).map((l) => (
