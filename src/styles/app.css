@@ -223,28 +223,49 @@ button {
 .add {
   min-width: 44px;
   min-height: 44px;
-  border-radius: 10px;
-  border: 0;
+  border-radius: 9px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   background: var(--amber);
-  color: #1a1205;
+  color: #120c02;
   font-weight: 800;
   font-size: calc(18rem / 16);
   cursor: pointer;
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, box-shadow 0.14s ease;
+}
+.add:hover:not([aria-disabled='true']) {
+  background: #ffb433;
+  transform: translateY(-1px);
+}
+.add:active:not([aria-disabled='true']) {
+  transform: scale(0.95);
 }
 .add[aria-disabled='true'] {
-  background: #3a4c78;
-  color: #c9d4e8; /* 5.7:1 on #3a4c78 */
+  background: #25334d;
+  color: #c9d4e8; /* 5.7:1 on #25334d */
+  border-color: transparent;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .x {
   min-width: 44px;
   min-height: 44px;
   border-radius: 8px;
-  border: 1px solid #3a4c78;
+  border: 1px solid rgba(241, 245, 249, 0.12);
   background: transparent;
   color: var(--soft);
   cursor: pointer;
   font-size: calc(18rem / 16);
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+}
+.x:hover {
+  background: rgba(248, 113, 113, 0.12);
+  color: var(--bad);
+  border-color: rgba(248, 113, 113, 0.35);
+  transform: translateY(-1px);
+}
+.x:active {
+  transform: scale(0.95);
 }
 
 .flip {
@@ -628,22 +649,32 @@ button.step:hover {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 10px;
-  border-bottom: 1px solid #1a2647;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.08);
+  background: #090e18;
 }
 .hud-item {
-  padding: 8px 10px;
+  padding: 9px 12px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 6px;
+  background: var(--panel);
+  border: 1px solid rgba(241, 245, 249, 0.08);
+  border-radius: 11px;
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.14s ease;
+}
+.hud-item:hover {
+  border-color: rgba(241, 245, 249, 0.2);
 }
 .bar {
-  height: 6px;
-  border-radius: 3px;
-  background: #1a2647;
+  height: 5px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
   overflow: hidden;
 }
 .bar > div {
-  height: 6px;
+  height: 5px;
+  border-radius: 999px;
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .build-body {
   grid-template-columns: 290px minmax(0, 1fr) 300px;
@@ -652,10 +683,17 @@ button.step:hover {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 8px;
+  padding: 8px 10px;
   border-radius: 10px;
-  background: #16213d;
-  border-left: 4px solid;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(241, 245, 249, 0.08);
+  border-left: 3px solid;
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, border-color 0.14s ease;
+}
+.part-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(241, 245, 249, 0.2);
+  transform: translateY(-1px);
 }
 .part-item .info {
   flex: 1;
@@ -672,30 +710,32 @@ button.step:hover {
   color: var(--amber);
 }
 .bay {
-  border: 3px solid #5b6b8f;
-  border-radius: 12px;
-  padding: 10px;
-  background: linear-gradient(145deg, #1b2847, #101a33);
-  box-shadow: 0 0 0 1px #0a1122, 0 20px 50px rgba(0, 0, 0, 0.45);
+  border: 2px solid rgba(241, 245, 249, 0.18);
+  border-radius: 14px;
+  padding: 12px;
+  background: #0b111d;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
   display: grid;
-  gap: 6px;
+  gap: 8px;
   max-width: 100%;
 }
 .bay-cell {
   height: 54px;
-  border-radius: 7px;
-  border: 1.5px solid;
-  color: #0b1020;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #080d16;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: calc(12rem / 16);
   font-weight: 800;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .bay-cell.empty {
-  border-style: dashed;
-  border-color: #3a4c78;
-  background: transparent;
+  border: 1.5px dashed rgba(241, 245, 249, 0.14);
+  background: rgba(255, 255, 255, 0.015);
+  box-shadow: none;
 }
 .placed-row {
   display: flex;

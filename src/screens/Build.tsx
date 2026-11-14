@@ -187,7 +187,7 @@ export function Build() {
 
         <section
           className="panel col"
-          style={{ padding: '12px 16px', gap: 10, background: 'radial-gradient(500px 300px at 50% 45%, #13224A, #0F1830)' }}
+          style={{ padding: '12px 16px', gap: 10, background: 'radial-gradient(500px 300px at 50% 45%, #0e1626, #070a12)' }}
           aria-label="Khung vệ tinh"
         >
           <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
