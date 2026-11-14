@@ -1223,45 +1223,64 @@ button.step:hover {
   width: 100%;
   margin: 0 auto;
   align-content: start;
+  gap: 16px;
 }
 .quiz-q {
   margin: 0;
-  padding: 12px 14px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
+  border-radius: 14px;
+  background: var(--panel);
+  border: 1px solid rgba(241, 245, 249, 0.09);
 }
 .quiz-legend {
   float: left;
   width: 100%;
-  padding: 0 0 4px;
+  padding: 0 0 8px;
   font-size: calc(15rem / 16);
   font-weight: 700;
   line-height: 1.45;
+  color: var(--text);
 }
 .quiz-opt {
   display: flex;
   align-items: center;
-  gap: 10px;
-  min-height: 44px;
-  padding: 6px 10px;
+  gap: 12px;
+  min-height: 46px;
+  padding: 8px 12px;
   border-radius: 10px;
-  border: 1.5px solid #3a4c78;
-  background: #16213d;
+  border: 1px solid rgba(241, 245, 249, 0.12);
+  background: rgba(255, 255, 255, 0.02);
   font-size: calc(14rem / 16);
+  color: var(--text);
   cursor: pointer;
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+}
+.quiz-opt:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(241, 245, 249, 0.25);
+  transform: translateY(-1px);
+}
+.quiz-opt:active {
+  transform: translateY(1px) scale(0.99);
 }
 .quiz-opt input {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   accent-color: var(--amber);
   flex: none;
+  cursor: pointer;
 }
 .quiz-opt.picked {
   border-color: var(--amber);
+  background: rgba(245, 165, 36, 0.08);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 .quiz-opt.right {
   border-color: var(--ok);
+  background: rgba(74, 222, 128, 0.08);
 }
 
 /* ---------- Share ---------- */
