@@ -189,13 +189,13 @@ export function Ops() {
             <span className="lbl">Chỉ số sau sự cố</span>
             <div>
               <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>{L_P1H}</div>
-              <div className="mono" style={{ fontSize: 'calc(26rem / 16)', fontWeight: 600, color: 'var(--cyan)' }}>
+              <div className="mono" style={{ fontSize: 'calc(26rem / 16)', fontWeight: 700, color: 'var(--text)' }}>
                 {fmt(ops.p1h, 0)}%
               </div>
             </div>
             <div>
               <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>{L_P1H_RAIN}</div>
-              <div className="mono" style={{ fontSize: 'calc(20rem / 16)', fontWeight: 600, color: 'var(--cyan)' }}>
+              <div className="mono" style={{ fontSize: 'calc(20rem / 16)', fontWeight: 700, color: 'var(--text)' }}>
                 {fmt(ops.p1hRain, 1)}%
               </div>
             </div>
@@ -375,7 +375,7 @@ export function Ops() {
                     </span>
                     <span style={{ fontSize: 'calc(15rem / 16)', fontWeight: 800 }}>{opt.text}</span>
                     <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)', lineHeight: 1.45 }}>{optionDetail(ev, o.key, run.hasShield)}</span>
-                    <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--cyan)' }}>
+                    <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--text)', fontWeight: 600 }}>
                       Tin SOS tới nơi trong 1 giờ: {o.p1hDisplay}% · chờ lâu nhất {fmt(o.longestGapH, 1)} h
                     </span>
                   </button>
