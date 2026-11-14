@@ -866,6 +866,87 @@ button.step:hover {
   gap: 10px;
 }
 
+/* ---------- Header tools (Sổ tay, Cài đặt) ---------- */
+.header-tools {
+  gap: 6px;
+}
+.tool-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid #3a4c78;
+  background: transparent;
+  color: var(--text);
+  font-weight: 700;
+  font-size: calc(13rem / 16);
+  cursor: pointer;
+}
+.tool-btn:hover {
+  background: #16213d;
+}
+.tool-q {
+  display: inline-grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 11px;
+  background: var(--cyan);
+  color: #0b1020;
+  font-weight: 800;
+}
+
+/* ---------- Guide ---------- */
+.guide-body {
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 18px;
+}
+.guide-side {
+  gap: 8px;
+}
+.guide-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.guide-tab {
+  min-height: 48px;
+  border-radius: 12px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--text);
+  font-size: calc(15rem / 16);
+  font-weight: 700;
+  text-align: left;
+  padding: 0 16px;
+  cursor: pointer;
+}
+.guide-tab[aria-selected='true'] {
+  background: var(--amber);
+  border-color: var(--amber);
+  color: #1a1205;
+}
+.guide-tip {
+  margin-top: auto;
+  align-items: flex-end;
+}
+.guide-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-content: start;
+}
+.guide-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  font-size: calc(12rem / 16);
+  font-weight: 700;
+}
+
 /* ---------- Quiz ---------- */
 .quiz-body {
   grid-template-columns: minmax(0, 1fr);
@@ -1008,5 +1089,22 @@ button.step:hover {
   }
   .map-panel {
     min-height: 260px;
+  }
+  .guide-body,
+  .guide-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .guide-tabs {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+  .guide-tab {
+    flex: 1 1 auto;
+  }
+  .guide-tip {
+    display: none;
+  }
+  .tool-label {
+    display: none;
   }
 }

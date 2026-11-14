@@ -10,6 +10,7 @@ import { fmt } from '../ui/format';
 import { MapVN, projVN } from '../ui/MapVN';
 import { ictLabel, IMERG_LABEL, RATE_BINS, rainCells } from '../ui/rain';
 import { RainLegend } from '../ui/RainLegend';
+import { HeaderTools } from '../ui/HeaderTools';
 
 const SPEEDS = [60, 360, 1440];
 const END = 72 * 60;
@@ -143,6 +144,7 @@ export function Ops() {
             </button>
           ))}
         </div>
+        <HeaderTools />
       </header>
 
       <div className="row strip-row">

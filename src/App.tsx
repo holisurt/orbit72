@@ -12,6 +12,7 @@ import { Ops } from './screens/Ops';
 import { Debrief } from './screens/Debrief';
 import { Share } from './screens/Share';
 import { Quiz } from './screens/Quiz';
+import { Guide } from './screens/Guide';
 
 export const APP_TITLE = 'ORBIT 72 - Bắt Sóng Cứu Hộ';
 
@@ -33,7 +34,7 @@ function Router() {
     case 'orbit':
       return <Orbit />;
     case 'guide':
-      return <Placeholder title="Sổ tay" back={() => dispatch({ type: 'closeGuide' })} />;
+      return <Guide key={state.guideTab} initialTab={state.guideTab} />;
     case 'review':
       return <Review />;
     case 'launch':

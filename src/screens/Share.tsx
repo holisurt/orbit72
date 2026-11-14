@@ -8,6 +8,7 @@ import { downloadBlob, EXPORT_FONT, EXPORT_MONO, shareOrDownload, svgToPng } fro
 import { fmt, missionOfDay } from '../ui/format';
 import { Patch, PATCH_THEMES } from '../ui/Patch';
 import { starGlyphs } from './Debrief';
+import { HeaderTools } from '../ui/HeaderTools';
 
 const C: Record<Status, string> = { DAT: '#4ADE80', SAT: '#FBBF24', VUOT: '#F87171' };
 const EMOJI: Record<Status, string> = { DAT: '🟩', SAT: '🟨', VUOT: '🟥' };
@@ -78,6 +79,7 @@ export function Share() {
           ORBIT <span className="amber">72</span> <span className="sub">· Chia sẻ thành tích</span>
         </span>
         <span style={{ fontSize: 12, color: '#7F90AE' }}>Không chứa logo NASA · không chứa ảnh hay tên thật của người chơi</span>
+        <HeaderTools />
       </header>
       <main className="body share-body">
         <div className="col" style={{ alignItems: 'center', gap: 12 }}>

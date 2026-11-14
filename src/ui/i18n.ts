@@ -3,6 +3,8 @@ export const DICT = {
   continue: { vi: 'Tiếp tục', en: 'Continue' },
   skip: { vi: 'Bỏ qua', en: 'Skip' },
   submit: { vi: 'Nộp bài', en: 'Submit' },
+  close: { vi: 'Đóng', en: 'Close' },
+  guide: { vi: 'Sổ tay', en: 'Guide' },
 } as const;
 
 export type TKey = keyof typeof DICT;

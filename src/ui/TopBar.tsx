@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import type { ScreenId } from '../state/store';
 import { Stepper } from './Stepper';
+import { HeaderTools } from './HeaderTools';
 
 interface Props {
   subtitle?: string;
@@ -17,7 +18,10 @@ export function TopBar({ subtitle, step, right }: Props) {
         {subtitle && <span className="sub"> · {subtitle}</span>}
       </span>
       {step && <Stepper current={step} />}
-      {right}
+      <div className="row" style={{ gap: 12, flexWrap: 'wrap' }}>
+        {right}
+        <HeaderTools />
+      </div>
     </header>
   );
 }

@@ -82,6 +82,7 @@ export interface GameState {
   v: 1;
   screen: ScreenId;
   returnTo: ScreenId | null; // for Guide / overlays
+  guideTab: number; // tab the Guide opens on (0 Thuật ngữ … 4 Nguồn)
   mode: Mode;
   difficulty: DifficultyId;
   tutorial: boolean;
@@ -132,6 +133,7 @@ export const initialState: GameState = {
   v: 1,
   screen: 'home',
   returnTo: null,
+  guideTab: 0,
   mode: 'solo',
   difficulty: 'ky_su',
   tutorial: false,
@@ -152,7 +154,7 @@ export const initialState: GameState = {
 
 export type Action =
   | { type: 'go'; screen: ScreenId }
-  | { type: 'openGuide' }
+  | { type: 'openGuide'; tab?: number }
   | { type: 'closeGuide' }
   | { type: 'setMode'; mode: Mode }
   | { type: 'setDifficulty'; difficulty: DifficultyId }
@@ -194,7 +196,8 @@ export function reducer(s: GameState, a: Action): GameState {
     case 'go':
       return { ...s, screen: a.screen };
     case 'openGuide':
-      return s.screen === 'guide' ? s : { ...s, returnTo: s.screen, screen: 'guide' };
+      if (s.screen === 'guide') return { ...s, guideTab: a.tab ?? s.guideTab };
+      return { ...s, returnTo: s.screen, screen: 'guide', guideTab: a.tab ?? 0 };
     case 'closeGuide':
       return { ...s, screen: s.returnTo ?? 'home', returnTo: null };
     case 'setMode':

@@ -2,6 +2,7 @@ import type { DifficultyId } from '../data/types';
 import { useStore, type Mode } from '../state/store';
 import { Globe } from '../ui/Globe';
 import { missionOfDay } from '../ui/format';
+import { HeaderTools } from '../ui/HeaderTools';
 
 const MODES: { id: Mode; name: string }[] = [
   { id: 'solo', name: 'Solo' },
@@ -30,13 +31,10 @@ export function Home() {
           <span style={{ fontWeight: 800, letterSpacing: '0.08em' }}>ORBIT 72</span>
         </div>
         <nav className="row" style={{ gap: 12, fontSize: 14 }} aria-label="Liên kết">
-          <button className="link-btn" onClick={() => dispatch({ type: 'openGuide' })}>
-            Sổ tay
-          </button>
-          <button className="link-btn" onClick={() => dispatch({ type: 'openGuide' })}>
+          <button className="link-btn" onClick={() => dispatch({ type: 'openGuide', tab: 2 })}>
             Science
           </button>
-          <span style={{ color: 'var(--muted)', fontWeight: 600 }}>VI · EN</span>
+          <HeaderTools />
         </nav>
       </header>
 

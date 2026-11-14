@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useMission } from '../state/mission';
 import { useStore } from '../state/store';
 import { fmt } from '../ui/format';
+import { HeaderTools } from '../ui/HeaderTools';
 
 // Stage times are illustrative (design/HF-Launch: "thời gian minh họa, tùy tên lửa").
 const STAGES: [string, string][] = [
@@ -43,6 +44,7 @@ export function Launch() {
         <span className="mono" style={{ fontSize: 13, color: 'var(--muted)' }}>
           {m.launch.launcher.name.toUpperCase()} · {m.orbit.hKm} km
         </span>
+        <HeaderTools />
       </header>
       <main className="body launch-body">
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', overflow: 'hidden', minHeight: 360 }}>
