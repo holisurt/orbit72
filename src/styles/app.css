@@ -947,34 +947,51 @@ button.step:hover {
 .vote {
   min-width: 70px;
   min-height: 44px;
-  border-radius: 10px;
-  border: 1.5px solid #3a4c78;
-  background: transparent;
+  border-radius: 9px;
+  border: 1px solid rgba(241, 245, 249, 0.16);
+  background: rgba(255, 255, 255, 0.02);
   color: var(--text);
   font-weight: 800;
   font-size: calc(13rem / 16);
   cursor: pointer;
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+}
+.vote:hover:not([aria-pressed='true']) {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(241, 245, 249, 0.28);
+  transform: translateY(-1px);
+}
+.vote:active {
+  transform: scale(0.96);
 }
 .vote.go[aria-pressed='true'] {
   background: var(--ok);
   border-color: var(--ok);
-  color: #0b1020;
+  color: #08110b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 .vote.no[aria-pressed='true'] {
   background: var(--bad);
   border-color: var(--bad);
-  color: #0b1020;
+  color: #120506;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
 }
 .select {
   flex: 1;
   min-height: 44px;
   border-radius: 9px;
-  border: 1px solid #3a4c78;
-  background: #16213d;
+  border: 1px solid rgba(241, 245, 249, 0.14);
+  background: #0f1523;
   color: var(--text);
   font: inherit;
   font-size: calc(13rem / 16);
-  padding: 0 8px;
+  padding: 0 10px;
+  cursor: pointer;
+  transition: border-color 0.16s ease;
+}
+.select:focus {
+  border-color: var(--amber);
+  outline: none;
 }
 
 /* ---------- Launch ---------- */
