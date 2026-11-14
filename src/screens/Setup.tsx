@@ -113,7 +113,7 @@ export function Setup() {
           <button className="btn-p ghost" onClick={() => setPass(true)}>
             Xem màn chuyền máy
           </button>
-          <button className="btn-p" style={{ marginTop: 'auto' }} onClick={() => dispatch({ type: 'go', screen: 'brief' })}>
+          <button className="btn-p" style={{ marginTop: 'auto' }} onClick={() => dispatch({ type: 'go', screen: state.quiz.pre === null ? 'quiz_pre' : 'brief' })}>
             Nhận hợp đồng →
           </button>
         </aside>

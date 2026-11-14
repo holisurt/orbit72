@@ -11,6 +11,7 @@ import { Launch } from './screens/Launch';
 import { Ops } from './screens/Ops';
 import { Debrief } from './screens/Debrief';
 import { Share } from './screens/Share';
+import { Quiz } from './screens/Quiz';
 
 export const APP_TITLE = 'ORBIT 72 - Bắt Sóng Cứu Hộ';
 
@@ -22,6 +23,9 @@ function Router() {
     case 'setup':
       return <Setup />;
     case 'quiz_pre':
+      return <Quiz key="pre" phase="pre" />;
+    case 'quiz_post':
+      return <Quiz key="post" phase="post" />;
     case 'brief':
       return <Brief />;
     case 'build':
@@ -37,7 +41,6 @@ function Router() {
     case 'ops':
       return state.ops.launch ? <Ops /> : <Review />;
     case 'debrief':
-    case 'quiz_post':
       return state.ops.launch ? <Debrief /> : <Review />;
     case 'share':
       return state.ops.launch ? <Share /> : <Review />;

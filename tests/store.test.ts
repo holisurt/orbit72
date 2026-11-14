@@ -9,8 +9,8 @@ function localStorageMock(value: string | null) {
 const run = (s: GameState, ...actions: Parameters<typeof reducer>[1][]) => actions.reduce(reducer, s);
 
 describe('store reducer', () => {
-  it('solo start goes to Brief, co-op to Setup (SPEC §1)', () => {
-    expect(run(initialState, { type: 'startMission' }).screen).toBe('brief');
+  it('solo start goes to Quiz(pre) then Brief, co-op to Setup (SPEC §1)', () => {
+    expect(run(initialState, { type: 'startMission' }).screen).toBe('quiz_pre');
     expect(run(initialState, { type: 'setMode', mode: 'coop' }, { type: 'startMission' }).screen).toBe('setup');
   });
 

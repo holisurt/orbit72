@@ -866,6 +866,54 @@ button.step:hover {
   gap: 10px;
 }
 
+/* ---------- Quiz ---------- */
+.quiz-body {
+  grid-template-columns: minmax(0, 1fr);
+  max-width: 820px;
+  width: 100%;
+  margin: 0 auto;
+  align-content: start;
+}
+.quiz-q {
+  margin: 0;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.quiz-legend {
+  float: left;
+  width: 100%;
+  padding: 0 0 4px;
+  font-size: calc(15rem / 16);
+  font-weight: 700;
+  line-height: 1.45;
+}
+.quiz-opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 44px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1.5px solid #3a4c78;
+  background: #16213d;
+  font-size: calc(14rem / 16);
+  cursor: pointer;
+}
+.quiz-opt input {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--amber);
+  flex: none;
+}
+.quiz-opt.picked {
+  border-color: var(--amber);
+}
+.quiz-opt.right {
+  border-color: var(--ok);
+}
+
 /* ---------- Share ---------- */
 .share-body {
   grid-template-columns: 440px minmax(0, 1fr) 300px;

@@ -11,6 +11,8 @@
   --ok: #4ade80;
   --warn: #fbbf24;
   --bad: #f87171;
+  --soft: #c9d4e8; /* secondary body text */
+  --dim: #8fa0bd; /* notes, captions (≥ 4.5:1 on --panel) */
 
   --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;

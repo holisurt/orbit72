@@ -45,6 +45,8 @@ export interface RunRecord {
 }
 
 export type Vote = 'go' | 'no' | null;
+export type QuizAnswers = number[] | 'skip' | null;
+export type QuizPhase = 'pre' | 'post';
 export type RCode = 'R1' | 'R2' | 'R3' | 'R4' | 'R5' | 'R6' | 'R7' | 'R8';
 
 export interface LaunchRecord {
@@ -90,7 +92,12 @@ export interface GameState {
   ops: OpsState;
   runs: RunRecord[];
   run: number;
-  quiz: { pre: number[] | null; post: number[] | null };
+  /** Quiz answers (option index per question), 'skip' if skipped, null if not reached yet. No personal data. */
+  quiz: { pre: QuizAnswers; post: QuizAnswers };
+  /** Screen to open after the post quiz (Share from the Debrief CTA, Debrief from its quiz row). */
+  quizNext: ScreenId | null;
+  /** Started from "Nhiệm vụ hôm nay" (Daily mode): Share header shows the mission number. */
+  daily: boolean;
   coach: { open: boolean };
   /**
    * Design decisions changed on Build/Orbit, where the HUD shows each effect live (part swap/add/remove,
@@ -136,6 +143,8 @@ export const initialState: GameState = {
   runs: [],
   run: 1,
   quiz: { pre: null, post: null },
+  quizNext: null,
+  daily: false,
   coach: { open: false },
   designChanges: 0,
   specExported: false,
@@ -147,7 +156,9 @@ export type Action =
   | { type: 'closeGuide' }
   | { type: 'setMode'; mode: Mode }
   | { type: 'setDifficulty'; difficulty: DifficultyId }
-  | { type: 'startMission' }
+  | { type: 'startMission'; daily?: boolean }
+  | { type: 'answerQuiz'; phase: QuizPhase; answers: number[] | 'skip' }
+  | { type: 'openPostQuiz'; next: ScreenId }
   | { type: 'startTutorial' }
   | { type: 'startSandbox' }
   | { type: 'setPlayerCount'; count: PlayerCount }
@@ -196,9 +207,15 @@ export function reducer(s: GameState, a: Action): GameState {
         mode: s.mode,
         difficulty: s.difficulty,
         players: s.players,
-        quiz: s.quiz,
-        screen: s.mode === 'coop' ? 'setup' : 'brief',
+        daily: !!a.daily,
+        // Flow (SPEC §1): Home → Setup (co-op) → Quiz(pre) → Brief; a new mission starts a new pre/post pair.
+        screen: s.mode === 'coop' ? 'setup' : 'quiz_pre',
       };
+    case 'answerQuiz':
+      if (a.phase === 'pre') return { ...s, quiz: { ...s.quiz, pre: a.answers }, screen: 'brief' };
+      return { ...s, quiz: { ...s.quiz, post: a.answers }, screen: s.quizNext ?? 'share', quizNext: null };
+    case 'openPostQuiz':
+      return { ...s, quizNext: a.next, screen: 'quiz_post' };
     case 'startTutorial':
       return {
         ...initialState,

@@ -4,6 +4,7 @@ import type { GameData } from '../data/types';
 import { CML_TEXT, OUTCOME_LABEL, type Outcome } from '../sim/score';
 import { useRun, type RunView } from '../state/run';
 import { useStore } from '../state/store';
+import { quizSummary } from '../state/quiz';
 import { downloadBlob, EXPORT_FONT, EXPORT_MONO, svgToPng } from '../ui/exportPng';
 import { fmt } from '../ui/format';
 import { TopBar } from '../ui/TopBar';
@@ -21,7 +22,7 @@ export function starGlyphs(n: number): string {
   return '★'.repeat(k) + '☆'.repeat(5 - k);
 }
 
-export function specRows(run: RunView, data: GameData, extraMonths: number): { k: string; v: string }[] {
+export function specRows(run: RunView, data: GameData, extraMonths: number, quizText = '—'): { k: string; v: string }[] {
   const m = run.mission;
   const b = m.build;
   const preset = data.launchers.presets.find((p) => p.id === m.orbit.preset)?.name ?? m.orbit.preset;
@@ -47,7 +48,7 @@ export function specRows(run: RunView, data: GameData, extraMonths: number): { k
     { k: 'Tuổi thọ · tồn lưu', v: `${fmt(m.lifetimeY, 1)} · ${fmt(residual, 1)} năm` },
     { k: 'Chi phí', v: cost.length > 1 ? `${cost.join(' + ')} = ${fmt(run.totalCostKusd, 0)}k` : cost[0] },
     { k: 'Phát triển', v: `${b.devMonths + extraMonths} tháng` },
-    { k: 'Quiz trước → sau', v: '—' },
+    { k: 'Quiz trước → sau', v: quizText },
   ];
 }
 
@@ -57,7 +58,9 @@ export function Debrief() {
   const run = useRun();
   const { score, why, cml, cmlOnExport } = run;
   const style = OUTCOME_STYLE[score.outcome];
-  const rows = specRows(run, data, state.ops.launch?.extraMonths ?? 0);
+  const quizText = quizSummary(state.quiz, data.quiz);
+  const rows = specRows(run, data, state.ops.launch?.extraMonths ?? 0, quizText);
+  const postPending = state.quiz.post === null;
   const specRef = useRef<SVGSVGElement>(null);
   const [exportMsg, setExportMsg] = useState('');
 
@@ -220,12 +223,26 @@ export function Debrief() {
             </span>
           </section>
 
+          <section className="panel row" style={{ padding: '10px 14px', justifyContent: 'space-between', flexWrap: 'wrap', fontSize: 'calc(13rem / 16)' }} aria-label="Quiz">
+            <span>
+              Quiz trước → sau: <strong className="mono">{quizText}</strong>
+            </span>
+            {postPending && (
+              <button className="link-btn" onClick={() => dispatch({ type: 'openPostQuiz', next: 'debrief' })}>
+                Làm quiz sau
+              </button>
+            )}
+          </section>
+
           <div className="col" style={{ gap: 8, marginTop: 'auto' }}>
             <button className="btn-s" onClick={() => dispatch({ type: 'rerun' })}>
               Sửa &amp; chạy lại (giữ thiết kế)
             </button>
-            <button className="btn-p" onClick={() => dispatch({ type: 'go', screen: 'share' })}>
-              Tạo mission patch · Chia sẻ →
+            <button
+              className="btn-p"
+              onClick={() => dispatch(postPending ? { type: 'openPostQuiz', next: 'share' } : { type: 'go', screen: 'share' })}
+            >
+              {postPending ? 'Quiz sau · Tạo mission patch →' : 'Tạo mission patch · Chia sẻ →'}
             </button>
           </div>
         </div>
