@@ -12,19 +12,20 @@ export function Globe() {
     >
       <defs>
         <radialGradient id="globe-oc" cx="40%" cy="35%" r="70%">
-          <stop offset="0%" stopColor="#1D4E89" />
-          <stop offset="70%" stopColor="#0B2547" />
-          <stop offset="100%" stopColor="#06142B" />
+          <stop offset="0%" stopColor="#1E3E6B" />
+          <stop offset="65%" stopColor="#0E2342" />
+          <stop offset="100%" stopColor="#05101F" />
         </radialGradient>
         <radialGradient id="globe-glow" cx="50%" cy="50%" r="50%">
-          <stop offset="80%" stopColor="#3DD6F5" stopOpacity="0" />
-          <stop offset="100%" stopColor="#3DD6F5" stopOpacity="0.35" />
+          <stop offset="78%" stopColor="#3B82F6" stopOpacity="0" />
+          <stop offset="96%" stopColor="#60A5FA" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#93C5FD" stopOpacity="0" />
         </radialGradient>
       </defs>
       <circle cx="210" cy="210" r="222" fill="url(#globe-glow)" />
       <circle cx="210" cy="210" r="200" fill="url(#globe-oc)" />
-      {maps?.globe && <path d={maps.globe} fill="#2F6B4F" stroke="#7BC59A" strokeWidth="0.6" fillRule="evenodd" />}
-      <circle cx="210" cy="210" r="200" fill="none" stroke="#3DD6F5" strokeOpacity="0.5" />
+      {maps?.globe && <path d={maps.globe} fill="#24543D" stroke="#5EA87F" strokeWidth="0.6" fillRule="evenodd" />}
+      <circle cx="210" cy="210" r="200" fill="none" stroke="rgba(243, 245, 248, 0.25)" strokeWidth="1" />
       {[-62, -22, 18].map((r) => (
         <ellipse
           key={r}

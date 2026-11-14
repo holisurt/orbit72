@@ -27,8 +27,9 @@ export function Home() {
       <header className="home-top">
         <div className="row" style={{ gap: 12 }}>
           <svg width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
-            <circle cx="17" cy="17" r="9" fill="#F5A524" />
-            <ellipse cx="17" cy="17" rx="16" ry="6" fill="none" stroke="#3DD6F5" strokeWidth="2" transform="rotate(-25 17 17)" />
+            <circle cx="17" cy="17" r="8" fill="#F5A524" />
+            <ellipse cx="17" cy="17" rx="15.5" ry="6" fill="none" stroke="#F3F5F8" strokeWidth="1.75" transform="rotate(-25 17 17)" strokeDasharray="30 5" />
+            <circle cx="28.5" cy="11.5" r="2" fill="#F5A524" />
           </svg>
           <span style={{ fontWeight: 800, letterSpacing: '0.08em' }}>ORBIT 72</span>
         </div>

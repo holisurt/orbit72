@@ -1,11 +1,11 @@
 /* ORBIT 72 design tokens — from design/HF-Home.dc.html.
    Fonts (Be Vietnam Pro, IBM Plex Mono) are loaded from Google Fonts in index.html. */
 :root {
-  --bg: #070d1a;
-  --panel: #0f1830;
-  --line: #26355a;
-  --text: #e8eef8;
-  --muted: #9aabc7;
+  --bg: #07090f;
+  --panel: #0e131d;
+  --line: #1a2647;
+  --text: #f3f5f8;
+  --muted: #8e9bae;
   --amber: #f5a524;
   --cyan: #3dd6f5;
   --ok: #4ade80;
@@ -13,6 +13,11 @@
   --bad: #f87171;
   --soft: #c9d4e8; /* secondary body text */
   --dim: #8fa0bd; /* notes, captions (≥ 4.5:1 on --panel) */
+  --hairline: rgba(241, 245, 249, 0.09);
+  --panel-elevated: #141b2a;
+
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
 
   --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;

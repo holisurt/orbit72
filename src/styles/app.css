@@ -41,13 +41,14 @@ button {
 
 .panel {
   background: var(--panel);
-  border: 1px solid var(--line);
+  border: 1px solid rgba(241, 245, 249, 0.09);
   border-radius: 14px;
 }
 
 .subtle {
   border-radius: 12px;
-  background: #16213d;
+  background: #111724;
+  border: 1px solid rgba(241, 245, 249, 0.06);
   padding: 10px 12px;
 }
 
@@ -59,36 +60,48 @@ button {
   gap: 10px;
   min-height: 48px;
   padding: 0 22px;
-  border-radius: 12px;
+  border-radius: 11px;
   background: var(--amber);
-  color: #1a1205;
+  color: #120c02;
   font-weight: 800;
   font-size: calc(15rem / 16);
   text-decoration: none;
-  border: 0;
+  border: 1px solid rgba(255, 255, 255, 0.22);
   cursor: pointer;
-  box-shadow: 0 0 24px rgba(245, 165, 36, 0.3);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
 }
 .btn-p:hover {
-  background: #ffb938;
+  background: #ffb433;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+.btn-p:active:not([aria-disabled='true']) {
+  transform: translateY(1px) scale(0.98);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 .btn-p[aria-disabled='true'] {
-  background: #3a4c78;
-  color: #c9d4e8; /* 5.7:1 on #3a4c78 */
+  background: #25334d;
+  color: #c9d4e8; /* 5.7:1 on #25334d */
+  border-color: transparent;
   box-shadow: none;
   cursor: not-allowed;
+  transform: none;
 }
 .btn-p.big {
   min-height: 52px;
   padding: 0 28px;
   font-size: calc(17rem / 16);
-  box-shadow: 0 0 28px rgba(245, 165, 36, 0.35);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 .btn-p.ghost {
   background: transparent;
   color: var(--amber);
   border: 1.5px solid var(--amber);
   box-shadow: none;
+}
+.btn-p.ghost:hover {
+  background: rgba(245, 165, 36, 0.08);
 }
 
 .btn-s {
@@ -98,31 +111,39 @@ button {
   min-height: 48px;
   min-width: 48px;
   padding: 0 18px;
-  border-radius: 12px;
+  border-radius: 11px;
   color: var(--text);
-  background: transparent;
+  background: rgba(255, 255, 255, 0.03);
   font-weight: 700;
   font-size: calc(14rem / 16);
   text-decoration: none;
-  border: 1.5px solid #3a4c78;
+  border: 1px solid rgba(241, 245, 249, 0.14);
   cursor: pointer;
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
 }
 .btn-s:hover {
-  background: #16213d;
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(241, 245, 249, 0.28);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+.btn-s:active {
+  transform: translateY(1px) scale(0.98);
 }
 
 .link-btn {
   background: none;
   border: 0;
-  color: var(--cyan);
+  color: var(--soft);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
   min-height: 44px;
-  padding: 0 4px;
+  padding: 0 6px;
+  transition: color 0.16s ease, transform 0.16s ease;
 }
 .link-btn:hover {
-  color: #8be9fa;
+  color: var(--amber);
 }
 
 /* toggle-style buttons: .seg / .chip / .tab — selected state via aria-pressed */
@@ -131,12 +152,27 @@ button {
 .tab,
 .tg {
   min-height: 44px;
-  border-radius: 10px;
-  border: 1px solid #3a4c78;
-  background: transparent;
-  color: var(--text);
+  border-radius: 9px;
+  border: 1px solid rgba(241, 245, 249, 0.12);
+  background: rgba(255, 255, 255, 0.02);
+  color: var(--soft);
   font-weight: 700;
   cursor: pointer;
+  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+}
+.seg:hover:not([aria-pressed='true']),
+.chip:hover:not([aria-pressed='true']),
+.tab:hover:not([aria-pressed='true']),
+.tg:hover:not([aria-pressed='true']) {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(241, 245, 249, 0.24);
+  color: var(--text);
+}
+.seg:active,
+.chip:active,
+.tab:active,
+.tg:active {
+  transform: scale(0.97);
 }
 .seg {
   padding: 0 16px;
@@ -371,11 +407,12 @@ button.step:hover {
 /* ---------- Home ---------- */
 .home {
   background-color: var(--bg);
-  background-image: radial-gradient(1.5px 1.5px at 20% 30%, #ffffff55, transparent),
-    radial-gradient(1.5px 1.5px at 70% 20%, #ffffff44, transparent),
-    radial-gradient(1px 1px at 40% 80%, #ffffff44, transparent),
-    radial-gradient(1px 1px at 85% 65%, #ffffff33, transparent),
-    radial-gradient(900px 600px at 75% 50%, #13224a, transparent);
+  background-image:
+    radial-gradient(1px 1px at 15% 25%, rgba(243, 245, 248, 0.4), transparent),
+    radial-gradient(1.5px 1.5px at 75% 18%, rgba(243, 245, 248, 0.35), transparent),
+    radial-gradient(1px 1px at 35% 82%, rgba(243, 245, 248, 0.25), transparent),
+    radial-gradient(1.2px 1.2px at 88% 68%, rgba(243, 245, 248, 0.3), transparent),
+    radial-gradient(850px 550px at 70% 45%, #0e1728, transparent);
 }
 .home-top {
   height: 64px;
@@ -383,12 +420,13 @@ button.step:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.07);
 }
 .home-main {
   flex: 1;
   display: grid;
   grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
-  gap: 24px;
+  gap: 28px;
   padding: 0 48px;
   align-items: center;
 }
@@ -404,12 +442,14 @@ button.step:hover {
   line-height: 0.95;
   font-weight: 800;
   letter-spacing: -0.02em;
+  color: var(--text);
 }
 .home-sub {
   font-size: clamp(22px, 3vw, 30px);
   font-weight: 700;
   margin-top: 8px;
-  color: var(--cyan);
+  color: var(--text);
+  letter-spacing: -0.01em;
 }
 .home-lead {
   margin: 0;
@@ -430,11 +470,13 @@ button.step:hover {
 .home-globe {
   display: flex;
   justify-content: center;
+  position: relative;
 }
 .home-globe svg {
   width: 100%;
   max-width: 560px;
   height: auto;
+  filter: drop-shadow(0 12px 32px rgba(0, 0, 0, 0.5));
 }
 .home-foot {
   min-height: 40px;
@@ -446,7 +488,7 @@ button.step:hover {
   flex-wrap: wrap;
   font-size: calc(12rem / 16);
   color: var(--dim);
-  border-top: 1px solid #1a2647;
+  border-top: 1px solid rgba(241, 245, 249, 0.08);
 }
 
 /* ---------- Setup ---------- */
