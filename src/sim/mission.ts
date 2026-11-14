@@ -125,6 +125,8 @@ export interface MissionInput {
   orbit: OrbitInput;
   /** false → Build-screen defaults (f_ecl 0.376, 17 min/day contact), no coverage. */
   orbitChosen: boolean;
+  /** Coverage target; defaults to the scenario target (Hanoi). Tutorial uses its own. */
+  target?: { lat: number; lon: number };
 }
 
 export interface MissionResult {
@@ -159,7 +161,7 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   const orbit = { ...normaliseConstellation(input.orbit), launcher: input.orbit.launcher };
   const inclDeg = presetInclination(orbit.preset, orbit.hKm);
 
-  const coverage = input.orbitChosen ? simulateCoverage(orbit, data.scenario.target) : null;
+  const coverage = input.orbitChosen ? simulateCoverage(orbit, input.target ?? data.scenario.target) : null;
   const fEcl = input.orbitChosen ? eclipseFraction(orbit.hKm) : DEFAULT_F_ECL;
   const tEclH = input.orbitChosen
     ? eclipseHours(orbit.hKm)
