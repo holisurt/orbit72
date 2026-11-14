@@ -10,7 +10,7 @@ import { useStore } from '../state/store';
 import { fmt } from '../ui/format';
 import { MapWorld, projWorld } from '../ui/MapWorld';
 import { PassScreen } from '../ui/PassScreen';
-import { StatusChip, STATUS_COLOR } from '../ui/StatusChip';
+import { StatusChip } from '../ui/StatusChip';
 import { TopBar } from '../ui/TopBar';
 import { Term } from '../ui/Term';
 import { L_P1H } from '../ui/labels';
@@ -306,7 +306,7 @@ export function Orbit() {
               {allLinks.map((l) => {
                 const s = statusMin(l.margin, data.scenario.requirements.linkMarginDb, 1);
                 return (
-                  <span key={l.id} style={{ color: l.installed ? STATUS_COLOR[s] : 'var(--muted)' }}
+                  <span key={l.id} data-status={s} style={{ color: l.installed ? 'var(--text)' : 'var(--muted)' }}
                     title={l.installed ? undefined : 'chưa lắp'}>
                     {l.id === 'uhf' ? 'UHF' : l.id === 's' ? 'S' : 'SOS'} {fmt(l.margin, 1)}
                     {l.id === 'sos' ? ' dB' : ''}

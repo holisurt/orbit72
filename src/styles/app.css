@@ -1527,9 +1527,9 @@ button.step:hover {
   padding: 10px 12px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas: 'label label' 'value chip';
-  align-items: end;
-  gap: 4px 6px;
+  grid-template-areas: 'label chip' 'value value';
+  align-items: start;
+  gap: 6px 6px;
 }
 .hero-label {
   grid-area: label;
@@ -1544,7 +1544,7 @@ button.step:hover {
   font-weight: 600;
   color: var(--text);
   line-height: 1.1;
-  overflow-wrap: break-word;
+  overflow-wrap: normal; /* never split "2.640k" or "3,0 h" mid-value */
 }
 .hero-chip {
   grid-area: chip;

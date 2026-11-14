@@ -30,7 +30,7 @@ export function Launch() {
   return (
     <div
       className="screen"
-      style={{ background: night ? 'linear-gradient(180deg, #03050a 0%, #07090f 100%)' : 'linear-gradient(180deg, #070e1c 0%, #0d1a33 100%)' }}
+      style={{ background: night ? 'var(--bg)' : 'linear-gradient(180deg, var(--bg) 0%, var(--panel-elevated) 100%)' }}
     >
       <header className="topbar">
         <span className="brand">
