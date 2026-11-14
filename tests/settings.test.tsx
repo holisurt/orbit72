@@ -32,7 +32,7 @@ describe('language (menu labels and buttons only)', () => {
 
   it('EN switches Home menu + buttons; body copy stays Vietnamese', () => {
     const h = render(<Home />, { ...DEFAULT_SETTINGS, lang: 'en' });
-    for (const s of ['Start mission', '3-minute tutorial', 'Engineer', 'Difficulty', 'Mode', "Today&#x27;s mission", 'Guide', 'Settings']) expect(h).toContain(s);
+    for (const s of ['Start mission', '3-minute tutorial', 'Engineer', 'Difficulty', 'Mode', 'Guide', 'Settings']) expect(h).toContain(s);
     expect(h).toContain('Siêu bão sắp đổ bộ'); // lead paragraph not translated
     expect(h).not.toContain('Bắt đầu sứ mệnh');
   });

@@ -47,7 +47,7 @@ describe('full run S1 Kỹ sư (solo)', () => {
   it('Launch → Ops → Debrief → Share', () => {
     s = play(s, {
       type: 'launch',
-      record: { attempts: [0, 1, 2, 3].map((l) => ({ launch: l, failed: false, replaced: false })), lostPlanes: [], extraCostKusd: 0, extraMonths: 0, inOrbit: true, launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true },
+      record: { launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true },
     });
     expect(s.screen).toBe('launch');
     expect(render(<Launch />, s)).toContain('Rời bệ phóng');
@@ -55,20 +55,19 @@ describe('full run S1 Kỹ sư (solo)', () => {
     s = play(s, { type: 'go', screen: 'ops' });
     const ops = render(<Ops />, s);
     expect(ops).toContain('MISSION CONTROL');
-    expect(ops).toContain('E0 · E1 · E2 · E3'); // ky_su events; E0 because no env test
+    expect(ops).toContain('E0 · E1 · E2'); // ky_su events; E0 because no env test
 
     s = play(
       s,
       { type: 'chooseEvent', id: 'E0', key: 'A' },
       { type: 'chooseEvent', id: 'E1', key: 'B' },
       { type: 'chooseEvent', id: 'E2', key: 'A' },
-      { type: 'chooseEvent', id: 'E3', key: 'A' },
       { type: 'finishOps' },
     );
     expect(s.screen).toBe('debrief');
     const d = render(<Debrief />, s);
     expect(d).toContain('THÀNH CÔNG — 8/8 yêu cầu đạt');
-    expect(d).toContain('VFM = 49,1 / 2,64'); // star 3 uses the nominal cost (events affect only stars 2, 4)
+    expect(d).toContain('Hiệu quả chi phí = 49,1 / 2,64'); // star 3 uses the nominal cost (events affect only stars 2, 4)
     // spec sheet cost: nominal design cost (Star 3) + E2-A generator (+20k)
     expect(d).toContain('2.640k thiết kế + 20k sự cố = 2.660k');
     expect(d).toContain('11 tháng');

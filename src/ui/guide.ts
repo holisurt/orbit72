@@ -5,9 +5,8 @@ import { DEG, coverageRadiusKm, eclipseFraction, eclipseHours, periodMin, raanRa
 import { BODY_FILL, CELL_EFF, DOD, POWER_LOSS, SOLAR_CONST, bodyPowerW, wingPowerW } from '../sim/power';
 import { LINKS, fsplDb, linkMarginDb } from '../sim/link';
 import { INTEGRATION_MONTHS } from '../sim/build';
-import { REPLACEMENT_MONTHS } from '../sim/launch';
-import { CML_TEXT, MIN_IMAGING_PASSES } from '../sim/score';
-import { E3_WINDOW } from '../state/run';
+import { CML_TEXT, RANK_PENALTY } from '../sim/score';
+import { ROLES } from '../state/roles';
 import { fmt } from './format';
 import { IMERG_LABEL } from './rain';
 
@@ -179,8 +178,8 @@ export function guideTabs(data: GameData): GuideTab[] {
         },
         {
           t: 'Tên lửa',
-          d: `${ride?.name ?? 'Rideshare'}: ${ride?.price?.baseKusd ?? '—'}k/chuyến ≤ ${ride?.price?.baseKg ?? '—'} kg [NG] · ${iss?.name ?? 'ISS'}: ${iss?.pricePerSatKusd ?? '—'}k/vệ tinh [GA] · ${dedicated?.name ?? 'Riêng'}: ${fmt(dedicated?.pricePerLaunchKusd ?? NaN, 0)}k [NG]. Phóng hỏng (Giám đốc) ${fmt(diff.giam_doc.launchFail * 100, 0)}%/chuyến, chuyến thay +${REPLACEMENT_MONTHS} tháng.`,
-          s: '[GA] rủi ro phóng',
+          d: `${ride?.name ?? 'Rideshare'}: ${ride?.price?.baseKusd ?? '—'}k/chuyến ≤ ${ride?.price?.baseKg ?? '—'} kg, thêm ${ride?.price?.perKgKusd ?? '—'}k/kg [NG] · ${iss?.name ?? 'ISS'}: ${iss?.pricePerSatKusd ?? '—'}k/vệ tinh [GA] · ${dedicated?.name ?? 'Riêng'}: ${fmt(dedicated?.pricePerLaunchKusd ?? NaN, 0)}k/chuyến [NG]. Trong game mọi lần phóng đều thành công.`,
+          s: 'Giá [NG]/[GA] · launchers.json',
         },
         {
           t: 'Cánh hãm',
@@ -189,21 +188,43 @@ export function guideTabs(data: GameData): GuideTab[] {
         },
         { t: 'Mốc T0', d: 'T0 = lúc bão đổ bộ ≈ 14:00 ngày 7/9/2024 giờ Việt Nam; vận hành T0 → T0 + 72 h.', s: '[GA] gần đúng' },
         {
-          t: 'Mây che camera',
-          d: `Coi là có mây khi mưa ô Hà Nội ≥ ${fmt(data.scenario.cloudRainThresholdMmH, 1)} mm/h (IMERG); sự cố E3 phủ mây T0+${E3_WINDOW[0]} → ${E3_WINDOW[1]} h. Lượt chụp hợp lệ 06:00–18:00; cần ≥ ${MIN_IMAGING_PASSES} lượt.`,
-          s: '[GA]',
-        },
-        {
           t: 'Độ khó',
-          d: (['hoc_vien', 'ky_su', 'giam_doc'] as const)
-            .map((k) => `${{ hoc_vien: 'Học viên', ky_su: 'Kỹ sư', giam_doc: 'Giám đốc' }[k]}: ${fmt(diff[k].budget, 0)}k, R1 ≤ ${fmt(diff[k].gapMaxH, 1)} h, sự cố ${diff[k].events.join(', ')}`)
+          d: (['hoc_vien', 'ky_su'] as const)
+            .map((k) => `${{ hoc_vien: 'Học viên', ky_su: 'Kỹ sư' }[k]}: ngân sách ${fmt(diff[k].budget, 0)}k, R1 ≤ ${fmt(diff[k].gapMaxH, 1)} h, sự cố ${diff[k].events.join(', ')}`)
             .join(' · '),
-          s: '[GA] · E0 chỉ khi bỏ thử môi trường',
+          s: '[GA] · scenario_72h.json · E0 chỉ khi bỏ thử môi trường',
         },
         {
-          t: 'Ngưỡng chấm',
-          d: 'ĐẠT ≤ 80% giới hạn · SÁT 80–100% · VƯỢT > 100%; so sánh trên số đã làm tròn như hiển thị. Ngưỡng sao và hiệu ứng thẻ sự cố là giá trị cân bằng game.',
-          s: '[GA]',
+          t: 'Yêu cầu hợp đồng R1–R8',
+          d: `R3 điện sinh ≥ ${fmt(req.powerMargin, 1)} × điện dùng · R4 tuổi thọ ${req.lifetimeMinY}–${req.lifetimeMaxY} năm, hoặc có cánh hãm thì tồn lưu ≤ ${req.residualMaxY} năm · R6 phát triển ≤ ${req.devMonthsMax} tháng · R7 biên ≥ ${fmt(req.linkMarginDb, 0)} dB ở góc ngẩng ${eps}°.`,
+          s: '[GA] · R4 5 năm theo FCC 22-74 [NG]',
+        },
+        {
+          t: 'Ngưỡng trạng thái',
+          d: 'ĐẠT ≤ 80% giới hạn · SÁT 80–100% · VƯỢT > 100%. Luôn so sánh trên số đã làm tròn như hiển thị (giờ, %, dB, W: 1 chữ số thập phân; tháng, nghìn USD: số nguyên).',
+          s: '[GA] · SPEC §3, §7',
+        },
+        {
+          t: 'Năm sao',
+          d: `Sao 1 = làm tròn(5 × số yêu cầu đạt / 8). Sao 2 theo tin SOS tới nơi trong 1 giờ (tính theo mưa): ≥ 70% → 5, ≥ 55% → 4, ≥ 40% → 3, ≥ 25% → 2. Sao 3 hiệu quả chi phí = % đó / triệu USD: ≥ 20 → 5, ≥ 17 → 4, ≥ 14 → 3, ≥ 10 → 2. Sao 4 = 100 − 25 (phóng khi có VƯỢT) − 10 (phóng khi có NO-GO) − ${RANK_PENALTY.middle}/${RANK_PENALTY.worst} mỗi phương án trung bình/kém + 10 nếu tốt hơn lần trước. Sao 5 (solo) = 40 thử môi trường + 30 dư điện ≥ 20% + 30 dự phòng ngân sách ≥ 5%; co-op = 20 × thẻ ưu tiên đạt + 20 nếu 4/4 GO.`,
+          s: '[GA] · SPEC §7',
+        },
+        {
+          t: 'Thẻ ưu tiên co-op',
+          d: (['FD', 'VT', 'KH', 'QD'] as const).map((r) => `${ROLES[r].ab}: (a) ${ROLES[r].cards.a} · (b) ${ROLES[r].cards.b}`).join(' — '),
+          s: '[GA] · SPEC §8',
+        },
+        {
+          t: 'Hiệu ứng thẻ sự cố',
+          d: data.events.events
+            .map((e) => `${e.id} ${e.title} (T0${e.atH < 0 ? ' trước' : '+' + e.atH + ' h'}): ${e.options.map((o) => `${o.k} ${o.text}`).join(' / ')}`)
+            .join(' · '),
+          s: '[GA] · events.json · bản ghi bão từ thật: NASA DONKI',
+        },
+        {
+          t: 'Thang màu bản đồ mưa',
+          d: 'Các mức màu (0,5 · 2 · 5 · 10 · 20 mm/h và 25 · 50 · 100 · 200 · 300 mm) chỉ để vẽ bản đồ, không dùng để chấm điểm.',
+          s: 'Hiển thị · số mưa từ NASA IMERG [NG]',
         },
       ],
     },
@@ -215,7 +236,7 @@ export function guideTabs(data: GameData): GuideTab[] {
       items: [
         { t: 'NanoDragon · 2021', d: 'CubeSat 3U, 3,8 kg, AIS, SSO ~560 km; mất liên lạc sau phóng.', s: 'Bài học: liên lạc dự phòng' },
         { t: 'LOTUSat-1', d: 'Vệ tinh radar ~600 kg; lùi lịch phóng sang năm tài chính 2027 vì sự cố thử động cơ Epsilon.', s: 'Bài học: rủi ro hoãn phóng' },
-        { t: 'FACSAT-2 · 2023–2025', d: '6U dự kiến sống ≥ 5 năm, rơi sau 926 ngày vì chu kỳ Mặt Trời mạnh hơn dự báo.', s: 'Lý do có bảng “Mặt Trời cực đại”' },
+        { t: 'FACSAT-2 · 2023–2025', d: '6U dự kiến sống ≥ 5 năm, rơi sau 926 ngày vì chu kỳ Mặt Trời mạnh hơn dự báo.', s: 'Bài học: Mặt Trời hoạt động mạnh làm vệ tinh rơi sớm' },
         { t: 'Bão Yagi · 9/2024', d: '6.285 trạm phát sóng mất liên lạc do mất điện ở 15 tỉnh, thành.', s: 'Động lực của 72 Giờ Vàng' },
         { t: 'PicoDragon · 2013', d: 'Vệ tinh ~1 kg thả từ Trạm Vũ trụ Quốc tế.', s: 'Gợi ý lớp “Thang Máy ISS”' },
         { t: 'Bão từ mạnh', d: 'Lực cản khí quyển tăng ~1,9 lần trong ngày bão mạnh.', s: 'Thẻ sự cố E1' },

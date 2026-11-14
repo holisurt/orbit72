@@ -78,7 +78,7 @@ describe('quiz flow', () => {
 describe('Debrief shows the quiz result', () => {
   const launched = play(initialState, { type: 'startMission' }, { type: 'acceptContract' }, {
     type: 'launch',
-    record: { attempts: [], lostPlanes: [], extraCostKusd: 0, extraMonths: 0, inOrbit: true, launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true },
+    record: { launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true },
   }, { type: 'finishOps' });
 
   it('both taken: panel + spec sheet row show "x → y / 5 (+gain)"', () => {

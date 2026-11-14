@@ -19,43 +19,24 @@
   "latMin": 20,
   "latMax": 23
  },
- "cloudRainThresholdMmH": 0.1,
  "opsYears": 3,
  "difficulty": {
   "hoc_vien": {
    "budget": 3500,
-   "gapMaxH": 6.0,
-   "lifetime": "avg",
+   "gapMaxH": 6,
    "events": [
     "E1",
     "E2"
-   ],
-   "launchFail": 0
+   ]
   },
   "ky_su": {
    "budget": 3000,
    "gapMaxH": 3.5,
-   "lifetime": "avg",
    "events": [
     "E0",
     "E1",
-    "E2",
-    "E3"
-   ],
-   "launchFail": 0
-  },
-  "giam_doc": {
-   "budget": 2800,
-   "gapMaxH": 3.5,
-   "lifetime": "max",
-   "events": [
-    "E0",
-    "E1",
-    "E2",
-    "E3",
-    "E4"
-   ],
-   "launchFail": 0.03
+    "E2"
+   ]
   }
  },
  "requirements": {
@@ -71,8 +52,8 @@
  "tutorial": {
   "id": "matbien",
   "target": {
-   "lat": 16.0,
-   "lon": 112.0
+   "lat": 16,
+   "lon": 112
   },
   "minPassesPerDay": 2
  }

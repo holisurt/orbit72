@@ -30,7 +30,7 @@ const render = (el: ReactElement, s: GameState) =>
     .replace(/&amp;/g, '&');
 const mission = (s: GameState) => evaluateMission(data, { difficulty: s.difficulty, design: s.design, orbit: s.orbit, orbitChosen: s.orbit.chosen });
 const status = (s: GameState, id: string) => mission(s).reqs.find((r) => r.id === id)!.status;
-const LAUNCH = { attempts: [], lostPlanes: [], extraCostKusd: 0, extraMonths: 0, inOrbit: true, launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true };
+const LAUNCH = { launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true };
 const allGo = (['FD', 'VT', 'KH', 'QD'] as const).map((role) => ({ type: 'vote', role, vote: 'go' }) as Action);
 
 describe('e2e checklist walk (solo Kỹ sư)', () => {
@@ -61,7 +61,7 @@ describe('e2e checklist walk (solo Kỹ sư)', () => {
     expect(status(noSos, 'R8')).toBe('VUOT');
   });
 
-  it('4 · GDD §12 #2–#4: no free cells → part cannot be added; smaller chassis → cells error; camera without ADCS+', () => {
+  it('4 · GDD §12 #2–#3: no free cells → part cannot be added; smaller chassis → cells error', () => {
     let full = s;
     while (canAddPart(data.components, full.design, 'bat')) full = play(full, { type: 'addPart', id: 'bat' });
     expect(mission(full).build.cellsUsed).toBe(12);
@@ -69,8 +69,6 @@ describe('e2e checklist walk (solo Kỹ sư)', () => {
     expect(render(<Build />, full)).toMatch(/aria-disabled="true"[^>]*aria-label="Thêm /);
     const small = play(full, { type: 'setChassis', chassis: '3U' });
     expect(mission(small).build.hardErrors.map((e) => e.code)).toContain('cells');
-    const cam = play(s, { type: 'addPart', id: 'cam' });
-    expect(mission(cam).build.hardErrors.map((e) => e.code)).toContain('needs_precise_adcs');
   });
 
   it('5 · Build: swap UHF → S-band (CML3 design change), go to Orbit', () => {
@@ -97,7 +95,7 @@ describe('e2e checklist walk (solo Kỹ sư)', () => {
   });
 
   it('8 · GDD §12 #8: dev time > 18 months is unreachable with components.json (max 15) — sim path covered in ops.test', () => {
-    const slow = play(s, { type: 'setChassis', chassis: '12U' }, { type: 'addPart', id: 'prop' }, { type: 'toggleEnvTest' });
+    const slow = play(s, { type: 'setChassis', chassis: '12U' }, { type: 'addPart', id: 'sband' }, { type: 'toggleEnvTest' });
     expect(mission(slow).build.devMonths).toBeLessThanOrEqual(data.scenario.requirements.devMonthsMax);
   });
 
@@ -128,7 +126,7 @@ describe('e2e checklist walk (solo Kỹ sư)', () => {
     } finally {
       g.localStorage = prev;
     }
-    s = play(s, { type: 'chooseEvent', id: 'E2', key: 'A' }, { type: 'chooseEvent', id: 'E3', key: 'A' }, { type: 'finishOps' });
+    s = play(s, { type: 'chooseEvent', id: 'E2', key: 'A' }, { type: 'finishOps' });
   });
 
   it('11 · Debrief → export → Share; GDD §12 #14: rerun keeps design + orbit, resets ops, run++', () => {

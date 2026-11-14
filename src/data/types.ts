@@ -27,18 +27,14 @@ export interface Part {
   months: number;
   wh?: number;
   txW?: number;
-  band?: 'uhf' | 's' | 'x';
+  band?: 'uhf' | 's';
   rbps?: number;
   mbPerDay?: number;
-  cameraDataFactor?: number;
   pointingDeg?: number;
-  needsPreciseAdcs?: boolean;
   required?: boolean;
   sailAreaM2?: number;
-  enablesE4A?: boolean;
   e1Immune?: boolean;
   dutyNote?: string;
-  thrustW?: number;
 }
 
 export interface Components {
@@ -78,14 +74,12 @@ export interface Launchers {
   presets: Preset[];
 }
 
-export type DifficultyId = 'hoc_vien' | 'ky_su' | 'giam_doc';
+export type DifficultyId = 'hoc_vien' | 'ky_su';
 
 export interface DifficultyRules {
   budget: number;
   gapMaxH: number;
-  lifetime: 'avg' | 'max';
   events: string[];
-  launchFail: number;
 }
 
 export interface Scenario {
@@ -96,7 +90,6 @@ export interface Scenario {
   target: { name: string; lat: number; lon: number };
   partnerStation: { name: string; lat: number; lon: number };
   rainBox: { lonMin: number; lonMax: number; latMin: number; latMax: number };
-  cloudRainThresholdMmH: number;
   opsYears: number;
   difficulty: Record<DifficultyId, DifficultyRules>;
   requirements: {

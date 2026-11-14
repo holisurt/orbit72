@@ -5,9 +5,7 @@ import type { GameData, GameEvent } from '../data/types';
 import type { MissionResult } from '../sim/mission';
 import {
   buildOpsContext,
-  cloudModel,
   evaluateEventOptions,
-  imagingPasses,
   imergWeights,
   runOps,
   type OpsConfig,
@@ -29,15 +27,11 @@ import { useMission } from './mission';
 import { fmt } from '../ui/format';
 import { useStore, type GameState } from './store';
 
-/** E3 cloud window: from the event to the end of the 72 h [GA — SPEC §6 gives no end time]. */
-export const E3_WINDOW: [number, number] = [50, 72];
-
 export function activeEvents(data: GameData, s: GameState): GameEvent[] {
   const ids = data.scenario.difficulty[s.difficulty].events;
   return data.events.events.filter((e) => {
     if (!ids.includes(e.id)) return false;
     if (e.onlyIf === 'noEnvTest') return !s.design.envTest;
-    if (e.onlyIf === 'giam_doc') return s.difficulty === 'giam_doc';
     return true;
   });
 }
@@ -48,14 +42,12 @@ export interface RunView {
   events: GameEvent[];
   base: Omit<OpsConfig, 'choices'>;
   ops: OpsResult; // with current choices
-  nominal: OpsResult; // no events (launch losses still apply)
+  nominal: OpsResult; // no events
   options: Record<string, OptionOutcome[]>;
-  /** event id → option key → reason it is disabled (missing part / not enough budget). */
+  /** event id → option key → reason it is disabled (not enough budget). */
   blocked: Record<string, Record<string, string>>;
   hasShield: boolean;
-  hasProp: boolean;
   weightsSource: 'imerg' | 'none';
-  imaging: ReturnType<typeof imagingPasses>;
   cards: CardResult[] | undefined;
   decisions: EventDecision[];
   score: ScoreResult;
@@ -63,8 +55,7 @@ export interface RunView {
   cml: 0 | 1 | 2 | 3 | 4;
   /** Level the player holds once the spec sheet is exported — printed on the exported PNG itself. */
   cmlOnExport: 0 | 1 | 2 | 3 | 4;
-  launchExtraKusd: number; // replacement launches (giam_doc)
-  totalCostKusd: number; // nominal + launch replacements + event costs
+  totalCostKusd: number; // nominal design cost + event costs
 }
 
 export function useRun(): RunView {
@@ -92,37 +83,35 @@ export function useRun(): RunView {
     [data, difficulty, envTest],
   );
   const hasShield = mission.build.parts.some((p) => p.e1Immune);
-  const hasProp = mission.build.parts.some((p) => p.enablesE4A);
   const weights = useMemo(() => imergWeights(data.imerg), [data.imerg]);
   const launch = state.ops.launch;
   const noSatellites = mission.reqs.find((r) => r.id === 'R6')!.status === 'VUOT';
 
   const base = useMemo<Omit<OpsConfig, 'choices'>>(
-    () => ({ events, hasShield, lostPlanes: launch?.lostPlanes ?? [], noSatellites, hourlyWeights: weights }),
-    [events, hasShield, launch, noSatellites, weights],
+    () => ({ events, hasShield, noSatellites, hourlyWeights: weights }),
+    [events, hasShield, noSatellites, weights],
   );
 
   const ops = useMemo(() => runOps(ctx, { ...base, choices: state.ops.choices }), [ctx, base, state.ops.choices]);
   const nominal = useMemo(() => runOps(ctx, { ...base, events: [], choices: {} }), [ctx, base]);
 
-  // Why an option cannot be chosen (GDD §12 #4/#6): missing part, or its cost exceeds the remaining budget
-  // (budget − nominal cost − launch replacements − costs of the other events already chosen).
+  // Why an option cannot be chosen (GDD §12 #6): its cost exceeds the remaining budget
+  // (budget − nominal design cost − costs of the other events already chosen).
   const blocked = useMemo(() => {
     const out: Record<string, Record<string, string>> = {};
     for (const ev of events) {
       const otherCosts = events
         .filter((e) => e.id !== ev.id && state.ops.choices[e.id])
         .reduce((sum, e) => sum + Number(e.options.find((o) => o.k === state.ops.choices[e.id])?.effect.costKusd ?? 0), 0);
-      const remaining = mission.budgetKusd - mission.totalCostKusd - (launch?.extraCostKusd ?? 0) - otherCosts;
+      const remaining = mission.budgetKusd - mission.totalCostKusd - otherCosts;
       out[ev.id] = {};
       for (const o of ev.options) {
         const cost = Number(o.effect.costKusd ?? 0);
-        if (o.requires && !mission.build.parts.some((p) => p.id === o.requires)) out[ev.id][o.k] = 'cần động cơ';
-        else if (cost > 0 && cost > remaining) out[ev.id][o.k] = `Không đủ ngân sách: còn ${fmt(Math.max(0, remaining), 0)}k`;
+        if (cost > 0 && cost > remaining) out[ev.id][o.k] = `Không đủ ngân sách: còn ${fmt(Math.max(0, remaining), 0)}k`;
       }
     }
     return out;
-  }, [events, state.ops.choices, mission.budgetKusd, mission.totalCostKusd, mission.build.parts, launch]);
+  }, [events, state.ops.choices, mission.budgetKusd, mission.totalCostKusd]);
 
   const options = useMemo(() => {
     const out: Record<string, OptionOutcome[]> = {};
@@ -131,17 +120,6 @@ export function useRun(): RunView {
   }, [ctx, base, events, blocked]);
 
   return useMemo(() => {
-    const cam = mission.build.parts.some((p) => p.id === 'cam');
-    const precise = mission.build.parts.some((p) => p.id === 'adcs2');
-    const e3 = events.find((e) => e.id === 'E3');
-    const e3Choice = e3 ? state.ops.choices.E3 : undefined;
-    const e3Fraction = e3Choice ? Number(e3?.options.find((x) => x.k === e3Choice)?.effect.imagingFraction ?? 0) : 0;
-    const imaging = imagingPasses(
-      ops,
-      cam && precise,
-      cloudModel(data.imerg, data.scenario.cloudRainThresholdMmH, e3 ? E3_WINDOW : null),
-      e3 ? { window: E3_WINDOW, fraction: e3Fraction } : null,
-    );
     const cards = state.mode === 'coop' && state.players.cards ? priorityCards(state.players.cards, mission) : undefined;
     const decisions: EventDecision[] = events
       .filter((ev) => state.ops.choices[ev.id])
@@ -149,14 +127,11 @@ export function useRun(): RunView {
     const prev = state.runs.filter((r) => r.run < state.run).at(-1)?.overall ?? null;
     const score = computeScore({
       mission,
-      inOrbit: launch?.inOrbit ?? true,
       p1hRainOps: ops.p1hRain,
       p1hRainNominal: nominal.p1hRain,
-      imaging,
       launchedWithVuot: launch?.launchedWithVuot ?? false,
       launchedWithNoGo: launch?.launchedWithNoGo ?? false,
       decisions,
-      decisionPenalty: ops.decisionPenalty,
       prevOverall: prev,
       mode: state.mode,
       cards,
@@ -185,17 +160,14 @@ export function useRun(): RunView {
       options,
       blocked,
       hasShield,
-      hasProp,
       weightsSource: weights ? 'imerg' : 'none',
-      imaging,
       cards,
       decisions,
       score,
       why: whyChain(mission, decisions),
       cml,
       cmlOnExport,
-      launchExtraKusd: launch?.extraCostKusd ?? 0,
-      totalCostKusd: mission.totalCostKusd + (launch?.extraCostKusd ?? 0) + ops.eventCostKusd,
+      totalCostKusd: mission.totalCostKusd + ops.eventCostKusd,
     };
-  }, [mission, ctx, events, base, ops, nominal, options, blocked, hasShield, hasProp, weights, state, data, launch]);
+  }, [mission, ctx, events, base, ops, nominal, options, blocked, hasShield, weights, state, launch]);
 }

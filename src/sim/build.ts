@@ -44,8 +44,7 @@ export type HardErrorCode =
   | 'missing_tx'
   | 'missing_sos'
   | 'cells'
-  | 'mass'
-  | 'needs_precise_adcs';
+  | 'mass';
 
 export interface HardError {
   code: HardErrorCode;
@@ -87,23 +86,19 @@ export function summariseBuild(comp: Components, d: DesignInput, orbit: OrbitCon
   const partMonths = Math.max(0, ...parts.map((p) => p.months), d.wings ? comp.wings.months : 0);
   const devMonths = chassis.months + partMonths + INTEGRATION_MONTHS + (d.envTest ? comp.envTest.months : 0);
 
-  const edge = parts.find((p) => p.cameraDataFactor);
-  const dataProducedMB = sum((p) => {
-    const mb = p.mbPerDay ?? 0;
-    return p.id === 'cam' && edge ? mb * edge.cameraDataFactor! : mb;
-  });
+  const dataProducedMB = sum((p) => p.mbPerDay ?? 0);
   // One transmitter downlinks at a time → use the fastest one.
   const bestRbps = Math.max(0, ...parts.map((p) => p.rbps ?? 0));
   const dataDownlinkMB = downlinkBytesPerDay(bestRbps, orbit.contactMinPerDay) / 1e6;
 
   const has = (pred: (p: Part) => boolean) => parts.some(pred);
   const hardErrors: HardError[] = [];
-  if (!has((p) => p.id === 'obc' || p.id === 'obc2'))
+  if (!has((p) => p.id === 'obc'))
     hardErrors.push({ code: 'missing_obc', message: 'Thiếu máy tính OBC.' });
   if (!has((p) => p.id === 'eps')) hardErrors.push({ code: 'missing_eps', message: 'Thiếu hệ nguồn EPS.' });
-  if (!has((p) => p.id === 'adcs' || p.id === 'adcs2'))
+  if (!has((p) => p.id === 'adcs'))
     hardErrors.push({ code: 'missing_adcs', message: 'Thiếu hệ điều khiển tư thế ADCS.' });
-  if (!has((p) => p.cat === 'com')) hardErrors.push({ code: 'missing_tx', message: 'Thiếu máy phát (UHF / S / X).' });
+  if (!has((p) => p.cat === 'com')) hardErrors.push({ code: 'missing_tx', message: 'Thiếu máy phát (UHF hoặc S-band).' });
   if (!has((p) => p.id === 'sos')) hardErrors.push({ code: 'missing_sos', message: 'Thiếu Payload SOS.' });
   if (cellsUsed > chassis.cells)
     hardErrors.push({ code: 'cells', message: `Quá số ô: ${cellsUsed}/${chassis.cells} ô của khung ${chassis.id}.` });
@@ -112,8 +107,6 @@ export function summariseBuild(comp: Components, d: DesignInput, orbit: OrbitCon
       code: 'mass',
       message: `Quá khối lượng: ${fmt1(massKg)}/${fmt1(chassis.limitKg)} kg.`,
     });
-  if (has((p) => !!p.needsPreciseAdcs) && !has((p) => p.id === 'adcs2'))
-    hardErrors.push({ code: 'needs_precise_adcs', message: 'Camera / X-band cần ADCS chính xác.' });
 
   return {
     chassis,

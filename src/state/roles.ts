@@ -32,8 +32,8 @@ export const ROLES: Record<RoleId, RoleInfo> = {
     name: 'Nhà Khoa học',
     ab: 'KH',
     color: '#F5A524',
-    duty: 'Payload SOS, camera, giá trị cứu hộ.',
-    cards: { a: '≥ 2 payload', b: 'P1h ≥ 55%' },
+    duty: 'Payload SOS, dữ liệu, giá trị cứu hộ.',
+    cards: { a: 'Dữ liệu tạo ra ≤ 50% dung lượng tải xuống mỗi ngày', b: 'Tin SOS tới nơi trong 1 giờ ≥ 55%' },
   },
   QD: {
     id: 'QD',

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { evaluateMission } from '../src/sim/mission';
-import { buildOpsContext, evaluateEventOptions, imagingPasses, cloudModel, runOps } from '../src/sim/ops';
+import { buildOpsContext, evaluateEventOptions, runOps } from '../src/sim/ops';
 import {
   cmlLevel,
   computeScore,
@@ -11,14 +11,13 @@ import {
   whyChain,
   type EventDecision,
 } from '../src/sim/score';
-import { hashSeed, mulberry32, simulateLaunches } from '../src/sim/launch';
 import { data, HANOI, REF_DESIGN } from './fixtures';
 import type { GameEvent } from '../src/data/types';
 
 const S1orbit = { preset: 'sso' as const, hKm: 520, planes: 4, perPlane: 1, launcher: 'rideshare' as const };
 const mission = evaluateMission(data, { difficulty: 'ky_su', design: REF_DESIGN, orbit: S1orbit, orbitChosen: true });
 const ctx = buildOpsContext(S1orbit, HANOI, data.scenario.partnerStation);
-const active = data.events.events.filter((e) => ['E0', 'E1', 'E2', 'E3'].includes(e.id)) as GameEvent[];
+const active = data.events.events.filter((e) => ['E0', 'E1', 'E2'].includes(e.id)) as GameEvent[];
 
 function play(choices: Record<string, string>) {
   const base = { events: active, hasShield: false, hourlyWeights: null };
@@ -31,21 +30,18 @@ function play(choices: Record<string, string>) {
   const nominal = runOps(ctx, { ...base, events: [], choices: {} });
   const score = computeScore({
     mission,
-    inOrbit: true,
     p1hRainOps: ops.p1hRain,
     p1hRainNominal: nominal.p1hRain,
-    imaging: imagingPasses(ops, false, cloudModel(null, 0.1, null), null),
     launchedWithVuot: false,
     launchedWithNoGo: false,
     decisions,
-    decisionPenalty: ops.decisionPenalty,
     prevOverall: null,
     mode: 'solo',
   });
   return { ops, decisions, score };
 }
 
-const best = { E0: 'A', E1: 'B', E2: 'A', E3: 'A' };
+const best = { E0: 'A', E1: 'B', E2: 'A' };
 
 describe('score: star formulas on S1 (SPEC §7)', () => {
   const { score, ops } = play(best);
@@ -60,8 +56,8 @@ describe('score: star formulas on S1 (SPEC §7)', () => {
     expect(score.stars[1].stars).toBe(starsFromP1h(ops.p1hRain));
   });
 
-  it('star 3: VFM = 49.1 / 2.64 ≈ 18.6 → 4 stars (nominal, events excluded)', () => {
-    expect(score.stars[2].formula).toMatch(/VFM = 49,1 \/ 2,64 = 18,6/);
+  it('star 3: cost efficiency = 49.1 / 2.64 ≈ 18.6 → 4 stars (nominal, events excluded)', () => {
+    expect(score.stars[2].formula).toMatch(/Hiệu quả chi phí = 49,1 \/ 2,64 = 18,6/);
     expect(score.stars[2].stars).toBe(4);
   });
 
@@ -95,9 +91,9 @@ describe('star tables', () => {
   it('P1h thresholds', () => expect([70, 55, 40, 25, 24.9].map(starsFromP1h)).toEqual([5, 4, 3, 2, 1]));
   it('VFM thresholds', () => expect([20, 17, 14, 10, 9.9].map(starsFromVfm)).toEqual([5, 4, 3, 2, 1]));
   it('outcome', () => {
-    expect(outcome(8, false)).toBe('MOT_PHAN');
-    expect(outcome(6, true)).toBe('MOT_PHAN');
-    expect(outcome(5, true)).toBe('THAT_BAI');
+    expect(outcome(8)).toBe('THANH_CONG');
+    expect(outcome(6)).toBe('MOT_PHAN');
+    expect(outcome(5)).toBe('THAT_BAI');
   });
 });
 
@@ -134,24 +130,3 @@ describe('CML badge (SPEC §12)', () => {
   it('contract not accepted → CML0', () => expect(cmlLevel({ ...s1, contractAccepted: false, specExported: true })).toBe(0));
 });
 
-describe('launch (giam_doc 3 %, seeded)', () => {
-  it('is deterministic for a seed', () => {
-    const run = () =>
-      simulateLaunches({ launches: 4, planesPerLaunch: 1, costPerLaunchKusd: 350, failProb: 0.03, budgetKusd: 2800, costKusd: 2640, rng: mulberry32(hashSeed('20261114-1')) });
-    expect(run()).toEqual(run());
-  });
-  it('failed launch without budget loses that plane', () => {
-    const r = simulateLaunches({ launches: 2, planesPerLaunch: 1, costPerLaunchKusd: 350, failProb: 1, budgetKusd: 1000, costKusd: 1000, rng: () => 0 });
-    expect(r.lostPlanes).toEqual([0, 1]);
-    expect(r.inOrbit).toBe(false);
-  });
-  it('failed launch with budget is replaced (+cost, +3 months)', () => {
-    let n = 0;
-    const r = simulateLaunches({ launches: 1, planesPerLaunch: 1, costPerLaunchKusd: 350, failProb: 0.5, budgetKusd: 3000, costKusd: 2000, rng: () => (n++ === 0 ? 0.1 : 0.9) });
-    expect(r).toMatchObject({ lostPlanes: [], extraCostKusd: 350, extraMonths: 3, inOrbit: true });
-  });
-  it('difficulty-free: failProb 0 never fails', () => {
-    const r = simulateLaunches({ launches: 6, planesPerLaunch: 1, costPerLaunchKusd: 350, failProb: 0, budgetKusd: 0, costKusd: 0, rng: Math.random });
-    expect(r.inOrbit).toBe(true);
-  });
-});

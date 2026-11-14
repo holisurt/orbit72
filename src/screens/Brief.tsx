@@ -9,7 +9,7 @@ import { RainLegend } from '../ui/RainLegend';
 import { TopBar } from '../ui/TopBar';
 import { useT } from '../ui/i18n';
 
-const LEVEL_NAME: Record<DifficultyId, string> = { hoc_vien: 'HỌC VIÊN', ky_su: 'KỸ SƯ', giam_doc: 'GIÁM ĐỐC' };
+const LEVEL_NAME: Record<DifficultyId, string> = { hoc_vien: 'HỌC VIÊN', ky_su: 'KỸ SƯ' };
 
 export function Brief() {
   const data = useGameData();
@@ -55,7 +55,7 @@ export function Brief() {
             </span>
             <span style={{ fontSize: 'calc(19rem / 16)', fontWeight: 800 }}>Mắt Biển</span>
             <span style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45, color: 'var(--soft)' }}>
-              CubeSat 3U theo dõi tàu cá bằng AIS — tri ân NanoDragon (2021).
+              CubeSat 3U đầu tay, một vệ tinh — tri ân NanoDragon (2021).
             </span>
           </button>
           <button className="card" aria-pressed={true}>
@@ -65,15 +65,6 @@ export function Brief() {
             <span style={{ fontSize: 'calc(19rem / 16)', fontWeight: 800 }}>72 Giờ Vàng</span>
             <span style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45, color: 'var(--soft)' }}>
               Chòm CubeSat chuyển tiếp SOS khi siêu bão đổ bộ miền Bắc.
-            </span>
-          </button>
-          <button className="card" disabled>
-            <span className="lbl" style={{ color: 'var(--dim)' }}>
-              Sắp có
-            </span>
-            <span style={{ fontSize: 'calc(19rem / 16)', fontWeight: 800 }}>Mùa Lũ Miền Trung</span>
-            <span style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45, color: 'var(--soft)' }}>
-              Lập bản đồ ngập khi mây dày: quang học hay radar?
             </span>
           </button>
           <div className="subtle" style={{ marginTop: 'auto', fontSize: 'calc(13rem / 16)', lineHeight: 1.5, color: 'var(--soft)' }}>

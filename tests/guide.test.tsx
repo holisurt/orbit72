@@ -59,8 +59,8 @@ describe('Guide content', () => {
       'Trạm Hòa Lạc · S xuống', 'G_rx 34,2 dBi, T_sys 150 K', 'biên 8,4 dB',
       'Trạm Hòa Lạc · SOS lên', 'phát 0,5 W', 'biên 9,3 dB',
       'cao hơn 10°', 'η = 0,29', 'hệ số hướng 0,5', 'Độ xả sâu 0,3', '3U: 6 ô', 'tích hợp +4 tháng',
-      '250k/vệ tinh [GA]', 'Phóng hỏng (Giám đốc) 3%/chuyến', 'Bung 0,5 m²', 'T0 = lúc bão đổ bộ',
-      '≥ 0,1 mm/h', 'T0+50 → 72 h', 'Học viên: 3.500k, R1 ≤ 6,0 h', 'ĐẠT ≤ 80%',
+      '250k/vệ tinh [GA]', 'mọi lần phóng đều thành công', 'Bung 0,5 m²', 'T0 = lúc bão đổ bộ',
+      'Học viên: ngân sách 3.500k, R1 ≤ 6,0 h', 'ĐẠT ≤ 80%', 'Năm sao', 'Thẻ ưu tiên co-op', 'Dữ liệu tạo ra ≤ 50%', 'Hiệu ứng thẻ sự cố',
     ]) expect(t).toContain(s);
   });
 
@@ -90,7 +90,7 @@ describe('Guide is reachable from every screen', () => {
   const launched = [
     { type: 'startMission' },
     { type: 'acceptContract' },
-    { type: 'launch', record: { attempts: [], lostPlanes: [], extraCostKusd: 0, extraMonths: 0, inOrbit: true, launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true } },
+    { type: 'launch', record: { launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true } },
   ].reduce((s, a) => reducer(s, a as never), initialState);
   const screens: [string, ReactElement, GameState][] = [
     ['Home', <Home />, initialState],

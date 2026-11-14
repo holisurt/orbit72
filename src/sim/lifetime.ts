@@ -1,13 +1,10 @@
-// Orbital lifetime — SPEC §5. Table [NG FACSAT-2, 6U, B = 72.3 kg/m²].
+// Orbital lifetime — SPEC §5. Table [NG FACSAT-2, 6U, B = 72.3 kg/m²], average solar activity (120 sfu).
 
 export interface LifetimeTable {
   h: number[];
   avg: number[];
-  max: number[];
   aBodyM2: number;
 }
-
-export type SolarColumn = 'avg' | 'max';
 
 export interface LifetimeResult {
   years: number;
@@ -15,9 +12,9 @@ export interface LifetimeResult {
 }
 
 /** Log-linear interpolation; outside the table, extrapolate with the end segment. */
-export function lifetimeYears(table: LifetimeTable, hKm: number, col: SolarColumn): LifetimeResult {
+export function lifetimeYears(table: LifetimeTable, hKm: number): LifetimeResult {
   const hs = table.h;
-  const ys = table[col];
+  const ys = table.avg;
   const last = hs.length - 1;
   let i = 0;
   if (hKm <= hs[0]) i = 0;

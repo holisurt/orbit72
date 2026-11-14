@@ -10,7 +10,7 @@ import { fmt } from '../ui/format';
 import { TopBar } from '../ui/TopBar';
 import { useT } from '../ui/i18n';
 
-const LEVEL_NAME = { hoc_vien: 'HỌC VIÊN', ky_su: 'KỸ SƯ', giam_doc: 'GIÁM ĐỐC' } as const;
+import { LEVEL_NAME } from '../ui/share';
 
 export const OUTCOME_STYLE: Record<Outcome, { color: string; bg: string; border: string }> = {
   THANH_CONG: { color: '#4ADE80', bg: 'linear-gradient(90deg, #11361F, #0F1830 70%)', border: '#2E6B45' },
@@ -23,7 +23,7 @@ export function starGlyphs(n: number): string {
   return '★'.repeat(k) + '☆'.repeat(5 - k);
 }
 
-export function specRows(run: RunView, data: GameData, extraMonths: number, quizText = '—'): { k: string; v: string }[] {
+export function specRows(run: RunView, data: GameData, quizText = '—'): { k: string; v: string }[] {
   const m = run.mission;
   const b = m.build;
   const preset = data.launchers.presets.find((p) => p.id === m.orbit.preset)?.name ?? m.orbit.preset;
@@ -31,11 +31,9 @@ export function specRows(run: RunView, data: GameData, extraMonths: number, quiz
   const minMargin = m.links.length ? Math.min(...m.links.map((l) => l.margin10)) : NaN;
   const residual = m.residualY ?? Math.max(0, m.lifetimeY - data.scenario.opsYears);
   // Design cost is the nominal cost Star 3 uses; extra parts appear only when > 0.
-  const replace = run.launchExtraKusd;
   const events = run.ops.eventCostKusd;
   const cost = [
     `${fmt(m.totalCostKusd, 0)}k thiết kế`,
-    replace > 0 ? `${fmt(replace, 0)}k phóng bù` : '',
     events > 0 ? `${fmt(events, 0)}k sự cố` : '',
   ].filter(Boolean);
   return [
@@ -48,7 +46,7 @@ export function specRows(run: RunView, data: GameData, extraMonths: number, quiz
     { k: 'Biên tới Hòa Lạc', v: Number.isFinite(minMargin) ? `${fmt(minMargin, 1)} dB (10°)` : '—' },
     { k: 'Tuổi thọ · tồn lưu', v: `${fmt(m.lifetimeY, 1)} · ${fmt(residual, 1)} năm` },
     { k: 'Chi phí', v: cost.length > 1 ? `${cost.join(' + ')} = ${fmt(run.totalCostKusd, 0)}k` : cost[0] },
-    { k: 'Phát triển', v: `${b.devMonths + extraMonths} tháng` },
+    { k: 'Phát triển', v: `${b.devMonths} tháng` },
     { k: 'Quiz trước → sau', v: quizText },
   ];
 }
@@ -61,7 +59,7 @@ export function Debrief() {
   const { score, why, cml, cmlOnExport } = run;
   const style = OUTCOME_STYLE[score.outcome];
   const quizText = quizSummary(state.quiz, data.quiz);
-  const rows = specRows(run, data, state.ops.launch?.extraMonths ?? 0, quizText);
+  const rows = specRows(run, data, quizText);
   const postPending = state.quiz.post === null;
   const specRef = useRef<SVGSVGElement>(null);
   const [exportMsg, setExportMsg] = useState('');
@@ -108,7 +106,6 @@ export function Debrief() {
           </div>
           <div style={{ fontSize: 'clamp(20px, 3vw, 28px)', fontWeight: 800 }}>
             {OUTCOME_LABEL[score.outcome]} — {score.passed}/8 yêu cầu đạt
-            {state.ops.launch && !state.ops.launch.inOrbit && ' · mất vệ tinh khi phóng'}
           </div>
         </div>
         <div style={{ textAlign: 'right' }}>

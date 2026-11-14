@@ -25,19 +25,21 @@ const probe = (s: GameState) =>
       .replace(/&quot;/g, '"'),
   );
 
-const s1 = (extraCostKusd: number): GameState =>
+// S1 (UHF → S-band) plus optional extras that push the design cost toward the 3.000k budget.
+const s1 = (...extra: Action[]): GameState =>
   [
     { type: 'startMission' },
     { type: 'acceptContract' },
     { type: 'removePart', index: 3 },
     { type: 'addPart', id: 'sband' },
+    ...extra,
     { type: 'chooseOrbit' },
-    { type: 'launch', record: { attempts: [], lostPlanes: [], extraCostKusd, extraMonths: 0, inOrbit: true, launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true } },
+    { type: 'launch', record: { launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true } },
   ].reduce((s, a) => reducer(s, a as Action), initialState);
 
 describe('E2-A generator (20k) vs remaining budget', () => {
   it('S1 (2.640k of 3.000k → 360k left): E2-A available and best', () => {
-    const r = probe(s1(0));
+    const r = probe(s1());
     expect(r.blocked).toEqual({});
     expect(r.e2).toEqual([
       { k: 'A', ok: true, rank: 'best' },
@@ -46,14 +48,15 @@ describe('E2-A generator (20k) vs remaining budget', () => {
     ]);
   });
 
-  it('after a 350k replacement launch (10k left): E2-A disabled with the reason', () => {
-    const r = probe(s1(350));
-    expect(r.blocked).toEqual({ A: 'Không đủ ngân sách: còn 10k' });
+  it('wings + env test (+90k × 4 → 3.000k, 0k left): E2-A disabled with the reason', () => {
+    const r = probe(s1({ type: 'toggleWings' }, { type: 'toggleEnvTest' }));
+    expect(r.blocked).toEqual({ A: 'Không đủ ngân sách: còn 0k' });
     expect(r.e2[0]).toMatchObject({ k: 'A', ok: false });
     expect(r.e2.filter((o: { ok: boolean }) => o.ok).map((o: { k: string }) => o.k)).toEqual(['B', 'C']);
   });
 
-  it('exactly enough budget (20k left) keeps E2-A available', () => {
-    expect(probe(s1(340)).blocked).toEqual({});
+  it('exactly enough budget (battery + sail + shield + env test → 2.980k, 20k left) keeps E2-A available', () => {
+    const add = (id: string): Action => ({ type: 'addPart', id });
+    expect(probe(s1(add('bat'), add('sail'), add('shield'), { type: 'toggleEnvTest' })).blocked).toEqual({});
   });
 });

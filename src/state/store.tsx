@@ -49,12 +49,8 @@ export type QuizAnswers = number[] | 'skip' | null;
 export type QuizPhase = 'pre' | 'post';
 export type RCode = 'R1' | 'R2' | 'R3' | 'R4' | 'R5' | 'R6' | 'R7' | 'R8';
 
+/** Result of the Go/No-Go launch (launches always succeed since v1.1). */
 export interface LaunchRecord {
-  lostPlanes: number[];
-  extraCostKusd: number;
-  extraMonths: number;
-  inOrbit: boolean;
-  attempts: { launch: number; failed: boolean; replaced: boolean }[];
   launchedWithVuot: boolean;
   launchedWithNoGo: boolean;
   unanimousGo: boolean;
@@ -97,8 +93,6 @@ export interface GameState {
   quiz: { pre: QuizAnswers; post: QuizAnswers };
   /** Screen to open after the post quiz (Share from the Debrief CTA, Debrief from its quiz row). */
   quizNext: ScreenId | null;
-  /** Started from "Nhiệm vụ hôm nay" (Daily mode): Share header shows the mission number. */
-  daily: boolean;
   coach: { open: boolean };
   /**
    * Design decisions changed on Build/Orbit, where the HUD shows each effect live (part swap/add/remove,
@@ -146,7 +140,6 @@ export const initialState: GameState = {
   run: 1,
   quiz: { pre: null, post: null },
   quizNext: null,
-  daily: false,
   coach: { open: false },
   designChanges: 0,
   specExported: false,
@@ -158,7 +151,7 @@ export type Action =
   | { type: 'closeGuide' }
   | { type: 'setMode'; mode: Mode }
   | { type: 'setDifficulty'; difficulty: DifficultyId }
-  | { type: 'startMission'; daily?: boolean }
+  | { type: 'startMission' }
   | { type: 'answerQuiz'; phase: QuizPhase; answers: number[] | 'skip' }
   | { type: 'openPostQuiz'; next: ScreenId }
   | { type: 'startTutorial' }
@@ -210,7 +203,6 @@ export function reducer(s: GameState, a: Action): GameState {
         mode: s.mode,
         difficulty: s.difficulty,
         players: s.players,
-        daily: !!a.daily,
         // Flow (SPEC §1): Home → Setup (co-op) → Quiz(pre) → Brief; a new mission starts a new pre/post pair.
         screen: s.mode === 'coop' ? 'setup' : 'quiz_pre',
       };

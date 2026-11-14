@@ -35,7 +35,6 @@ export interface OpsConfig {
   events: GameEvent[]; // events active in this run (already filtered by difficulty / onlyIf)
   choices: Choices;
   hasShield: boolean;
-  lostPlanes?: number[]; // launch failures without replacement
   noSatellites?: boolean; // R6 > 18 months → ops run with no satellites (P1h = 0)
   hourlyWeights?: number[] | null; // IMERG weights w(h); null → w = 1
 }
@@ -51,7 +50,6 @@ export interface OpsResult {
   p1hRain: number; // % (IMERG-weighted; = p1h when w = 1)
   longestGapH: number;
   eventCostKusd: number;
-  decisionPenalty: number; // e.g. E4-B
 }
 
 type Effect = {
@@ -63,10 +61,6 @@ type Effect = {
   deferDeliveryToH?: number;
   windowH?: [number, number];
   relayVia?: string;
-  loseWindows?: number;
-  decisionPenalty?: number;
-  imaging?: number;
-  imagingFraction?: number;
 };
 
 function effectOf(ev: GameEvent, key: string | undefined): Effect | null {
@@ -107,7 +101,6 @@ export function runOps(ctx: OpsContext, cfg: OpsConfig): OpsResult {
   const global = new Uint8Array(M);
   const satLost = ctx.perSat.map(() => false);
   let eventCostKusd = 0;
-  let decisionPenalty = 0;
 
   const loseSat = (i: number) => {
     if (i < 0 || i >= N) return;
@@ -115,7 +108,6 @@ export function runOps(ctx: OpsContext, cfg: OpsConfig): OpsResult {
     satMask[i].fill(1);
   };
   if (cfg.noSatellites) for (let i = 0; i < N; i++) loseSat(i);
-  for (const p of cfg.lostPlanes ?? []) ctx.planeOf.forEach((pl, i) => pl === p && loseSat(i));
 
   // Masking effects, applied in time order (E0 at −1 h first).
   const ordered = [...cfg.events].sort((a, b) => a.atH - b.atH);
@@ -127,21 +119,9 @@ export function runOps(ctx: OpsContext, cfg: OpsConfig): OpsResult {
     if (!e) continue;
     const at = Math.max(0, ev.atH * 60);
     if (e.costKusd) eventCostKusd += e.costKusd;
-    if (e.decisionPenalty) decisionPenalty += e.decisionPenalty;
     if (e.sat !== undefined) {
       if (e.lost) loseSat(e.sat);
       else if (e.maskH && e.sat < N) fillRange(satMask[e.sat], e.maskH[0] * 60, e.maskH[1] * 60);
-      else if (e.loseWindows && e.sat < N) {
-        // that satellite loses its next N visibility windows from the event time
-        const v = ctx.perSat[e.sat];
-        let lost = 0;
-        let m = at;
-        while (m < M && lost < e.loseWindows) {
-          while (m < M && !(v[m] && !satMask[e.sat][m] && !global[m])) m++;
-          while (m < M && v[m]) satMask[e.sat][m++] = 1;
-          lost++;
-        }
-      }
     } else if (e.maskH) {
       fillRange(global, e.maskH[0] * 60, e.maskH[1] * 60);
     } else if (e.loseNextWindowUnless) {
@@ -216,7 +196,6 @@ export function runOps(ctx: OpsContext, cfg: OpsConfig): OpsResult {
     p1hRain: wDen ? (100 * wNum) / wDen : 0,
     longestGapH: longestGapH(vis),
     eventCostKusd,
-    decisionPenalty,
   };
 }
 
@@ -226,14 +205,14 @@ export type Rank = 'best' | 'middle' | 'worst';
 
 export interface OptionOutcome {
   key: string;
-  available: boolean; // e.g. E4-A requires propulsion
+  available: boolean; // false when the option is locked (e.g. not enough budget)
   p1h: number;
   p1hDisplay: number; // integer %, as shown on the event card
   longestGapH: number;
   rank: Rank;
 }
 
-/** Evaluate each option of one event on its own (nominal timeline + launch losses + this option). */
+/** Evaluate each option of one event on its own (nominal timeline + this option). */
 export function evaluateEventOptions(
   ctx: OpsContext,
   base: Omit<OpsConfig, 'choices'>,
@@ -261,65 +240,4 @@ export function imergWeights(imerg: Imerg | null | undefined, hours = 72): numbe
   const mean = R.reduce((a, b) => a + b, 0) / R.length;
   if (!(mean > 0)) return null;
   return R.map((r) => 1 + r / mean);
-}
-
-export interface CloudModel {
-  /** cloudy at a given hour after T0 */
-  cloudy: (hour: number) => boolean;
-}
-
-/**
- * Cloud proxy for imaging [GA]: Hanoi-cell rain ≥ threshold (IMERG). Without IMERG, no rain clouds.
- * The E3 event window is cloudy in either case.
- */
-export function cloudModel(
-  imerg: Imerg | null | undefined,
-  thresholdMmH: number,
-  e3Window: [number, number] | null,
-): CloudModel {
-  return {
-    cloudy: (h) =>
-      (e3Window !== null && h >= e3Window[0] && h < e3Window[1]) ||
-      (!!imerg?.hanoi_mmh && (imerg.hanoi_mmh[h] ?? 0) >= thresholdMmH),
-  };
-}
-
-export const T0_LOCAL_HOUR = 14; // 2024-09-07 14:00 ICT (scenario t0Local)
-
-export interface ImagingResult {
-  eligible: boolean; // camera + precise ADCS
-  valid: number; // valid imaging passes
-  daylightPasses: number;
-}
-
-/**
- * Flood-imaging side goal (SPEC §6): valid pass = start 06:00–18:00 ICT and not cloudy.
- * In the E3 window: A/B → no images, C → 30 % of daylight passes count (rounded down).
- */
-export function imagingPasses(
-  ops: OpsResult,
-  eligible: boolean,
-  clouds: CloudModel,
-  e3: { window: [number, number]; fraction: number } | null,
-): ImagingResult {
-  if (!eligible) return { eligible, valid: 0, daylightPasses: 0 };
-  let valid = 0;
-  let daylight = 0;
-  let e3Daylight = 0;
-  for (const v of ops.satEff) {
-    for (let m = 0; m < v.length; m++) {
-      if (!v[m] || (m > 0 && v[m - 1])) continue;
-      const hour = Math.floor(m / 60);
-      const local = (T0_LOCAL_HOUR + m / 60) % 24;
-      if (local < 6 || local >= 18) continue;
-      daylight++;
-      if (e3 && hour >= e3.window[0] && hour < e3.window[1]) {
-        e3Daylight++;
-        continue;
-      }
-      if (!clouds.cloudy(hour)) valid++;
-    }
-  }
-  if (e3) valid += Math.floor(e3Daylight * e3.fraction);
-  return { eligible, valid, daylightPasses: daylight };
 }

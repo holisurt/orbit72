@@ -1,7 +1,8 @@
 import type { DifficultyId } from '../data/types';
 import { useStore, type Mode } from '../state/store';
 import { Globe } from '../ui/Globe';
-import { missionOfDay } from '../ui/format';
+import { useGameData } from '../data/context';
+import { fmt } from '../ui/format';
 import { HeaderTools } from '../ui/HeaderTools';
 import { useT, type TKey } from '../ui/i18n';
 
@@ -10,16 +11,15 @@ const MODES: { id: Mode; name: TKey }[] = [
   { id: 'coop', name: 'coop' },
 ];
 
-const LEVELS: { id: DifficultyId; note: string }[] = [
-  { id: 'hoc_vien', note: 'Ngân sách 3.500k USD, khoảng trống ≤ 6 giờ, có gợi ý từng bước' },
-  { id: 'ky_su', note: 'Ngân sách 3.000k USD, khoảng trống ≤ 3,5 giờ, có sự cố' },
-  { id: 'giam_doc', note: 'Ngân sách 2.800k USD, Mặt Trời cực đại, rủi ro phóng 3%' },
-];
+const LEVELS: DifficultyId[] = ['hoc_vien', 'ky_su'];
 
 export function Home() {
   const { state, dispatch } = useStore();
   const t = useT();
-  const level = LEVELS.find((l) => l.id === state.difficulty) ?? LEVELS[1];
+  const data = useGameData();
+  // Level note read from scenario_72h.json (budget, R1 gap limit, events).
+  const rules = data.scenario.difficulty[state.difficulty] ?? data.scenario.difficulty.ky_su;
+  const levelNote = `Ngân sách ${fmt(rules.budget, 0)}k USD, khoảng trống liên lạc ≤ ${fmt(rules.gapMaxH, 1)} giờ, sự cố ${rules.events.join(', ')}${state.difficulty === 'hoc_vien' ? ', có gợi ý từng bước' : ''}`;
   const inProgress = state.contract.accepted;
 
   return (
@@ -74,19 +74,19 @@ export function Home() {
             </div>
             <div className="home-opt" role="group" aria-label={t('difficulty')}>
               <span className="lbl">{t('difficulty')}</span>
-              {LEVELS.map((l) => (
+              {LEVELS.map((id) => (
                 <button
-                  key={l.id}
+                  key={id}
                   className="seg"
-                  aria-pressed={state.difficulty === l.id}
-                  onClick={() => dispatch({ type: 'setDifficulty', difficulty: l.id })}
+                  aria-pressed={state.difficulty === id}
+                  onClick={() => dispatch({ type: 'setDifficulty', difficulty: id })}
                 >
-                  {t(l.id)}
+                  {t(id)}
                 </button>
               ))}
             </div>
             <span style={{ fontSize: 'calc(13rem / 16)', color: 'var(--muted)', paddingLeft: 80 }} aria-live="polite">
-              {level.note}
+              {levelNote}
             </span>
           </div>
           <div className="row" style={{ gap: 12, marginTop: 4, flexWrap: 'wrap' }}>
@@ -98,12 +98,6 @@ export function Home() {
             </button>
           </div>
           <div className="row" style={{ gap: 18, fontSize: 'calc(14rem / 16)', color: 'var(--muted)', flexWrap: 'wrap' }}>
-            <button className="link-btn" onClick={() => dispatch({ type: 'startMission', daily: true })}>
-              {t('daily')}{' '}
-              <span className="mono" style={{ color: 'var(--text)' }}>
-                #{missionOfDay()}
-              </span>
-            </button>
             <button className="link-btn" onClick={() => dispatch({ type: 'startSandbox' })}>
               {t('sandbox')}
             </button>

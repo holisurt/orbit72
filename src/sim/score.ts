@@ -2,7 +2,7 @@
 import type { GameEvent } from '../data/types';
 import type { MissionResult, Requirement } from './mission';
 import { roundTo } from './mission';
-import type { ImagingResult, OptionOutcome, Rank } from './ops';
+import type { OptionOutcome, Rank } from './ops';
 
 const vn = (x: number, d = 1) => roundTo(x, d).toFixed(d).replace('.', ',');
 
@@ -20,9 +20,9 @@ export function requirementsPassed(reqs: Requirement[]): number {
   return reqs.filter((r) => r.status !== 'VUOT').length;
 }
 
-/** THÀNH CÔNG (8/8 and in orbit) · MỘT PHẦN (≥ 6/8) · THẤT BẠI. */
-export function outcome(passed: number, inOrbit: boolean): Outcome {
-  if (passed === 8 && inOrbit) return 'THANH_CONG';
+/** THÀNH CÔNG (8/8) · MỘT PHẦN (≥ 6/8) · THẤT BẠI. (Launches cannot fail since v1.1.) */
+export function outcome(passed: number): Outcome {
+  if (passed === 8) return 'THANH_CONG';
   if (passed >= 6) return 'MOT_PHAN';
   return 'THAT_BAI';
 }
@@ -42,7 +42,6 @@ export function starsFromVfm(vfm: number): number {
 }
 
 export const RANK_PENALTY: Record<Rank, number> = { best: 0, middle: 10, worst: 20 };
-export const MIN_IMAGING_PASSES = 3;
 
 // ---------- priority cards (SPEC §8) ----------
 
@@ -65,7 +64,10 @@ export function budgetMarginPct(m: MissionResult): number {
 }
 
 export function priorityCards(cards: Record<RoleId, CardSide>, m: MissionResult): CardResult[] {
-  const payloads = m.build.parts.filter((p) => p.cat === 'pay').length;
+  // KH (a): data produced ≤ 50 % of the daily downlink capacity (displayed values, 1 decimal MB)
+  const down = roundTo(m.build.dataDownlinkMB, 1);
+  const dataRatio = down > 0 ? roundTo(m.build.dataProducedMB, 1) / down : Infinity;
+  const dataPct = roundTo(100 * dataRatio, 0);
   const gap = m.coverage ? roundTo(m.coverage.longestGapH, 1) : Infinity;
   const p1h = m.coverage ? roundTo(m.coverage.p1h, 1) : 0;
   const minMargin = m.links.length ? Math.min(...m.links.map((l) => roundTo(l.margin10, 1))) : -Infinity;
@@ -80,8 +82,8 @@ export function priorityCards(cards: Record<RoleId, CardSide>, m: MissionResult)
       b: () => [m.envTest, m.envTest ? 'có thử nghiệm' : 'không thử nghiệm'],
     },
     KH: {
-      a: () => [payloads >= 2, `${payloads} payload`],
-      b: () => [p1h >= 55, `P1h ${vn(p1h, 0)}%`],
+      a: () => [dataPct <= 50, Number.isFinite(dataPct) ? `dữ liệu ${dataPct}% dung lượng tải xuống` : 'không tải xuống được'],
+      b: () => [p1h >= 55, `tin SOS ≤ 1 giờ ${vn(p1h, 0)}%`],
     },
     QD: {
       a: () => [gap <= 3.0, `${vn(gap)} h`],
@@ -111,14 +113,11 @@ export interface EventDecision {
 
 export interface ScoreInput {
   mission: MissionResult; // nominal design at launch
-  inOrbit: boolean;
   p1hRainOps: number; // after events (star 2)
   p1hRainNominal: number; // no events (star 3: events affect only stars 2 and 4)
-  imaging: ImagingResult;
   launchedWithVuot: boolean;
   launchedWithNoGo: boolean;
   decisions: EventDecision[];
-  decisionPenalty: number; // explicit penalties, e.g. E4-B
   prevOverall: number | null;
   mode: 'solo' | 'coop';
   cards?: CardResult[];
@@ -137,25 +136,21 @@ export interface ScoreResult {
 export function computeScore(i: ScoreInput): ScoreResult {
   const m = i.mission;
   const passed = requirementsPassed(m.reqs);
-  const out = outcome(passed, i.inOrbit);
+  const out = outcome(passed);
 
   // Star 1
   const s1 = Math.round((5 * passed) / 8);
   const l1 = `R1–R8: ${passed}/8 đạt → làm tròn(5 × ${passed}/8) = ${s1}`;
 
   // Star 2
-  const base2 = starsFromP1h(i.p1hRainOps);
-  const img = i.imaging.eligible && i.imaging.valid >= MIN_IMAGING_PASSES;
-  const s2 = Math.min(5, base2 + (img ? 1 : 0));
-  const l2 =
-    `P1h_mưa sau sự cố = ${vn(i.p1hRainOps)}% → ${base2} sao` +
-    (i.imaging.eligible ? ` · ảnh lũ hợp lệ ${i.imaging.valid}/${MIN_IMAGING_PASSES}${img ? ' → +1' : ''}` : '');
+  const s2 = starsFromP1h(i.p1hRainOps);
+  const l2 = `Tin SOS tới nơi trong 1 giờ (tính theo mưa NASA IMERG), sau sự cố = ${vn(i.p1hRainOps)}% → ${s2} sao`;
 
   // Star 3 (nominal, events excluded)
   const costM = m.totalCostKusd / 1000;
   const vfm = costM > 0 ? i.p1hRainNominal / costM : 0;
   const s3 = starsFromVfm(vfm);
-  const l3 = `VFM = ${vn(i.p1hRainNominal)} / ${vn(costM, 2)} = ${vn(vfm)} → ${s3} sao`;
+  const l3 = `Hiệu quả chi phí = ${vn(i.p1hRainNominal)} / ${vn(costM, 2)} = ${vn(vfm)} → ${s3} sao`;
 
   // Star 5
   let s5: number;
@@ -188,15 +183,11 @@ export function computeScore(i: ScoreInput): ScoreResult {
   }
   for (const d of i.decisions) {
     const rank = d.outcomes.find((o) => o.key === d.chosen)?.rank ?? 'best';
-    const pen = d.event.options.find((o) => o.k === d.chosen)?.effect.decisionPenalty ? 0 : RANK_PENALTY[rank];
+    const pen = RANK_PENALTY[rank];
     if (pen) {
       score4 -= pen;
       parts4.push(`−${pen} ${d.event.id}-${d.chosen}`);
     }
-  }
-  if (i.decisionPenalty) {
-    score4 -= i.decisionPenalty;
-    parts4.push(`−${i.decisionPenalty} quyết định rủi ro`);
   }
   const star4 = (s: number) => Math.max(1, Math.ceil(Math.max(0, Math.min(100, s)) / 20));
   const mean = (s4: number) => (s1 + s2 + s3 + s4 + s5) / 5;
@@ -263,15 +254,10 @@ export function whyChain(m: MissionResult, decisions: EventDecision[]): WhyItem[
     const opt = d.event.options.find((o) => o.k === d.chosen);
     if (!chosen || !opt) continue;
     const best = d.outcomes.filter((o) => o.rank === 'best' && o.available);
-    if (opt.effect.decisionPenalty) {
+    if (chosen.rank !== 'best' && best.length) {
       const cause = `${d.event.id} ${d.event.title}: chọn ${d.chosen} — ${opt.text}`;
-      const effect = `Không mất liên lạc nhưng chấp nhận rủi ro, trừ ${opt.effect.decisionPenalty} điểm sao 4`;
-      const lever = 'lắp động cơ điện nhỏ để có thể né';
-      items.push({ cause, effect, lever, sentence: `${cause} → ${effect}. Thử: ${lever}` });
-    } else if (chosen.rank !== 'best' && best.length) {
-      const cause = `${d.event.id} ${d.event.title}: chọn ${d.chosen} — ${opt.text}`;
-      const effect = `P1h ${chosen.p1hDisplay}% thay vì ${best[0].p1hDisplay}%, khoảng trống ${vn(chosen.longestGapH)} h`;
-      const lever = `phương án ${best.map((b) => b.key).join('/')} giữ P1h cao nhất`;
+      const effect = `Tin SOS tới nơi trong 1 giờ: ${chosen.p1hDisplay}% thay vì ${best[0].p1hDisplay}%, khoảng trống ${vn(chosen.longestGapH)} h`;
+      const lever = `phương án ${best.map((b) => b.key).join('/')} giữ được nhiều tin SOS tới nơi nhất`;
       items.push({ cause, effect, lever, sentence: `${cause} → ${effect}. Thử: ${lever}` });
     }
   }

@@ -23,12 +23,12 @@ export function wingPowerW(wingAreaM2: number, orientation: number, fEcl: number
 }
 
 export interface LoadInput {
-  continuousW: number[]; // Σ part.w (camera's w is already its 5 W × 10 % duty average)
+  continuousW: number[]; // Σ part.w
   txW: number[]; // transmitter powers
   contactMinPerDay: number;
 }
 
-/** P_use = Σ continuous + Σ tx_W × contact_min/1440 (+ camera duty, included in its w). */
+/** P_use = Σ continuous + Σ tx_W × contact_min/1440. */
 export function powerUseW(l: LoadInput): number {
   const cont = l.continuousW.reduce((a, b) => a + b, 0);
   const tx = l.txW.reduce((a, b) => a + b, 0) * (l.contactMinPerDay / 1440);

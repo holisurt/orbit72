@@ -16,10 +16,6 @@ export function eventIntro(ev: GameEvent, ctx: { hasShield: boolean; donki: Donk
       const w = ev.options.find((o) => o.effect.windowH)?.effect.windowH as [number, number] | undefined;
       return `Lưới điện trạm Hòa Lạc mất${w ? ` từ T0+${w[0]} h đến T0+${w[1]} h` : ''}. Vệ tinh vẫn nhận tin SOS nhưng trạm không thu được.`;
     }
-    case 'E3':
-      return 'Mây dày che kín miền Bắc từ T0+50 h: camera quang học không nhìn thấy mặt đất. Liên lạc SOS không bị ảnh hưởng.';
-    case 'E4':
-      return 'Một mảnh vỡ không gian tiến gần Rồng Con-1. Né cần động cơ; không né là chấp nhận rủi ro va chạm.';
     default:
       return '';
   }
@@ -46,16 +42,6 @@ export function optionDetail(ev: GameEvent, key: string, hasShield: boolean): st
       return `Tin nhận trong lúc mất điện chỉ về khi có điện (T0+${e.deferDeliveryToH} h) và vệ tinh qua Hà Nội.`;
     case 'E2C':
       return 'Vệ tinh giữ tin và thả xuống trạm TP.HCM ở lần đầu nhìn thấy sau khi nhận.';
-    case 'E3A':
-      return 'Không chụp trong vùng mây; SOS giữ nguyên.';
-    case 'E3B':
-      return 'Chụp vào mây: tốn năng lượng, không có ảnh dùng được.';
-    case 'E3C':
-      return `Chỉ khoảng ${Math.round(Number(e.imagingFraction ?? 0) * 100)}% lượt ban ngày trong vùng mây có ảnh dùng được.`;
-    case 'E4A':
-      return `Đốt động cơ: Rồng Con-1 mất ${e.loseWindows} lượt liên lạc.`;
-    case 'E4B':
-      return `Không mất lượt nào, nhưng là quyết định rủi ro (−${e.decisionPenalty} điểm sao 4).`;
     default:
       return '';
   }

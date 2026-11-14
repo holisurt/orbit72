@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useMission } from '../state/mission';
 import { useStore } from '../state/store';
-import { fmt } from '../ui/format';
 import { HeaderTools } from '../ui/HeaderTools';
 import { useT } from '../ui/i18n';
 
@@ -27,9 +26,6 @@ export function Launch() {
   const onPad = k <= 1;
   const lift = k === 0 ? 0 : k === 1 ? -40 : -900;
   const night = k >= 2;
-  const failed = rec?.attempts.filter((a) => a.failed) ?? [];
-  const lost = rec?.lostPlanes.length ?? 0;
-  const N = m.satCount;
 
   return (
     <div
@@ -102,40 +98,11 @@ export function Launch() {
           </ol>
 
           {k === last && rec && (
-            <div className="panel" style={{ padding: 12, borderColor: lost ? 'var(--bad)' : 'var(--ok)', fontSize: 'calc(13rem / 16)', lineHeight: 1.5 }} role="status">
-              {lost === 0 ? (
-                <>
-                  <strong style={{ color: 'var(--ok)' }}>Rồng Con-1 đã vào quỹ đạo.</strong> Tín hiệu đầu tiên qua trạm Hòa Lạc.
-                  {m.launch.launches > 1 && ` ${m.launch.launches - 1} chuyến còn lại cho các mặt phẳng khác được mô phỏng tự động.`}
-                </>
-              ) : (
-                <>
-                  <strong style={{ color: 'var(--bad)' }}>
-                    Mất {lost} mặt phẳng ({(lost * N) / m.orbit.planes} vệ tinh).
-                  </strong>{' '}
-                  Không đủ ngân sách mua chuyến thay thế.
-                </>
-              )}
-              {failed.length > 0 && (
-                <ul style={{ margin: '6px 0 0', paddingLeft: 18 }}>
-                  {failed.map((a) => (
-                    <li key={a.launch}>
-                      Chuyến {a.launch + 1}: thất bại → {a.replaced ? 'đã mua chuyến thay thế' : 'không thay thế được'}
-                    </li>
-                  ))}
-                  {rec.extraCostKusd > 0 && (
-                    <li>
-                      Chi phí thêm {fmt(rec.extraCostKusd, 0)}k · chậm {rec.extraMonths} tháng
-                    </li>
-                  )}
-                </ul>
-              )}
+            <div className="panel" style={{ padding: 12, borderColor: 'var(--ok)', fontSize: 'calc(13rem / 16)', lineHeight: 1.5 }} role="status">
+              <strong style={{ color: 'var(--ok)' }}>Rồng Con-1 đã vào quỹ đạo.</strong> Tín hiệu đầu tiên qua trạm Hòa Lạc.
+              {m.launch.launches > 1 && ` ${m.launch.launches - 1} chuyến còn lại cho các mặt phẳng khác được mô phỏng tự động.`}
             </div>
           )}
-
-          <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--dim)', lineHeight: 1.5 }}>
-            Độ khó Giám đốc: mỗi chuyến có 3% thất bại [GA]; hỏng thì mua chuyến thay thế nếu còn ngân sách, cộng 3 tháng.
-          </div>
           <div className="row" style={{ marginTop: 'auto', flexWrap: 'wrap' }}>
             <button className="btn-s" onClick={() => setK(0)}>
               {t('replay')}

@@ -46,9 +46,7 @@ export function partWhy(p: Part, contactMinPerDay: number, hKm: number, elevDeg:
 
 export const PART_INFO: Record<string, { ab: string; why: string }> = {
   obc: { ab: 'OBC', why: 'Máy tính chính: chạy phần mềm bay, lưu tin SOS chờ tải xuống.' },
-  obc2: { ab: 'AI', why: 'Xử lý ảnh ngay trên vệ tinh: dữ liệu camera còn 40%.' },
-  adcs: { ab: 'ADC', why: 'Giữ hướng bằng từ trường Trái Đất, trỏ khoảng 10° — đủ cho UHF, S-band, SOS.' },
-  adcs2: { ab: 'ADC+', why: 'Trỏ dưới 0,1°; bắt buộc nếu có camera hoặc X-band.' },
+  adcs: { ab: 'ADC', why: 'Giữ hướng bằng từ trường Trái Đất, trỏ khoảng 10° — đủ cho UHF, S-band và SOS.' },
   eps: { ab: 'EPS', why: 'Quản lý điện và nuôi vệ tinh khoảng 36 phút trong bóng Trái Đất mỗi vòng.' },
   bat: { ab: 'BAT', why: 'Thêm dung lượng khi tải lớn.' },
   uhf: {
@@ -59,11 +57,7 @@ export const PART_INFO: Record<string, { ab: string; why: string }> = {
     ab: 'S',
     why: 'Phát 2 W, patch 6 dBi; trạm dùng chảo 3 m. Biên {m}; {dl}.',
   },
-  xband: { ab: 'X', why: 'Rất nhanh, cần ADCS chính xác. Link budget chỉ có ở Sandbox.' },
   sos: { ab: 'SOS', why: 'Nhận tin 300 bps từ máy cầm tay 0,5 W (biên {m}). Tạo 5 MB/ngày.' },
-  ais: { ab: 'AIS', why: 'Theo dõi tàu cá trên biển — như NanoDragon.' },
-  cam: { ab: 'CAM', why: '5 W khi chụp, 10% thời gian. 2.000 MB/ngày; vô dụng khi mây dày.' },
   sail: { ab: 'SAIL', why: 'Bung 0,5 m² khi hết nhiệm vụ: tồn lưu = (L − 3) × 0,047 / 0,547.' },
-  prop: { ab: 'PRP', why: 'Né mảnh vỡ (sự cố E4); 10 W chỉ khi đẩy.' },
   shield: { ab: 'SH', why: 'Miễn nhiễm mất lượt do bão Mặt Trời (E1-B).' },
 };

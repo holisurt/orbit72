@@ -14,8 +14,3 @@ export function kusd(x: number): string {
   return fmt(Math.round(x), 0) + 'k';
 }
 
-/** Today's mission number, e.g. #20261114. */
-export function missionOfDay(d = new Date()): string {
-  const p = (n: number) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}`;
-}

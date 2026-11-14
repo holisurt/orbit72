@@ -10,9 +10,9 @@ import { data, dataNasa } from './fixtures';
 
 const C = { DAT: '#4ADE80', SAT: '#FBBF24', VUOT: '#F87171' };
 
-function s1(daily = false): GameState {
+function s1(): GameState {
   return [
-    { type: 'startMission', daily },
+    { type: 'startMission' },
     { type: 'answerQuiz', phase: 'pre', answers: 'skip' },
     { type: 'acceptContract' },
     { type: 'removePart', index: 3 },
@@ -20,11 +20,10 @@ function s1(daily = false): GameState {
     { type: 'go', screen: 'orbit' },
     { type: 'chooseOrbit' },
     ...(['FD', 'VT', 'KH', 'QD'] as const).map((role) => ({ type: 'vote', role, vote: 'go' })),
-    { type: 'launch', record: { attempts: [], lostPlanes: [], extraCostKusd: 0, extraMonths: 0, inOrbit: true, launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true } },
+    { type: 'launch', record: { launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true } },
     { type: 'chooseEvent', id: 'E0', key: 'A' },
     { type: 'chooseEvent', id: 'E1', key: 'B' },
     { type: 'chooseEvent', id: 'E2', key: 'A' },
-    { type: 'chooseEvent', id: 'E3', key: 'A' },
     { type: 'finishOps' },
     { type: 'exportSpec' },
     { type: 'go', screen: 'share' },
@@ -60,18 +59,15 @@ describe('share card (S1 run)', () => {
     expect(h).toContain('4 mặt phẳng → khoảng trống 3,0 h');
   });
 
-  it('header shows scenario · difficulty outside Daily mode', () => {
+  it('header shows scenario · difficulty', () => {
     expect(h).toContain('>72 GIỜ VÀNG · KỸ SƯ</text>');
     expect(h).not.toContain('NHIỆM VỤ HÔM NAY');
   });
 
-  it('header shows the mission number in Daily mode', () => {
-    expect(render(s1(true))).toMatch(/>NHIỆM VỤ HÔM NAY #\d{8}<\/text>/);
-  });
 
   it('P1h tile is labelled P1h_mưa (IMERG) and shows P1h_rain after events', () => {
     expect(h).toContain('>P1h_mưa (IMERG)</text>');
-    expect(h).toContain('>44%</text>'); // 43,8 % with IMERG weights after E0-A, E1-B, E2-A, E3-A
+    expect(h).toContain('>44%</text>'); // 43,8 % with IMERG weights after E0-A, E1-B, E2-A
     expect(render(s1(), data)).toContain('>P1h_mưa (w = 1)</text>');
   });
 });
@@ -81,7 +77,7 @@ describe('share helpers', () => {
     expect([5, 4, 3, 2, 1].map(starStatus)).toEqual(['DAT', 'DAT', 'SAT', 'VUOT', 'VUOT']);
   });
   it('cardHeader', () => {
-    expect(cardHeader(true, '20261114', '72 Giờ Vàng', 'giam_doc')).toBe('NHIỆM VỤ HÔM NAY #20261114');
-    expect(cardHeader(false, '20261114', '72 Giờ Vàng', 'giam_doc')).toBe('72 GIỜ VÀNG · GIÁM ĐỐC');
+    expect(cardHeader('72 Giờ Vàng', 'hoc_vien')).toBe('72 GIỜ VÀNG · HỌC VIÊN');
+    expect(cardHeader('72 Giờ Vàng', 'ky_su')).toBe('72 GIỜ VÀNG · KỸ SƯ');
   });
 });

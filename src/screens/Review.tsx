@@ -1,11 +1,10 @@
 import { useState } from 'react';
 import { useGameData } from '../data/context';
-import { hashSeed, mulberry32, simulateLaunches } from '../sim/launch';
 import { STATUS_LABEL } from '../sim/mission';
 import { useMission } from '../state/mission';
 import { ROLES } from '../state/roles';
 import { useStore, type RCode, type RoleId } from '../state/store';
-import { fmt, missionOfDay } from '../ui/format';
+import { fmt } from '../ui/format';
 import { PassScreen } from '../ui/PassScreen';
 import { StatusChip } from '../ui/StatusChip';
 import { TopBar } from '../ui/TopBar';
@@ -52,21 +51,9 @@ export function Review() {
 
   const doLaunch = () => {
     if (!canLaunch) return;
-    const rules = data.scenario.difficulty[state.difficulty];
-    const l = m.launch;
-    const out = simulateLaunches({
-      launches: l.launches,
-      planesPerLaunch: m.orbit.planes / l.launches,
-      costPerLaunchKusd: l.costKusd / l.launches,
-      failProb: rules.launchFail,
-      budgetKusd: m.budgetKusd,
-      costKusd: m.totalCostKusd,
-      rng: mulberry32(hashSeed(`${missionOfDay()}-${state.run}-${state.difficulty}`)),
-    });
     dispatch({
       type: 'launch',
       record: {
-        ...out,
         launchedWithVuot: vuot.length > 0,
         launchedWithNoGo: no > 0,
         unanimousGo: go === 4,
@@ -215,11 +202,6 @@ export function Review() {
                 <li key={b}>{b}</li>
               ))}
             </ul>
-          )}
-          {data.scenario.difficulty[state.difficulty].launchFail > 0 && (
-            <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--dim)' }}>
-              Giám đốc: mỗi chuyến có {Math.round(data.scenario.difficulty[state.difficulty].launchFail * 100)}% thất bại [GA].
-            </span>
           )}
           <div className="row" style={{ marginTop: 'auto' }}>
             <button className="btn-s" aria-label={t('back')} onClick={() => dispatch({ type: 'go', screen: 'orbit' })}>

@@ -121,7 +121,7 @@ describe('Ops map shows the hourly IMERG layer with the time slider', () => {
     { type: 'acceptContract' },
     {
       type: 'launch',
-      record: { attempts: [], lostPlanes: [], extraCostKusd: 0, extraMonths: 0, inOrbit: true, launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true },
+      record: { launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true },
     },
     { type: 'go', screen: 'ops' },
   ].reduce((st, a) => reducer(st, a as Action), initialState);

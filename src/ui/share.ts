@@ -5,7 +5,7 @@ import type { Outcome } from '../sim/score';
 import type { LaunchRecord } from '../state/store';
 import { fmt } from './format';
 
-export const LEVEL_NAME: Record<DifficultyId, string> = { hoc_vien: 'HỌC VIÊN', ky_su: 'KỸ SƯ', giam_doc: 'GIÁM ĐỐC' };
+export const LEVEL_NAME: Record<DifficultyId, string> = { hoc_vien: 'HỌC VIÊN', ky_su: 'KỸ SƯ' };
 export const PHASES = ['Nhiệm vụ', 'Ráp', 'Quỹ đạo', 'Go/No-Go', 'Vận hành', 'Báo cáo'] as const;
 
 /** Star rating → colour class: ≥ 4 green (ĐẠT), 3 yellow (SÁT), ≤ 2 red (VƯỢT). */
@@ -34,9 +34,9 @@ export function phaseSquares(m: MissionResult, launch: LaunchRecord | null, star
   ];
 }
 
-/** Card header: mission number only in Daily mode, otherwise scenario · difficulty. */
-export function cardHeader(daily: boolean, missionNo: string, scenarioName: string, difficulty: DifficultyId): string {
-  return daily ? `NHIỆM VỤ HÔM NAY #${missionNo}` : `${scenarioName.toUpperCase()} · ${LEVEL_NAME[difficulty]}`;
+/** Card header: scenario · difficulty. */
+export function cardHeader(scenarioName: string, difficulty: DifficultyId): string {
+  return `${scenarioName.toUpperCase()} · ${LEVEL_NAME[difficulty]}`;
 }
 
 /** One line from the run, e.g. "4 mặt phẳng → khoảng trống 3,0 h" (nominal design, R1). */

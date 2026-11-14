@@ -6,7 +6,7 @@ import { cardHeader, phaseSquares, PHASES, runLine } from '../ui/share';
 import { useRun } from '../state/run';
 import { useStore } from '../state/store';
 import { downloadBlob, EXPORT_FONT, EXPORT_MONO, shareOrDownload, svgToPng } from '../ui/exportPng';
-import { fmt, missionOfDay } from '../ui/format';
+import { fmt } from '../ui/format';
 import { Patch, PATCH_THEMES } from '../ui/Patch';
 import { starGlyphs } from './Debrief';
 import { HeaderTools } from '../ui/HeaderTools';
@@ -31,8 +31,8 @@ export function Share() {
   const launch = state.ops.launch;
   // Six squares: Nhiệm vụ · Ráp · Quỹ đạo · Go/No-Go · Vận hành (Star 2) · Báo cáo (outcome)
   const squares = phaseSquares(m, launch, run.score.stars[1].stars, run.score.outcome);
-  const no = missionOfDay();
-  const header = cardHeader(state.daily, no, data.scenario.name, state.difficulty);
+  const no = `lan${state.run}`; // file names: orbit72-lan1-the.png
+  const header = cardHeader(data.scenario.name, state.difficulty);
   const p1hRain = Math.round(run.ops.p1hRain);
   const p1hLabel = run.weightsSource === 'imerg' ? 'P1h_mưa (IMERG)' : 'P1h_mưa (w = 1)';
   const stars = starGlyphs(run.score.overall);

@@ -171,7 +171,7 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
 
   const build = summariseBuild(data.components, input.design, { fEcl, tEclH, contactMinPerDay });
 
-  const lt = lifetimeYears(data.lifetime, orbit.hKm, rules.lifetime);
+  const lt = lifetimeYears(data.lifetime, orbit.hKm);
   const sail = build.parts.find((p) => p.sailAreaM2);
   const residualY = sail
     ? sailResidualYears(lt.years, data.scenario.opsYears, data.lifetime.aBodyM2, sail.sailAreaM2!)

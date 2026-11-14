@@ -40,13 +40,9 @@ describe('build: hard constraints (R8)', () => {
   it('flags cells over chassis', () => {
     const s = summariseBuild(
       data.components,
-      { ...REF_DESIGN, chassis: '3U', parts: ['obc', 'eps', 'adcs', 'sband', 'sos', 'cam'] },
+      { ...REF_DESIGN, chassis: '3U', parts: ['obc', 'eps', 'adcs', 'sband', 'sos', 'bat', 'bat'] },
       ctx,
     );
     expect(s.hardErrors.map((e) => e.code)).toContain('cells');
-  });
-  it('camera needs precise ADCS', () => {
-    const s = summariseBuild(data.components, { ...REF_DESIGN, chassis: '12U', parts: [...REF_DESIGN.parts, 'cam'] }, ctx);
-    expect(s.hardErrors.map((e) => e.code)).toContain('needs_precise_adcs');
   });
 });

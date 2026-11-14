@@ -34,7 +34,7 @@ const render = (el: ReactElement, s: GameState = initialState) =>
 const launched = [
   { type: 'startMission' },
   { type: 'acceptContract' },
-  { type: 'launch', record: { attempts: [], lostPlanes: [], extraCostKusd: 0, extraMonths: 0, inOrbit: true, launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true } },
+  { type: 'launch', record: { launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true } },
   { type: 'finishOps' },
 ].reduce((s, a) => reducer(s, a as Action), initialState);
 const coop = { ...initialState, mode: 'coop' as const };
