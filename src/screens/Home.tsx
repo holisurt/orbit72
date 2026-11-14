@@ -33,6 +33,9 @@ export function Home() {
           <span style={{ fontWeight: 800, letterSpacing: '0.08em' }}>ORBIT 72</span>
         </div>
         <nav className="row" style={{ gap: 12, fontSize: 'calc(14rem / 16)' }} aria-label="Liên kết">
+          <a className="link-btn" href={`${import.meta.env.BASE_URL}about.html`} style={{ display: 'inline-flex', alignItems: 'center', textDecoration: 'none' }}>
+            Giới thiệu / About
+          </a>
           <button className="link-btn" onClick={() => dispatch({ type: 'openGuide', tab: 2 })}>
             {t('science')}
           </button>
