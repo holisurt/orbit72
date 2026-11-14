@@ -14,9 +14,9 @@ import { useT } from '../ui/i18n';
 import { LEVEL_NAME } from '../ui/share';
 
 export const OUTCOME_STYLE: Record<Outcome, { color: string; bg: string; border: string }> = {
-  THANH_CONG: { color: '#4ADE80', bg: 'linear-gradient(90deg, #0c2616, #0e131d 70%)', border: 'rgba(74, 222, 128, 0.35)' },
-  MOT_PHAN: { color: '#FBBF24', bg: 'linear-gradient(90deg, #281d06, #0e131d 70%)', border: 'rgba(251, 191, 36, 0.35)' },
-  THAT_BAI: { color: '#F87171', bg: 'linear-gradient(90deg, #280b0f, #0e131d 70%)', border: 'rgba(248, 113, 113, 0.35)' },
+  THANH_CONG: { color: '#4ADE80', bg: 'linear-gradient(90deg, #0c2616, var(--panel) 70%)', border: 'rgba(74, 222, 128, 0.35)' },
+  MOT_PHAN: { color: '#FBBF24', bg: 'linear-gradient(90deg, #281d06, var(--panel) 70%)', border: 'rgba(251, 191, 36, 0.35)' },
+  THAT_BAI: { color: '#F87171', bg: 'linear-gradient(90deg, #280b0f, var(--panel) 70%)', border: 'rgba(248, 113, 113, 0.35)' },
 };
 
 export function starGlyphs(n: number): string {
@@ -123,7 +123,7 @@ export function Debrief() {
             5 sao · GDD mục 10
           </span>
           {score.stars.map((s) => (
-            <div key={s.n} style={{ padding: '8px 0', borderBottom: '1px solid #1A2647' }}>
+            <div key={s.n} style={{ padding: '8px 0', borderBottom: '1px solid var(--hairline)' }}>
               <div className="row" style={{ justifyContent: 'space-between' }}>
                 <span style={{ fontSize: 'calc(14rem / 16)', fontWeight: 800 }}>
                   {s.n} · {s.name}
@@ -187,7 +187,7 @@ export function Debrief() {
             </div>
             <div className="row" style={{ gap: 4 }} aria-hidden="true">
               {[1, 2, 3, 4].map((l) => (
-                <div key={l} style={{ flex: 1, height: 8, borderRadius: 4, background: l <= cml ? 'var(--amber)' : '#1A2647' }} />
+                <div key={l} style={{ flex: 1, height: 8, borderRadius: 4, background: l <= cml ? 'var(--accent)' : 'var(--hairline)' }} />
               ))}
             </div>
             {([1, 2, 3, 4] as const).map((l) => (
@@ -208,7 +208,7 @@ export function Debrief() {
               </svg>
             </div>
             {rows.map((r) => (
-              <div key={r.k} className="row" style={{ justifyContent: 'space-between', gap: 8, padding: '3px 0', borderBottom: '1px solid #1A2647' }}>
+              <div key={r.k} className="row" style={{ justifyContent: 'space-between', gap: 8, padding: '3px 0', borderBottom: '1px solid var(--hairline)' }}>
                 <span style={{ color: 'var(--muted)' }}>{r.k}</span>
                 <span className="mono" style={{ textAlign: 'right' }}>
                   {r.v}

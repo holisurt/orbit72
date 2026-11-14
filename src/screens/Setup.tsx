@@ -57,7 +57,7 @@ export function Setup() {
               return (
                 <section key={q} className="panel player" style={{ borderTop: `3px solid ${col}`, position: 'relative' }} aria-label={`Người chơi ${q + 1}`}>
                   <div className="row" style={{ gap: 10 }}>
-                    <div className="avatar" style={{ background: col, color: '#090d16', fontWeight: 800, fontSize: 'calc(13rem / 16)' }} aria-hidden="true">
+                    <div className="avatar" style={{ background: col, color: 'var(--bg)', fontWeight: 800, fontSize: 'calc(13rem / 16)' }} aria-hidden="true">
                       {g.map((k) => ROLES[k].ab).join('+')}
                     </div>
                     <div>

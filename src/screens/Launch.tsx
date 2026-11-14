@@ -32,7 +32,7 @@ export function Launch() {
       className="screen"
       style={{ background: night ? 'linear-gradient(180deg, #03050a 0%, #07090f 100%)' : 'linear-gradient(180deg, #070e1c 0%, #0d1a33 100%)' }}
     >
-      <header className="topbar" style={{ borderBottomColor: 'rgba(255,255,255,.08)' }}>
+      <header className="topbar">
         <span className="brand">
           ORBIT <span className="amber">72</span>{' '}
           <span className="sub">
@@ -82,14 +82,14 @@ export function Launch() {
                 <li
                   key={t}
                   className="panel row"
-                  style={{ padding: '9px 12px', gap: 10, borderColor: q === k ? 'var(--amber)' : 'rgba(241, 245, 249, 0.08)', background: q === k ? 'rgba(245, 165, 36, 0.08)' : undefined }}
+                  style={{ padding: '9px 12px', gap: 10, borderColor: q === k ? 'var(--accent)' : 'var(--hairline)', background: q === k ? 'var(--accent-wash)' : undefined }}
                   aria-current={q === k ? 'step' : undefined}
                 >
                   <span className="mono" style={{ width: 78, fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>
                     {t}
                   </span>
                   <span style={{ flex: 1, fontSize: 'calc(13rem / 16)', fontWeight: 600 }}>{n}</span>
-                  <span className="status" style={{ background: q < k ? 'var(--ok)' : q === k ? 'var(--amber)' : '#3A4C78' }}>
+                  <span className={`status stage-chip ${q < k ? 'done' : q === k ? 'now' : 'wait'}`}>
                     {st}
                   </span>
                 </li>

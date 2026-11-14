@@ -73,7 +73,7 @@ export function Brief() {
               Vì sao quan trọng
             </span>
             <br />
-            Bão Yagi (9/2024) làm <strong style={{ color: '#FFFFFF' }}>6.285 trạm phát sóng</strong> mất liên lạc do mất
+            Bão Yagi (9/2024) làm <strong style={{ color: 'var(--text)' }}>6.285 trạm phát sóng</strong> mất liên lạc do mất
             điện ở 15 tỉnh, thành.
             <br />
             <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--dim)' }}>Nguồn: Bộ TT&amp;TT qua VnEconomy, 13/9/2024</span>

@@ -100,15 +100,15 @@ export function Share() {
             aria-label={`Thẻ kết quả: ${header}, ${OUTCOME_LABEL[run.score.outcome]}, ${PHASES.map((p, q) => `${p} ${STATUS_LABEL[squares[q]]}`).join(', ')}, ${p1hLabel} ${p1hRain}%, ${m.satCount} vệ tinh, CML ${run.cml}, ${line}`}>
             <defs>
               <linearGradient id="card-bg" x1="0" y1="0" x2="0.3" y2="1">
-                <stop offset="0%" stopColor="#13224A" />
-                <stop offset="70%" stopColor="#070D1A" />
+                <stop offset="0%" stopColor="#141B2A" />
+                <stop offset="70%" stopColor="#07090F" />
               </linearGradient>
             </defs>
-            <rect x="0.5" y="0.5" width="299" height="532" rx="22" fill="url(#card-bg)" stroke="#3A4C78" />
+            <rect x="0.5" y="0.5" width="299" height="532" rx="22" fill="url(#card-bg)" stroke="#646971" />
             <text x="22" y="40" fontFamily={EXPORT_FONT} fontSize="11" fontWeight="700" letterSpacing="1.3" fill="#F5A524">
               {header}
             </text>
-            <text x="22" y="76" fontFamily={EXPORT_FONT} fontSize="26" fontWeight="800" fill="#E8EEF8">
+            <text x="22" y="76" fontFamily={EXPORT_FONT} fontSize="26" fontWeight="800" fill="#F3F5F8">
               {data.scenario.name}
             </text>
             <text x="22" y="100" fontFamily={EXPORT_FONT} fontSize="18" fontWeight="800" fill={OUTCOME_COLOR[run.score.outcome]}>
@@ -119,23 +119,23 @@ export function Share() {
                 <title>{`${PHASES[q]}: ${STATUS_LABEL[s]}`}</title>
               </rect>
             ))}
-            <text x="22" y="162" fontFamily={EXPORT_FONT} fontSize="9" fill="#7F90AE">
+            <text x="22" y="162" fontFamily={EXPORT_FONT} fontSize="9" fill="#8E9BAE">
               {PHASES.join(' · ')}
             </text>
             <text x="22" y="196" fontFamily={EXPORT_FONT} fontSize="24" letterSpacing="3" fill="#F5A524">
               {stars}
             </text>
             <g transform="translate(22 208)">
-              <rect width="256" height="66" rx="10" fill="#0F1830" stroke="#26355A" />
+              <rect width="256" height="66" rx="10" fill="#0E131D" stroke="#292E37" />
               {tileLines.map((ln, q) => (
-                <text key={q} x="12" y={19 + q * 14} fontFamily={EXPORT_FONT} fontSize="11" fill="#9AABC7">
+                <text key={q} x="12" y={19 + q * 14} fontFamily={EXPORT_FONT} fontSize="11" fill="#8E9BAE">
                   {ln}
                 </text>
               ))}
               <text x="12" y="57" fontFamily={EXPORT_MONO} fontSize="20" fill="#F3F5F8">
                 {p1hRain}%
               </text>
-              <text x="244" y="57" textAnchor="end" fontFamily={EXPORT_MONO} fontSize="13" fill="#E8EEF8">
+              <text x="244" y="57" textAnchor="end" fontFamily={EXPORT_MONO} fontSize="13" fill="#F3F5F8">
                 {m.satCount} vệ tinh
               </text>
             </g>
@@ -146,7 +146,7 @@ export function Share() {
                 CML {run.cml} · JPL
               </text>
             </g>
-            <text x="22" y="346" fontFamily={EXPORT_FONT} fontSize="13" fontWeight="700" fill="#E8EEF8">
+            <text x="22" y="346" fontFamily={EXPORT_FONT} fontSize="13" fontWeight="700" fill="#F3F5F8">
               {line}
             </text>
             <g transform="translate(90 368)">
@@ -160,7 +160,7 @@ export function Share() {
               <circle cx="71" cy="57" r="3.5" fill="#0B1020" />
               <path d="M50 74 Q60 82 70 74" stroke="#0B1020" strokeWidth="3" fill="none" strokeLinecap="round" />
             </g>
-            <text x="22" y="505" fontFamily={EXPORT_FONT} fontSize="11" fontWeight="700" fill="#E8EEF8">
+            <text x="22" y="505" fontFamily={EXPORT_FONT} fontSize="11" fontWeight="700" fill="#F3F5F8">
               Chơi thử: {url.replace(/^https?:\/\//, '')} · #Orbit72
             </text>
           </svg>
@@ -172,7 +172,7 @@ export function Share() {
             {shareText}
           </pre>
           <button className="btn-p" onClick={copy}>
-            {t('copy')}
+            {msg.startsWith('Đã sao chép') ? 'Đã sao chép ✓' : t('copy')}
           </button>
           <button className="btn-s" onClick={() => exportSvg(cardRef.current, `orbit72-${no}-the.png`, false)}>
             {t('dlCard')}

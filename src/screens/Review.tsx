@@ -128,7 +128,7 @@ export function Review() {
 
         <section
           className="panel review-pad"
-          style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(420px 360px at 50% 70%, #1B2A55, #0F1830)' }}
+          style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(420px 360px at 50% 70%, var(--panel-elevated), var(--panel))' }}
           aria-label="Bệ phóng"
         >
           <svg width="100%" height="100%" viewBox="0 0 300 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Tên lửa trên bệ phóng chờ lệnh">
@@ -159,7 +159,7 @@ export function Review() {
             const r = ROLES[role];
             const v = votes[role];
             return (
-              <div key={role} className="col" style={{ gap: 6, padding: '8px 0', borderBottom: '1px solid #1A2647' }}>
+              <div key={role} className="col" style={{ gap: 6, padding: '8px 0', borderBottom: '1px solid var(--hairline)' }}>
                 <div className="row" style={{ gap: 10 }}>
                   <div className="avatar" style={{ width: 40, height: 40, background: roleColor(r.color), fontSize: 'calc(13rem / 16)' }} aria-hidden="true">
                     {r.ab}

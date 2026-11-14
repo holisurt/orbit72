@@ -1517,6 +1517,19 @@ button.step:hover {
   padding: 10px 0;
   border-bottom: 1px solid var(--hairline);
 }
+/* Launch stage chips: CHỜ (outlined) · ĐANG (accent) · XONG (ok) — text + colour */
+.stage-chip.wait {
+  background: transparent;
+  border: 1px solid var(--line-control);
+  color: var(--muted);
+}
+.stage-chip.now {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.stage-chip.done {
+  background: var(--ok);
+}
 .panel {
   border-color: var(--hairline);
 }
