@@ -104,9 +104,25 @@ downlink @17 min: UHF 1.22 MB, S 255 MB · L(520)=6.5 y, L(550)=10.9 y · sail @
 coverage (gap h / P1h % / contact min/day/sat): SSO520 1×1 11.9/12/19 · 1×3 11.1/22/17 · 2×1 6.0/25/17 · 3×1 4.4/38/17 ·
 4×1 3.0/49/17 · 3×2 3.2/58/16 · 5×1 2.9/61/17 · ISS 1×1 13.2/14/16 · Low20 3×1 1.6/73/41 · LEO53@550 1×1 13.6/16 · 3×1 5.9/42 · 5×1 3.7/57 ·
 S1 (4×1) events: E1 A/B/C = 46/48/48 % · E2 A/B/C = 49/45/48 % · tutorial (3U SSO 520, target 16°N 112°E) 3 passes/day ·
-costs S1 = 2640 k, S2 (3×2) = 2910 k · P1h_rain with w=1 must equal P1h.
+costs S1 = 2640 k, S2 (3×2) = 2910 k · P1h_rain with w=1 must equal P1h ·
+CML badge (§12): S1 run with spec sheet export → CML4.
 
 ## 11. Sources
 [NG] VnEconomy 13/09/2024 (6,285 stations, Yagi) · Decision 1131/QĐ-TTg (2025), 21/2026/QĐ-TTg · FCC 22-74 5-year rule ·
 CubeSat Design Spec (Cal Poly) · Vargas Domínguez et al., arXiv:2609.24534 (FACSAT-2 lifetime table, J2, storm drag ×1.92) ·
 rideshare 2026 pricing (New Space Economy) · NASA GPM IMERG (GES DISC) · NASA DONKI · NASA Small Spacecraft SOA 2026 · Natural Earth (public domain).
+
+## 12. Challenge resources
+The challenge Resources tab provides methodology and tools, not numeric data (details in `data_prep/BTC_DATASET.md`; titles in CREDITS.md).
+Segment mapping (from "Design and Develop Science Missions"):
+| Segment | In ORBIT 72 |
+|---|---|
+| Launch | launcher choice (§4: Rideshare SSO / ISS deploy / Dedicated) |
+| Space | CubeSat build (§3: chassis, parts, wings, env test) |
+| Ground | Hoa Lac station, link budget (§5, R7), event E2 |
+| User | rescue centre and SOS villages, scored by P1h_rain (§6) |
+CML badge (JPL Concept Maturity Levels) shown in Debrief. The badge is the highest level reached, and each level requires the ones below it:
+- CML1: contract accepted.
+- CML2: all hard constraints pass (R8, and budget at signing, R5).
+- CML3: the player compared ≥ 2 configurations (changed planes, chassis or altitude) or did ≥ 1 rerun.
+- CML4: launched with R1–R8 all ĐẠT and exported the spec sheet.

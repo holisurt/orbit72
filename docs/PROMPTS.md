@@ -18,10 +18,12 @@ CHECK CP2 (12:30): play Home → Orbit on phone and laptop; default S1 (SSO 520,
 ## CP3 · 13:00–14:30 · Phóng, vận hành 72 giờ, báo cáo
 P3.1 Implement `src/sim/ops.ts` and `src/sim/score.ts` per SPEC §6–§7: event masks E0–E4, E2-B deferral, E2-C relay via HCMC visibility, option ranking by P1h, IMERG weights → P1h_rain, imaging side goal, five stars, outcome, why-chain sentences. Add tests: S1 events E1 = 46/48/48 %, E2 = 49/45/48 %, P1h_rain(w=1) = P1h, star formulas on S1. Commit.
 P3.2 Port Review (checklist R1–R8 from sim, nominal design; Go/No-Go poll per role), Launch (stages; giam_doc launch failure with seeded RNG), Ops (HF-Ops: 72-h strip, IMERG rain overlay from imerg_yagi.json on MapVN with time slider, event cards with live consequence numbers, E1 card shows DONKI record), Debrief (HF-Debrief: outcome, stars with formula lines, why-chain, spec sheet), Share (HF-Share: patch SVG with 14-ray star, result card; PNG export via canvas, Web Share API fallback to download). Commit, push.
+Debrief also shows the CML badge (SPEC §12).
 CHECK CP3 (14:30): one full run S1 Kỹ sư without errors; debrief shows 8/8 THÀNH CÔNG; PNG downloads · tag `cp3`.
 
 ## CP4 · 14:30–15:30 · Hoàn thiện & thử nghiệm
 P4.1 Add Quiz screen (public/data/quiz.json) before Brief and after Debrief; show learning gain in Debrief. Add Guide screen (HF-Guide: Thuật ngữ, Công thức, Science/giả định, Hồ sơ Rồng, Nguồn) reachable from every screen. Add Settings (VI/EN labels for menus, text size 100/125/150 %, reduced motion, reset). Accessibility pass: focus order, aria-labels on SVG, contrast, 44 px targets. Mobile landscape layout for ≤ 900 px. Commit, push, tag `v0.9`.
+Guide > Nguồn lists the challenge resources; Guide adds a card 'Bốn phân đoạn sứ mệnh'.
 P4.2 Write `tests/e2e-checklist.md` (manual): 12 steps covering every screen and edge cases from GDD §12. Run it yourself where possible (build + preview) and fix blockers only.
 CHECK CP4 (15:30): v0.9 live · 3 playtesters complete pre/post quiz (record scores in docs/playtest.md) · BTC progress form sent.
 

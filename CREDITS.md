@@ -17,6 +17,20 @@ ORBIT 72 is not affiliated with or endorsed by NASA. No NASA logos or insignia a
 | NASA Small Spacecraft State of the Art 2026 | CubeSat component parameters |
 | Natural Earth (public domain) | World / Vietnam map outlines (`public/data/maps/`) |
 
+## Challenge resources (NASA Space Apps 2026 Resources tab, SPEC §12)
+
+| Resource | Organisation |
+|---|---|
+| Design and Develop Science Missions | NASA |
+| GMAT: General Mission Analysis Tool | NASA |
+| Concept Maturity Levels (CML) | NASA JPL |
+| Mission Design Lab | NASA |
+| NASA Mission Viz | NASA |
+| NASA telescope learning game | NASA |
+| CubeSat 101 | NASA |
+| 2023 Space Apps VR mission challenge | NASA Space Apps |
+| Digital games | CSA (Canadian Space Agency) |
+
 ## Fonts
 
 - **Be Vietnam Pro** — SIL Open Font License 1.1
