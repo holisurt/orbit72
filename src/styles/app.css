@@ -779,7 +779,24 @@ button.step:hover {
   padding: 0 10px;
 }
 .map-slider .lbl {
-  flex: none;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+.map-slider {
+  flex-wrap: wrap;
+}
+.map-slider input[type='range'] {
+  flex: 1 1 140px;
+  min-height: 44px;
+}
+.rain-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 6px 8px;
+  background: rgba(11, 16, 32, 0.8);
+  border: 1px solid #26355a;
+  border-radius: 8px;
 }
 .modal-backdrop {
   position: fixed;

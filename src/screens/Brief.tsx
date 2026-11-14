@@ -1,8 +1,11 @@
+import { useMemo } from 'react';
 import { useGameData } from '../data/context';
 import type { DifficultyId } from '../data/types';
 import { useStore } from '../state/store';
 import { fmt } from '../ui/format';
 import { MapVN, projVN } from '../ui/MapVN';
+import { accumulate, IMERG_LABEL, rainCells, TOTAL_BINS } from '../ui/rain';
+import { RainLegend } from '../ui/RainLegend';
 import { TopBar } from '../ui/TopBar';
 
 const LEVEL_NAME: Record<DifficultyId, string> = { hoc_vien: 'HỌC VIÊN', ky_su: 'KỸ SƯ', giam_doc: 'GIÁM ĐỐC' };
@@ -13,6 +16,10 @@ export function Brief() {
   const rules = data.scenario.difficulty[state.difficulty];
   const req = data.scenario.requirements;
   const hn = projVN(data.scenario.target.lat, data.scenario.target.lon);
+  const grid = data.imerg?.grid;
+  // Real 72 h accumulated rain (sum of hourly IMERG frames); Hanoi total from the native 0.1° cell.
+  const total = useMemo(() => (grid ? rainCells(grid, accumulate(grid), TOTAL_BINS) : null), [grid]);
+  const hanoiTotal = (data.imerg?.hanoi_mmh ?? []).slice(0, 72).reduce((a, b) => a + b, 0);
 
   const reqs = [
     { id: 'R1', t: 'Khoảng trống liên lạc dài nhất', v: `≤ ${fmt(rules.gapMaxH, 1)} h` },
@@ -80,9 +87,14 @@ export function Brief() {
         </div>
 
         <div className="panel map-panel">
-          <MapVN label="Bản đồ miền Bắc Việt Nam với đường đi siêu bão và vùng mưa minh họa">
-            <ellipse cx="245" cy="140" rx="110" ry="70" fill="#3DD6F5" fillOpacity="0.12" stroke="#3DD6F5" strokeOpacity="0.5" strokeDasharray="3 3" />
-            <ellipse cx="250" cy="142" rx="60" ry="38" fill="#3DD6F5" fillOpacity="0.22" stroke="#3DD6F5" strokeOpacity="0.7" strokeDasharray="3 3" />
+          <MapVN
+            label={
+              total
+                ? `Bản đồ miền Bắc Việt Nam: mưa tích lũy 72 giờ (${IMERG_LABEL}) và đường đi siêu bão`
+                : 'Bản đồ miền Bắc Việt Nam với đường đi siêu bão'
+            }
+          >
+            {total?.map((c, k) => <rect key={k} x={c.x} y={c.y} width={c.s} height={c.s} fill="#3DD6F5" fillOpacity={c.o} />)}
             <path d="M480 210 L375 186 L276 153 L180 126 L105 105" fill="none" stroke="#F87171" strokeWidth="3" strokeDasharray="8 5" />
             <g transform="translate(375 186)">
               <circle r="11" fill="none" stroke="#F87171" strokeWidth="2.5" />
@@ -96,10 +108,12 @@ export function Brief() {
             <text x="270" y="170" fontSize="10" fill="#FCA5A5">
               Đổ bộ T0
             </text>
-            <text x="300" y="120" fontSize="10" fill="#8BE9FA">
-              Mưa lớn (minh họa)
-            </text>
           </MapVN>
+          {grid && (
+            <div style={{ position: 'absolute', right: 16, top: 14 }}>
+              <RainLegend bins={TOTAL_BINS} unit="mm" title="Mưa tích lũy 72 h" />
+            </div>
+          )}
           <div style={{ position: 'absolute', left: 16, top: 14, display: 'flex', flexDirection: 'column', gap: 4 }}>
             <span className="lbl" style={{ color: 'var(--bad)' }}>
               Siêu bão · T0 = đổ bộ
@@ -120,7 +134,16 @@ export function Brief() {
               color: '#7F90AE',
             }}
           >
-            <span>Bản đồ: Natural Earth (public domain). Vùng mưa minh họa — bản game dùng lưới NASA GPM IMERG.</span>
+            <span>
+              Bản đồ: Natural Earth (public domain) ·{' '}
+              {grid ? (
+                <>
+                  Mưa: {IMERG_LABEL} (lưới {fmt(grid.step, 1)}°) · Hà Nội {fmt(hanoiTotal, 0)} mm / 72 h
+                </>
+              ) : (
+                'Chưa có lớp mưa IMERG (data_prep/prepare_imerg.py)'
+              )}
+            </span>
             <span>— — đường đi bão</span>
           </div>
         </div>

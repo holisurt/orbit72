@@ -5,9 +5,17 @@ import scenario from '../public/data/scenario_72h.json';
 import lifetime from '../public/data/lifetime_6u.json';
 import events from '../public/data/events.json';
 import quiz from '../public/data/quiz.json';
-import type { GameData } from '../src/data/types';
+import imergJson from '../public/data/imerg_yagi.json';
+import donkiJson from '../public/data/donki_gst.json';
+import type { DonkiGst, GameData, Imerg } from '../src/data/types';
 
+/** Base data without the optional NASA files (w = 1, SPEC §10 values). */
 export const data = { components, launchers, scenario, lifetime, events, quiz } as unknown as GameData;
+
+/** NASA files built by data_prep (IMERG Final Run, DONKI GST). */
+export const imerg = imergJson as unknown as Imerg;
+export const donki = donkiJson as unknown as DonkiGst;
+export const dataNasa: GameData = { ...data, imerg, donki };
 
 export const HANOI = { lat: 21.03, lon: 105.85 };
 

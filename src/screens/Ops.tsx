@@ -8,6 +8,8 @@ import { useStore } from '../state/store';
 import { eventIntro, optionDetail } from '../ui/events';
 import { fmt } from '../ui/format';
 import { MapVN, projVN } from '../ui/MapVN';
+import { ictLabel, IMERG_LABEL, RATE_BINS, rainCells } from '../ui/rain';
+import { RainLegend } from '../ui/RainLegend';
 
 const SPEEDS = [60, 360, 1440];
 const END = 72 * 60;
@@ -107,21 +109,9 @@ export function Ops() {
   // ---- IMERG frame ----
   const hour = Math.min(71, Math.floor(clock / 60));
   const grid = data.imerg?.grid;
-  const rain = useMemo(() => {
-    if (!grid) return null;
-    const f = grid.frames[hour];
-    if (!f) return null;
-    const cells: { x: number; y: number; s: number; o: number }[] = [];
-    const size = grid.step * 30;
-    for (let r = 0; r < grid.rows; r++)
-      for (let c = 0; c < grid.cols; c++) {
-        const v = f[r * grid.cols + c];
-        if (!(v >= 0.1)) continue;
-        const p = projVN(grid.lat0 + r * grid.step, grid.lon0 + c * grid.step);
-        cells.push({ x: p.x - size / 2, y: p.y - size / 2, s: size, o: Math.min(0.75, 0.1 + v / 20) });
-      }
-    return cells;
-  }, [grid, hour]);
+  const rain = useMemo(() => (grid?.frames[hour] ? rainCells(grid, grid.frames[hour], RATE_BINS) : null), [grid, hour]);
+  const hourLocal = ictLabel(data.imerg?.hours[hour]);
+  const hanoiRate = data.imerg?.hanoi_mmh[hour];
 
   const hn = projVN(data.scenario.target.lat, data.scenario.target.lon);
   const ev = modal ? events.find((e) => e.id === modal)! : null;
@@ -212,7 +202,9 @@ export function Ops() {
             <span style={{ fontSize: 11, color: '#7F90AE' }}>
               Tính lại từ mô phỏng 72 h ({mission.orbit.planes} MP × {mission.orbit.perPlane}, {mission.orbit.hKm} km) với mặt nạ sự cố. Sự cố chỉ ảnh hưởng sao 2 và sao 4;
               R1 chấm trên thiết kế danh nghĩa ({mission.coverage ? fmt(mission.coverage.longestGapH, 1) : '—'} h).
-              {run.weightsSource === 'none' && ' Chưa có tệp IMERG nên trọng số mưa w = 1.'}
+              {run.weightsSource === 'none'
+                ? ' Chưa có tệp IMERG nên trọng số mưa w = 1.'
+                : ' Trọng số mưa w(h) = 1 + R(h)/R̄ từ mưa IMERG trung bình vùng 103–108°E, 20–23°N.'}
             </span>
           </section>
         </div>
@@ -250,9 +242,16 @@ export function Ops() {
               );
             })}
           </MapVN>
+          {grid && (
+            <div style={{ position: 'absolute', right: 12, top: 10 }}>
+              <RainLegend bins={RATE_BINS} unit="mm/h" title={`Mưa IMERG · ${hourLocal}`} />
+            </div>
+          )}
           <div className="map-slider">
             <label htmlFor="ops-time" className="lbl">
               Thời gian · giờ {hour}
+              {hourLocal && ` · ${hourLocal} giờ VN`}
+              {hanoiRate !== undefined && ` · mưa Hà Nội ${fmt(hanoiRate, 1)} mm/h`}
             </label>
             <input
               id="ops-time"
@@ -267,7 +266,10 @@ export function Ops() {
           </div>
           <span style={{ position: 'absolute', left: 12, bottom: 8, right: 12, fontSize: 10, color: '#7F90AE' }}>
             Bản đồ: Natural Earth ·{' '}
-            {grid ? `Lớp mưa: NASA GPM IMERG Final Run (${data.imerg?.source?.doi ?? 'GPM_3IMERGHH'})` : 'Chưa có lớp mưa IMERG (data_prep/prepare_imerg.py)'} · Điểm SOS minh họa
+            {grid
+              ? `Lớp mưa: ${IMERG_LABEL} (DOI ${data.imerg?.source?.doi ?? '10.5067/GPM/IMERG/3B-HH/07'}, lưới ${fmt(grid.step, 1)}°)`
+              : 'Chưa có lớp mưa IMERG (data_prep/prepare_imerg.py)'}{' '}
+            · Điểm SOS minh họa
           </span>
         </section>
 
@@ -343,6 +345,12 @@ export function Ops() {
                 <p style={{ margin: '6px 0 0', fontSize: 14, lineHeight: 1.55, color: '#C9D4E8' }}>
                   {eventIntro(ev, { hasShield: run.hasShield, donki: data.donki })}
                 </p>
+                {ev.id === 'E1' && data.donki?.link && (
+                  <a href={data.donki.link} target="_blank" rel="noopener noreferrer"
+                    style={{ fontSize: 12, color: 'var(--cyan)', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>
+                    {data.donki.source ?? 'NASA DONKI'} · {data.donki.gstID ?? 'xem bản ghi'} ↗
+                  </a>
+                )}
               </div>
             </div>
             <div className="opt-grid" role="radiogroup" aria-label="Phương án">

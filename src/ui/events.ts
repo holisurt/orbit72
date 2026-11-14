@@ -8,7 +8,7 @@ export function eventIntro(ev: GameEvent, ctx: { hasShield: boolean; donki: Donk
       return 'Ăng-ten của Rồng Con-1 chưa bung sau khi tách khỏi tên lửa — thiết kế bỏ qua thử nghiệm môi trường.';
     case 'E1': {
       const rec = ctx.donki
-        ? `Bản ghi thật từ NASA DONKI: bão địa từ ${formatDate(ctx.donki.startTime)}, Kp ${fmt(ctx.donki.kpIndex, ctx.donki.kpIndex % 1 ? 2 : 0)}.`
+        ? `Bản ghi thật từ NASA DONKI: bão địa từ ngày ${formatDate(ctx.donki.startTime)}, Kp ${fmt(ctx.donki.kpIndex, ctx.donki.kpIndex % 1 ? 2 : 0)}.`
         : 'Bản ghi NASA DONKI chưa được tải (chạy data_prep/fetch_donki.py).';
       return `${rec} Khí quyển trên cao nóng lên và phình ra: lực cản tăng khoảng 1,9 lần trong ngày bão mạnh (FACSAT-2, 2026). Hạt năng lượng cao có thể làm máy tính khởi động lại. Thiết kế hiện tại ${ctx.hasShield ? 'có che chắn bức xạ' : 'không có che chắn bức xạ'}.`;
     }
