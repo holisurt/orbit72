@@ -30,7 +30,7 @@ export function Launch() {
   return (
     <div
       className="screen"
-      style={{ background: `linear-gradient(180deg, ${night ? '#030612' : '#0B1B3D'} 0%, ${night ? '#070D1A' : '#1B3A6B'} 100%)` }}
+      style={{ background: night ? 'linear-gradient(180deg, #03050a 0%, #07090f 100%)' : 'linear-gradient(180deg, #070e1c 0%, #0d1a33 100%)' }}
     >
       <header className="topbar" style={{ borderBottomColor: 'rgba(255,255,255,.08)' }}>
         <span className="brand">
@@ -51,7 +51,7 @@ export function Launch() {
               <path d="M150 40 C170 70 176 100 176 140 V300 H124 V140 C124 100 130 70 150 40Z" fill="#E8EEF8" />
               <path d="M124 270 L102 320 H124Z M176 270 L198 320 H176Z" fill="#F87171" />
               <rect x="124" y="180" width="52" height="8" fill="#F5A524" />
-              <circle cx="150" cy="120" r="10" fill="#3DD6F5" stroke="#1E3A8A" strokeWidth="3" />
+              <circle cx="150" cy="120" r="10" fill="#F5A524" stroke="#78350F" strokeWidth="2.5" />
               <path d="M128 300 H172 L166 318 H134Z" fill="#5B6B8F" />
               {fire && (
                 <>
@@ -82,7 +82,7 @@ export function Launch() {
                 <li
                   key={t}
                   className="panel row"
-                  style={{ padding: '9px 12px', gap: 10, borderColor: q === k ? 'var(--amber)' : undefined, background: q === k ? '#16213D' : undefined }}
+                  style={{ padding: '9px 12px', gap: 10, borderColor: q === k ? 'var(--amber)' : 'rgba(241, 245, 249, 0.08)', background: q === k ? 'rgba(245, 165, 36, 0.08)' : undefined }}
                   aria-current={q === k ? 'step' : undefined}
                 >
                   <span className="mono" style={{ width: 78, fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>
