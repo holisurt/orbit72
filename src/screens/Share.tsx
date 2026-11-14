@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
 import { useGameData } from '../data/context';
-import type { Status } from '../sim/mission';
+import { STATUS_LABEL, type Status } from '../sim/mission';
 import { OUTCOME_LABEL, type Outcome } from '../sim/score';
+import { cardHeader, phaseSquares, PHASES, runLine } from '../ui/share';
 import { useRun } from '../state/run';
 import { useStore } from '../state/store';
 import { downloadBlob, EXPORT_FONT, EXPORT_MONO, shareOrDownload, svgToPng } from '../ui/exportPng';
@@ -16,10 +17,6 @@ const EMOJI: Record<Status, string> = { DAT: '🟩', SAT: '🟨', VUOT: '🟥' }
 const OUTCOME_COLOR: Record<Outcome, string> = { THANH_CONG: '#4ADE80', MOT_PHAN: '#FBBF24', THAT_BAI: '#F87171' };
 const TEAM = 'ĐỘI RỒNG CON';
 
-function worst(list: Status[]): Status {
-  return list.includes('VUOT') ? 'VUOT' : list.includes('SAT') ? 'SAT' : 'DAT';
-}
-
 export function Share() {
   const data = useGameData();
   const { state, dispatch } = useStore();
@@ -31,23 +28,17 @@ export function Share() {
   const cardRef = useRef<SVGSVGElement>(null);
 
   const m = run.mission;
-  const st = (ids: string[]) => worst(m.reqs.filter((r) => ids.includes(r.id)).map((r) => r.status));
-  const ranks = run.decisions.map((d) => d.outcomes.find((o) => o.key === d.chosen)?.rank ?? 'best');
   const launch = state.ops.launch;
-  // Six squares: Nhiệm vụ · Ráp · Quỹ đạo · Go/No-Go · Vận hành · Báo cáo
-  const squares: Status[] = [
-    'DAT',
-    st(['R2', 'R3', 'R6', 'R8']),
-    st(['R1', 'R4', 'R5', 'R7']),
-    launch?.unanimousGo ? 'DAT' : launch?.launchedWithNoGo ? 'VUOT' : 'SAT',
-    ranks.includes('worst') || run.ops.decisionPenalty ? 'VUOT' : ranks.includes('middle') ? 'SAT' : 'DAT',
-    run.score.outcome === 'THANH_CONG' ? 'DAT' : run.score.outcome === 'MOT_PHAN' ? 'SAT' : 'VUOT',
-  ];
+  // Six squares: Nhiệm vụ · Ráp · Quỹ đạo · Go/No-Go · Vận hành (Star 2) · Báo cáo (outcome)
+  const squares = phaseSquares(m, launch, run.score.stars[1].stars, run.score.outcome);
   const no = missionOfDay();
-  const p1h = Math.round(run.ops.p1h);
+  const header = cardHeader(state.daily, no, data.scenario.name, state.difficulty);
+  const p1hRain = Math.round(run.ops.p1hRain);
+  const p1hLabel = run.weightsSource === 'imerg' ? 'P1h_mưa (IMERG)' : 'P1h_mưa (w = 1)';
   const stars = starGlyphs(run.score.overall);
+  const line = runLine(m);
   const url = typeof window !== 'undefined' ? `${window.location.origin}${import.meta.env.BASE_URL}` : '';
-  const shareText = `ORBIT 72 #${no}\n${squares.map((s) => EMOJI[s]).join('')} ${stars}\nP1h ${p1h}% · ${m.satCount} vệ tinh · ${OUTCOME_LABEL[run.score.outcome]}\n${url} #Orbit72`;
+  const shareText = `ORBIT 72 · ${header}\n${squares.map((s) => EMOJI[s]).join('')} ${stars}\n${p1hLabel} ${p1hRain}% · ${m.satCount} vệ tinh · ${OUTCOME_LABEL[run.score.outcome]} · CML ${run.cml}\n${url} #Orbit72`;
 
   const copy = async () => {
     try {
@@ -103,7 +94,7 @@ export function Share() {
 
         <div className="row" style={{ justifyContent: 'center' }}>
           <svg ref={cardRef} viewBox="0 0 300 533" style={{ width: '100%', maxWidth: 300, height: 'auto' }} role="img"
-            aria-label={`Thẻ kết quả: ${data.scenario.name}, ${OUTCOME_LABEL[run.score.outcome]}, P1h ${p1h}%, ${m.satCount} vệ tinh`}>
+            aria-label={`Thẻ kết quả: ${header}, ${OUTCOME_LABEL[run.score.outcome]}, ${PHASES.map((p, q) => `${p} ${STATUS_LABEL[squares[q]]}`).join(', ')}, ${p1hLabel} ${p1hRain}%, ${m.satCount} vệ tinh, CML ${run.cml}, ${line}`}>
             <defs>
               <linearGradient id="card-bg" x1="0" y1="0" x2="0.3" y2="1">
                 <stop offset="0%" stopColor="#13224A" />
@@ -112,7 +103,7 @@ export function Share() {
             </defs>
             <rect x="0.5" y="0.5" width="299" height="532" rx="22" fill="url(#card-bg)" stroke="#3A4C78" />
             <text x="22" y="40" fontFamily={EXPORT_FONT} fontSize="11" fontWeight="700" letterSpacing="1.3" fill="#F5A524">
-              ORBIT 72 · NHIỆM VỤ #{no}
+              {header}
             </text>
             <text x="22" y="76" fontFamily={EXPORT_FONT} fontSize="26" fontWeight="800" fill="#E8EEF8">
               {data.scenario.name}
@@ -121,16 +112,18 @@ export function Share() {
               {OUTCOME_LABEL[run.score.outcome]}
             </text>
             {squares.map((s, q) => (
-              <rect key={q} x={22 + q * 43} y="116" width="38" height="30" rx="6" fill={C[s]} />
+              <rect key={q} x={22 + q * 43} y="116" width="38" height="30" rx="6" fill={C[s]}>
+                <title>{`${PHASES[q]}: ${STATUS_LABEL[s]}`}</title>
+              </rect>
             ))}
             <text x="22" y="162" fontFamily={EXPORT_FONT} fontSize="9" fill="#7F90AE">
-              Nhiệm vụ · Ráp · Quỹ đạo · Go/No-Go · Vận hành · Báo cáo
+              {PHASES.join(' · ')}
             </text>
             <text x="22" y="196" fontFamily={EXPORT_FONT} fontSize="24" letterSpacing="3" fill="#F5A524">
               {stars}
             </text>
             {[
-              { k: 'P1h', v: `${p1h}%`, x: 22 },
+              { k: p1hLabel, v: `${p1hRain}%`, x: 22 },
               { k: 'Vệ tinh', v: String(m.satCount), x: 154 },
             ].map((b) => (
               <g key={b.k} transform={`translate(${b.x} 212)`}>
@@ -143,7 +136,17 @@ export function Share() {
                 </text>
               </g>
             ))}
-            <g transform="translate(90 320)">
+            {/* CML badge + one line from the run (fills the band above the mascot) */}
+            <g transform="translate(22 288)">
+              <rect width="124" height="32" rx="16" fill="#3A2E0E" stroke="#F5A524" />
+              <text x="62" y="21" textAnchor="middle" fontFamily={EXPORT_MONO} fontSize="14" fontWeight="600" fill="#F5A524">
+                CML {run.cml} · JPL
+              </text>
+            </g>
+            <text x="22" y="346" fontFamily={EXPORT_FONT} fontSize="13" fontWeight="700" fill="#E8EEF8">
+              {line}
+            </text>
+            <g transform="translate(90 368)">
               <rect x="8" y="46" width="26" height="30" rx="3" fill="#1E3A8A" stroke="#3DD6F5" />
               <rect x="86" y="46" width="26" height="30" rx="3" fill="#1E3A8A" stroke="#3DD6F5" />
               <rect x="34" y="34" width="52" height="56" rx="10" fill="#F5A524" />
