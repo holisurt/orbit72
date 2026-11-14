@@ -8,3 +8,5 @@ __pycache__/
 data_prep/raw/
 .DS_Store
 Thumbs.db
+dist-offline/
+*.zip
