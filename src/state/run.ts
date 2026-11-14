@@ -60,6 +60,7 @@ export interface RunView {
   cml: 0 | 1 | 2 | 3 | 4;
   /** Level the player holds once the spec sheet is exported — printed on the exported PNG itself. */
   cmlOnExport: 0 | 1 | 2 | 3 | 4;
+  launchExtraKusd: number; // replacement launches (giam_doc)
   totalCostKusd: number; // nominal + launch replacements + event costs
 }
 
@@ -148,7 +149,7 @@ export function useRun(): RunView {
     const cmlInput = {
       contractAccepted: state.contract.accepted,
       hardOk: r5 !== 'VUOT' && r8 !== 'VUOT',
-      configsCompared: state.configs.length,
+      designChanges: state.designChanges,
       reruns: state.run - 1,
       launched: !!launch,
       allPassed: score.passed === 8,
@@ -174,6 +175,7 @@ export function useRun(): RunView {
       why: whyChain(mission, decisions),
       cml,
       cmlOnExport,
+      launchExtraKusd: launch?.extraCostKusd ?? 0,
       totalCostKusd: mission.totalCostKusd + (launch?.extraCostKusd ?? 0) + ops.eventCostKusd,
     };
   }, [mission, ctx, events, base, ops, nominal, options, hasShield, hasProp, weights, state, data, launch]);

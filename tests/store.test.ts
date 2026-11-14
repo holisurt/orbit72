@@ -43,15 +43,22 @@ describe('store reducer', () => {
     expect(s.design.parts[0]).toBe('eps');
   });
 
-  it('tracks distinct configurations once the orbit is chosen (CML3)', () => {
+  it('counts design decisions changed with the HUD visible (CML3)', () => {
     const s = run(
       initialState,
-      { type: 'chooseOrbit' },
+      { type: 'chooseOrbit' }, // opening the Orbit screen is not a decision
       { type: 'setOrbit', patch: { planes: 5 } },
-      { type: 'setOrbit', patch: { planes: 5 } },
+      { type: 'setOrbit', patch: { planes: 5 } }, // no change
+      { type: 'setOrbit', patch: { launcher: 'dedicated' } }, // launcher is not in the CML3 list
+      { type: 'setChassis', chassis: '6U' }, // same chassis
       { type: 'setChassis', chassis: '12U' },
+      { type: 'setOrbit', patch: { perPlane: 2 } },
+      { type: 'setOrbit', patch: { preset: 'leo53' } },
+      { type: 'removePart', index: 3 },
+      { type: 'addPart', id: 'sband' },
+      { type: 'toggleWings' }, // not in the list
     );
-    expect(s.configs).toEqual(['6U|4|520', '6U|5|520', '12U|5|520']);
+    expect(s.designChanges).toBe(6);
   });
 
   it('stepper jumps only among Brief/Build/Orbit', () => {

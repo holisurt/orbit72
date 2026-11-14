@@ -28,6 +28,14 @@ export function specRows(run: RunView, data: GameData, extraMonths: number): { k
   const tx = b.parts.filter((p) => p.rbps).sort((a, c) => (c.rbps ?? 0) - (a.rbps ?? 0))[0];
   const minMargin = m.links.length ? Math.min(...m.links.map((l) => l.margin10)) : NaN;
   const residual = m.residualY ?? Math.max(0, m.lifetimeY - data.scenario.opsYears);
+  // Design cost is the nominal cost Star 3 uses; extra parts appear only when > 0.
+  const replace = run.launchExtraKusd;
+  const events = run.ops.eventCostKusd;
+  const cost = [
+    `${fmt(m.totalCostKusd, 0)}k thiết kế`,
+    replace > 0 ? `${fmt(replace, 0)}k phóng bù` : '',
+    events > 0 ? `${fmt(events, 0)}k sự cố` : '',
+  ].filter(Boolean);
   return [
     { k: 'Quỹ đạo', v: `${preset} ${m.orbit.hKm} km · i ${fmt(m.inclDeg, 1)}°` },
     { k: 'Chòm', v: `${m.orbit.planes} mặt phẳng × ${m.orbit.perPlane}` },
@@ -37,7 +45,8 @@ export function specRows(run: RunView, data: GameData, extraMonths: number): { k
     { k: 'Tải xuống', v: tx ? tx.name : '—' },
     { k: 'Biên tới Hòa Lạc', v: Number.isFinite(minMargin) ? `${fmt(minMargin, 1)} dB (10°)` : '—' },
     { k: 'Tuổi thọ · tồn lưu', v: `${fmt(m.lifetimeY, 1)} · ${fmt(residual, 1)} năm` },
-    { k: 'Chi phí · phát triển', v: `${fmt(run.totalCostKusd, 0)}k · ${b.devMonths + extraMonths} tháng` },
+    { k: 'Chi phí', v: cost.length > 1 ? `${cost.join(' + ')} = ${fmt(run.totalCostKusd, 0)}k` : cost[0] },
+    { k: 'Phát triển', v: `${b.devMonths + extraMonths} tháng` },
     { k: 'Quiz trước → sau', v: '—' },
   ];
 }

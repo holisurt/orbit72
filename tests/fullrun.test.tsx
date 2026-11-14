@@ -69,17 +69,26 @@ describe('full run S1 Kỹ sư (solo)', () => {
     const d = render(<Debrief />, s);
     expect(d).toContain('THÀNH CÔNG — 8/8 yêu cầu đạt');
     expect(d).toContain('VFM = 49,1 / 2,64'); // star 3 uses the nominal cost (events affect only stars 2, 4)
-    expect(d).toContain('2.660k · 11 tháng'); // spec sheet total includes the E2-A generator (+20k)
-    expect(d).toContain('CML 2');
+    // spec sheet cost: nominal design cost (Star 3) + E2-A generator (+20k)
+    expect(d).toContain('2.640k thiết kế + 20k sự cố = 2.660k');
+    expect(d).toContain('11 tháng');
+    expect(d).toMatch(/aria-label="Huy hiệu CML"[\s\S]*?CML 3/); // UHF→S-band swap satisfies CML3
 
     s = play(s, { type: 'exportSpec' });
-    expect(render(<Debrief />, s)).toContain('CML 4'); // SPEC §10: S1 run with spec sheet export → CML4
+    expect(render(<Debrief />, s)).toMatch(/aria-label="Huy hiệu CML"[\s\S]*?CML 4/); // SPEC §10: S1 + swap + export → CML4
 
     s = play(s, { type: 'go', screen: 'share' });
     const sh = render(<Share />, s);
     expect(sh).toContain('Tải thẻ PNG (9:16)');
     expect(sh).toContain('THÀNH CÔNG');
     expect((sh.match(/<polygon points="([^"]+)"/)?.[1].split(' ') ?? []).length).toBe(28); // 14-ray star
+  });
+
+  it('cost line without events shows the design cost only', () => {
+    const quiet = play({ ...s, ops: { ...s.ops, choices: {} } }, { type: 'go', screen: 'debrief' });
+    const h = render(<Debrief />, quiet);
+    expect(h).toContain('>2.640k thiết kế<');
+    expect(h).not.toContain('k sự cố');
   });
 
   it('exported spec sheet PNG prints the CML level reached by exporting (CML 4), before and after export', () => {
@@ -92,7 +101,7 @@ describe('full run S1 Kỹ sư (solo)', () => {
     const badge = (h: string) => h.match(/aria-label="Huy hiệu CML"[\s\S]*?(CML \d)/)?.[1];
 
     const h0 = render(<Debrief />, before);
-    expect(badge(h0)).toBe('CML 2'); // on-screen badge: not exported yet
+    expect(badge(h0)).toBe('CML 3'); // on-screen badge: not exported yet
     expect(header(h0)).toContain('THÀNH CÔNG 8/8');
     expect(header(h0)).toContain('CML 4'); // the PNG is rendered before exportSpec fires
 

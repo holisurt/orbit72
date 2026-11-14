@@ -283,28 +283,28 @@ export function whyChain(m: MissionResult, decisions: EventDecision[]): WhyItem[
 export interface CmlInput {
   contractAccepted: boolean;
   hardOk: boolean; // R8 and R5 (budget at signing) pass
-  configsCompared: number;
+  designChanges: number; // part/chassis/orbit decisions changed with the HUD visible
   reruns: number;
   launched: boolean;
-  allPassed: boolean; // R1–R8 none VƯỢT
+  allPassed: boolean; // R1–R8 none VƯỢT (SÁT passes)
   specExported: boolean;
 }
 
 export const CML_TEXT: Record<1 | 2 | 3 | 4, string> = {
   1: 'Đã nhận hợp đồng',
   2: 'Mọi ràng buộc cứng đạt (R8, ngân sách khi ký)',
-  3: 'Đã so sánh ≥ 2 cấu hình hoặc chạy lại ≥ 1 lần',
+  3: 'Đã đổi ≥ 1 quyết định thiết kế sau khi xem HUD, hoặc chạy lại ≥ 1 lần',
   4: 'Phóng với R1–R8 đều đạt và đã xuất spec sheet',
 };
 
-/**
- * Highest Concept Maturity Level reached (0 = none). CML4 implies CML2 (8/8 includes R5, R8);
- * CML3 requires CML2. CML4 does not require CML3 (SPEC §10: S1 run + spec sheet export → CML4).
- */
+/** Highest Concept Maturity Level reached (0 = none). Cumulative: each level needs all lower ones (SPEC §12). */
 export function cmlLevel(c: CmlInput): 0 | 1 | 2 | 3 | 4 {
-  if (c.launched && c.allPassed && c.specExported) return 4;
-  if (c.hardOk && (c.configsCompared >= 2 || c.reruns >= 1)) return 3;
-  if (c.hardOk) return 2;
-  if (c.contractAccepted) return 1;
-  return 0;
+  const met = [
+    c.contractAccepted,
+    c.hardOk,
+    c.designChanges >= 1 || c.reruns >= 1,
+    c.launched && c.allPassed && c.specExported,
+  ];
+  const n = met.findIndex((ok) => !ok);
+  return (n === -1 ? 4 : n) as 0 | 1 | 2 | 3 | 4;
 }

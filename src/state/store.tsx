@@ -92,8 +92,11 @@ export interface GameState {
   run: number;
   quiz: { pre: number[] | null; post: number[] | null };
   coach: { open: boolean };
-  /** Distinct configurations tried (chassis/planes/altitude) — for the CML3 badge (SPEC §12). */
-  configs: string[];
+  /**
+   * Design decisions changed on Build/Orbit, where the HUD shows each effect live (part swap/add/remove,
+   * chassis, altitude, inclination preset, planes, satellites per plane) — for the CML3 badge (SPEC §12).
+   */
+  designChanges: number;
   specExported: boolean;
 }
 
@@ -134,7 +137,7 @@ export const initialState: GameState = {
   run: 1,
   quiz: { pre: null, post: null },
   coach: { open: false },
-  configs: [],
+  designChanges: 0,
   specExported: false,
 };
 
@@ -172,15 +175,8 @@ export type Action =
 
 const ORDER_BEFORE_LAUNCH: ScreenId[] = ['brief', 'build', 'orbit'];
 
-function configKey(s: GameState): string {
-  return `${s.design.chassis}|${s.orbit.planes}|${s.orbit.hKm}`;
-}
-
-function trackConfig(s: GameState): GameState {
-  if (!s.orbit.chosen) return s;
-  const key = configKey(s);
-  return s.configs.includes(key) ? s : { ...s, configs: [...s.configs, key] };
-}
+const changed = (s: GameState): GameState => ({ ...s, designChanges: s.designChanges + 1 });
+const ORBIT_DECISIONS = ['preset', 'hKm', 'planes', 'perPlane'] as const;
 
 export function reducer(s: GameState, a: Action): GameState {
   switch (a.type) {
@@ -234,11 +230,12 @@ export function reducer(s: GameState, a: Action): GameState {
     case 'acceptContract':
       return { ...s, contract: { ...s.contract, accepted: true }, screen: 'build' };
     case 'setChassis':
-      return trackConfig({ ...s, design: { ...s.design, chassis: a.chassis } });
+      return a.chassis === s.design.chassis ? s : changed({ ...s, design: { ...s.design, chassis: a.chassis } });
     case 'addPart':
-      return { ...s, design: { ...s.design, parts: [...s.design.parts, a.id] } };
+      return changed({ ...s, design: { ...s.design, parts: [...s.design.parts, a.id] } });
     case 'removePart':
-      return { ...s, design: { ...s.design, parts: s.design.parts.filter((_, i) => i !== a.index) } };
+      if (a.index < 0 || a.index >= s.design.parts.length) return s;
+      return changed({ ...s, design: { ...s.design, parts: s.design.parts.filter((_, i) => i !== a.index) } });
     case 'toggleWings':
       return { ...s, design: { ...s.design, wings: !s.design.wings } };
     case 'toggleEnvTest':
@@ -254,10 +251,11 @@ export function reducer(s: GameState, a: Action): GameState {
       orbit.planes = clamp(orbit.planes, 1, 6);
       orbit.perPlane = clamp(orbit.perPlane, 1, 3);
       orbit.hKm = clamp(orbit.hKm, 300, 800);
-      return trackConfig({ ...s, orbit });
+      const next = { ...s, orbit };
+      return ORBIT_DECISIONS.some((k) => orbit[k] !== s.orbit[k]) ? changed(next) : next;
     }
     case 'chooseOrbit':
-      return trackConfig({ ...s, orbit: { ...s.orbit, chosen: true } });
+      return { ...s, orbit: { ...s.orbit, chosen: true } };
     case 'vote': {
       const reasons = { ...s.ops.reasons };
       if (a.vote !== 'no') delete reasons[a.role];

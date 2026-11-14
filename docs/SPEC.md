@@ -105,7 +105,7 @@ coverage (gap h / P1h % / contact min/day/sat): SSO520 1×1 11.9/12/19 · 1×3 1
 4×1 3.0/49/17 · 3×2 3.2/58/16 · 5×1 2.9/61/17 · ISS 1×1 13.2/14/16 · Low20 3×1 1.6/73/41 · LEO53@550 1×1 13.6/16 · 3×1 5.9/42 · 5×1 3.7/57 ·
 S1 (4×1) events: E1 A/B/C = 46/48/48 % · E2 A/B/C = 49/45/48 % · tutorial (3U SSO 520, target 16°N 112°E) 3 passes/day ·
 costs S1 = 2640 k, S2 (3×2) = 2910 k · P1h_rain with w=1 must equal P1h ·
-CML badge (§12): S1 run with spec sheet export → CML4.
+CML badge (§12): S1 run (with the UHF→S-band swap) + spec sheet export → CML4.
 
 ## 11. Sources
 [NG] VnEconomy 13/09/2024 (6,285 stations, Yagi) · Decision 1131/QĐ-TTg (2025), 21/2026/QĐ-TTg · FCC 22-74 5-year rule ·
@@ -121,8 +121,10 @@ Segment mapping (from "Design and Develop Science Missions"):
 | Space | CubeSat build (§3: chassis, parts, wings, env test) |
 | Ground | Hoa Lac station, link budget (§5, R7), event E2 |
 | User | rescue centre and SOS villages, scored by P1h_rain (§6) |
-CML badge (JPL Concept Maturity Levels) shown in Debrief. The badge is the highest level whose condition holds:
+CML badge (JPL Concept Maturity Levels) shown in Debrief. Levels are cumulative: a level counts only if all lower levels are met.
 - CML1: contract accepted.
-- CML2: all hard constraints pass (R8, and budget at signing, R5).
-- CML3: CML2 holds and the player compared ≥ 2 configurations (changed planes, chassis or altitude) or did ≥ 1 rerun.
-- CML4: launched with R1–R8 all passed (ĐẠT or SÁT, none VƯỢT — 8/8) and exported the spec sheet. CML4 implies CML2 but does not require CML3 (§10: an S1 run with spec sheet export → CML4).
+- CML2: CML1 + all hard constraints pass (R8, and budget at signing, R5).
+- CML3: CML2 + the player changed at least one design decision after the HUD showed its effect (swap/add/remove a part,
+  change chassis, altitude, inclination, planes or satellites per plane) or did ≥ 1 rerun. In S1, swapping UHF for S-band satisfies CML3.
+- CML4: CML3 + launched with R1–R8 all passing (ĐẠT or SÁT pass, only VƯỢT fails) + spec sheet exported.
+The exported spec sheet PNG prints the level reached by that export.

@@ -121,13 +121,17 @@ describe('why-chain', () => {
 });
 
 describe('CML badge (SPEC §12)', () => {
-  const s1 = { contractAccepted: true, hardOk: true, configsCompared: 1, reruns: 0, launched: true, allPassed: true };
-  it('S1 run with spec sheet export → CML4', () => expect(cmlLevel({ ...s1, specExported: true })).toBe(4));
-  it('S1 run without export, one configuration → CML2', () => expect(cmlLevel({ ...s1, specExported: false })).toBe(2));
-  it('compared 2 configurations → CML3', () =>
-    expect(cmlLevel({ ...s1, configsCompared: 2, specExported: false })).toBe(3));
-  it('hard constraint failed → CML1', () =>
-    expect(cmlLevel({ ...s1, hardOk: false, allPassed: false, configsCompared: 3, specExported: true })).toBe(1));
+  // S1 with the UHF → S-band swap: two design changes (remove + add), 8/8 passed (R1, R5 SÁT count as passing)
+  const s1 = { contractAccepted: true, hardOk: true, designChanges: 2, reruns: 0, launched: true, allPassed: true };
+  it('S1 run (UHF→S-band swap) + spec sheet export → CML4', () => expect(cmlLevel({ ...s1, specExported: true })).toBe(4));
+  it('S1 run without export → CML3', () => expect(cmlLevel({ ...s1, specExported: false })).toBe(3));
+  it('no design change and no rerun → CML2, even launched 8/8 with export (cumulative)', () =>
+    expect(cmlLevel({ ...s1, designChanges: 0, specExported: true })).toBe(2));
+  it('a rerun alone satisfies CML3', () => expect(cmlLevel({ ...s1, designChanges: 0, reruns: 1, specExported: false })).toBe(3));
+  it('a VƯỢT requirement blocks CML4', () => expect(cmlLevel({ ...s1, allPassed: false, specExported: true })).toBe(3));
+  it('hard constraint failed → CML1 (higher levels do not count)', () =>
+    expect(cmlLevel({ ...s1, hardOk: false, specExported: true })).toBe(1));
+  it('contract not accepted → CML0', () => expect(cmlLevel({ ...s1, contractAccepted: false, specExported: true })).toBe(0));
 });
 
 describe('launch (giam_doc 3 %, seeded)', () => {
