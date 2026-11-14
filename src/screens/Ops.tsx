@@ -370,7 +370,7 @@ export function Ops() {
                   >
                     <span className="lbl" style={{ color: 'var(--amber)' }}>
                       {o.key}
-                      {o.available ? ` · ${RANK_LABEL[o.rank]}` : ' · cần động cơ'}
+                      {o.available ? ` · ${RANK_LABEL[o.rank]}` : ` · ${run.blocked[ev.id]?.[o.key] ?? 'không chọn được'}`}
                     </span>
                     <span style={{ fontSize: 'calc(15rem / 16)', fontWeight: 800 }}>{opt.text}</span>
                     <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)', lineHeight: 1.45 }}>{optionDetail(ev, o.key, run.hasShield)}</span>

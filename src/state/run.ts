@@ -26,6 +26,7 @@ import {
   type WhyItem,
 } from '../sim/score';
 import { useMission } from './mission';
+import { fmt } from '../ui/format';
 import { useStore, type GameState } from './store';
 
 /** E3 cloud window: from the event to the end of the 72 h [GA — SPEC §6 gives no end time]. */
@@ -49,6 +50,8 @@ export interface RunView {
   ops: OpsResult; // with current choices
   nominal: OpsResult; // no events (launch losses still apply)
   options: Record<string, OptionOutcome[]>;
+  /** event id → option key → reason it is disabled (missing part / not enough budget). */
+  blocked: Record<string, Record<string, string>>;
   hasShield: boolean;
   hasProp: boolean;
   weightsSource: 'imerg' | 'none';
@@ -102,15 +105,30 @@ export function useRun(): RunView {
   const ops = useMemo(() => runOps(ctx, { ...base, choices: state.ops.choices }), [ctx, base, state.ops.choices]);
   const nominal = useMemo(() => runOps(ctx, { ...base, events: [], choices: {} }), [ctx, base]);
 
+  // Why an option cannot be chosen (GDD §12 #4/#6): missing part, or its cost exceeds the remaining budget
+  // (budget − nominal cost − launch replacements − costs of the other events already chosen).
+  const blocked = useMemo(() => {
+    const out: Record<string, Record<string, string>> = {};
+    for (const ev of events) {
+      const otherCosts = events
+        .filter((e) => e.id !== ev.id && state.ops.choices[e.id])
+        .reduce((sum, e) => sum + Number(e.options.find((o) => o.k === state.ops.choices[e.id])?.effect.costKusd ?? 0), 0);
+      const remaining = mission.budgetKusd - mission.totalCostKusd - (launch?.extraCostKusd ?? 0) - otherCosts;
+      out[ev.id] = {};
+      for (const o of ev.options) {
+        const cost = Number(o.effect.costKusd ?? 0);
+        if (o.requires && !mission.build.parts.some((p) => p.id === o.requires)) out[ev.id][o.k] = 'cần động cơ';
+        else if (cost > 0 && cost > remaining) out[ev.id][o.k] = `Không đủ ngân sách: còn ${fmt(Math.max(0, remaining), 0)}k`;
+      }
+    }
+    return out;
+  }, [events, state.ops.choices, mission.budgetKusd, mission.totalCostKusd, mission.build.parts, launch]);
+
   const options = useMemo(() => {
     const out: Record<string, OptionOutcome[]> = {};
-    for (const ev of events)
-      out[ev.id] = evaluateEventOptions(ctx, base, ev, (k) => {
-        const req = ev.options.find((x) => x.k === k)?.requires;
-        return !req || mission.build.parts.some((p) => p.id === req);
-      });
+    for (const ev of events) out[ev.id] = evaluateEventOptions(ctx, base, ev, (k) => !blocked[ev.id]?.[k]);
     return out;
-  }, [ctx, base, events, mission.build.parts]);
+  }, [ctx, base, events, blocked]);
 
   return useMemo(() => {
     const cam = mission.build.parts.some((p) => p.id === 'cam');
@@ -165,6 +183,7 @@ export function useRun(): RunView {
       ops,
       nominal,
       options,
+      blocked,
       hasShield,
       hasProp,
       weightsSource: weights ? 'imerg' : 'none',
@@ -178,5 +197,5 @@ export function useRun(): RunView {
       launchExtraKusd: launch?.extraCostKusd ?? 0,
       totalCostKusd: mission.totalCostKusd + (launch?.extraCostKusd ?? 0) + ops.eventCostKusd,
     };
-  }, [mission, ctx, events, base, ops, nominal, options, hasShield, hasProp, weights, state, data, launch]);
+  }, [mission, ctx, events, base, ops, nominal, options, blocked, hasShield, hasProp, weights, state, data, launch]);
 }
