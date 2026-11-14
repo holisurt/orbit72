@@ -14,9 +14,9 @@ import { useT } from '../ui/i18n';
 import { LEVEL_NAME } from '../ui/share';
 
 export const OUTCOME_STYLE: Record<Outcome, { color: string; bg: string; border: string }> = {
-  THANH_CONG: { color: '#4ADE80', bg: 'linear-gradient(90deg, #11361F, #0F1830 70%)', border: '#2E6B45' },
-  MOT_PHAN: { color: '#FBBF24', bg: 'linear-gradient(90deg, #3A2E0E, #0F1830 70%)', border: '#6B5320' },
-  THAT_BAI: { color: '#F87171', bg: 'linear-gradient(90deg, #3A1518, #0F1830 70%)', border: '#7F2A30' },
+  THANH_CONG: { color: '#4ADE80', bg: 'linear-gradient(90deg, #0c2616, #0e131d 70%)', border: 'rgba(74, 222, 128, 0.35)' },
+  MOT_PHAN: { color: '#FBBF24', bg: 'linear-gradient(90deg, #281d06, #0e131d 70%)', border: 'rgba(251, 191, 36, 0.35)' },
+  THAT_BAI: { color: '#F87171', bg: 'linear-gradient(90deg, #280b0f, #0e131d 70%)', border: 'rgba(248, 113, 113, 0.35)' },
 };
 
 export function starGlyphs(n: number): string {
