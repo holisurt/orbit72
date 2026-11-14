@@ -35,3 +35,13 @@ ORBIT 72 is not affiliated with or endorsed by NASA. No NASA logos or insignia a
 
 - **Be Vietnam Pro** — SIL Open Font License 1.1
 - **IBM Plex Mono** — SIL Open Font License 1.1
+
+## Software
+
+- React, Vite, TypeScript, Vitest — MIT / Apache-2.0 licences (see `package.json`)
+- Data preparation: Python with `earthaccess`, `h5py`, `numpy` (see `data_prep/requirements.txt`)
+
+## Artwork and AI
+
+- Mascot “Rồng Con”, satellites, mission patch (14-ray Đông Sơn drum star) and all UI graphics are original SVG drawings made for this project.
+- Code, tests and documentation were drafted with Claude Code (Anthropic) and reviewed by the team and a mentor — see [AI_USAGE.md](AI_USAGE.md).
