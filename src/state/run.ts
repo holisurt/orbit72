@@ -58,6 +58,8 @@ export interface RunView {
   score: ScoreResult;
   why: WhyItem[];
   cml: 0 | 1 | 2 | 3 | 4;
+  /** Level the player holds once the spec sheet is exported — printed on the exported PNG itself. */
+  cmlOnExport: 0 | 1 | 2 | 3 | 4;
   totalCostKusd: number; // nominal + launch replacements + event costs
 }
 
@@ -143,7 +145,7 @@ export function useRun(): RunView {
     });
     const r5 = mission.reqs.find((r) => r.id === 'R5')!.status;
     const r8 = mission.reqs.find((r) => r.id === 'R8')!.status;
-    const cml = cmlLevel({
+    const cmlInput = {
       contractAccepted: state.contract.accepted,
       hardOk: r5 !== 'VUOT' && r8 !== 'VUOT',
       configsCompared: state.configs.length,
@@ -151,7 +153,9 @@ export function useRun(): RunView {
       launched: !!launch,
       allPassed: score.passed === 8,
       specExported: state.specExported,
-    });
+    };
+    const cml = cmlLevel(cmlInput);
+    const cmlOnExport = cmlLevel({ ...cmlInput, specExported: true });
     return {
       mission,
       ctx,
@@ -169,6 +173,7 @@ export function useRun(): RunView {
       score,
       why: whyChain(mission, decisions),
       cml,
+      cmlOnExport,
       totalCostKusd: mission.totalCostKusd + (launch?.extraCostKusd ?? 0) + ops.eventCostKusd,
     };
   }, [mission, ctx, events, base, ops, nominal, options, hasShield, hasProp, weights, state, data, launch]);

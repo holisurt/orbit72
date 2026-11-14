@@ -82,6 +82,25 @@ describe('full run S1 Kỹ sư (solo)', () => {
     expect((sh.match(/<polygon points="([^"]+)"/)?.[1].split(' ') ?? []).length).toBe(28); // 14-ray star
   });
 
+  it('exported spec sheet PNG prints the CML level reached by exporting (CML 4), before and after export', () => {
+    // `s` is the S1 run (UHF → S-band swap) at Share; go back to Debrief with the export not yet done.
+    const before = play({ ...s, specExported: false }, { type: 'go', screen: 'debrief' });
+    const header = (h: string) => {
+      const svg = h.match(/<svg[^>]*data-testid="spec-sheet"[\s\S]*?<\/svg>/)?.[0] ?? '';
+      return svg.match(/<text[^>]*>([^<]*lần chạy[^<]*)<\/text>/)?.[1] ?? '';
+    };
+    const badge = (h: string) => h.match(/aria-label="Huy hiệu CML"[\s\S]*?(CML \d)/)?.[1];
+
+    const h0 = render(<Debrief />, before);
+    expect(badge(h0)).toBe('CML 2'); // on-screen badge: not exported yet
+    expect(header(h0)).toContain('THÀNH CÔNG 8/8');
+    expect(header(h0)).toContain('CML 4'); // the PNG is rendered before exportSpec fires
+
+    const h1 = render(<Debrief />, play(before, { type: 'exportSpec' }));
+    expect(badge(h1)).toBe('CML 4');
+    expect(header(h1)).toContain('CML 4');
+  });
+
   it('rerun keeps design + orbit, resets ops, run++', () => {
     const r = play(s, { type: 'rerun' });
     expect(r).toMatchObject({ screen: 'build', run: 2, design: s.design, orbit: s.orbit });

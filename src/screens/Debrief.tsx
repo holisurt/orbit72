@@ -46,7 +46,7 @@ export function Debrief() {
   const data = useGameData();
   const { state, dispatch } = useStore();
   const run = useRun();
-  const { score, why, cml } = run;
+  const { score, why, cml, cmlOnExport } = run;
   const style = OUTCOME_STYLE[score.outcome];
   const rows = specRows(run, data, state.ops.launch?.extraMonths ?? 0);
   const specRef = useRef<SVGSVGElement>(null);
@@ -224,13 +224,14 @@ export function Debrief() {
 
       {/* Off-screen, exportable spec sheet (literal colours). */}
       <div style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
-        <svg ref={specRef} viewBox={`0 0 600 ${120 + rows.length * 36}`}>
+        {/* The PNG is rendered before the exportSpec action, so it prints the level reached by exporting. */}
+        <svg ref={specRef} data-testid="spec-sheet" viewBox={`0 0 600 ${120 + rows.length * 36}`}>
           <rect width="600" height={120 + rows.length * 36} fill="#0F1830" />
           <text x="30" y="46" fontFamily={EXPORT_FONT} fontSize="26" fontWeight="800" fill="#E8EEF8">
             ORBIT 72 · Spec sheet · Rồng Con
           </text>
           <text x="30" y="78" fontFamily={EXPORT_FONT} fontSize="15" fill="#9AABC7">
-            {data.scenario.name} · lần chạy {state.run} · {OUTCOME_LABEL[score.outcome]} {score.passed}/8 · CML {cml}
+            {data.scenario.name} · lần chạy {state.run} · {OUTCOME_LABEL[score.outcome]} {score.passed}/8 · CML {cmlOnExport}
           </text>
           {rows.map((r, i) => (
             <g key={r.k} transform={`translate(30 ${118 + i * 36})`}>
