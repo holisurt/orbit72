@@ -24,6 +24,7 @@ CHECK CP3 (14:30): one full run S1 Kỹ sư without errors; debrief shows 8/8 TH
 ## CP4 · 14:30–15:30 · Hoàn thiện & thử nghiệm
 P4.1 Add Quiz screen (public/data/quiz.json) before Brief and after Debrief; show learning gain in Debrief. Add Guide screen (HF-Guide: Thuật ngữ, Công thức, Science/giả định, Hồ sơ Rồng, Nguồn) reachable from every screen. Add Settings (VI/EN labels for menus, text size 100/125/150 %, reduced motion, reset). Accessibility pass: focus order, aria-labels on SVG, contrast, 44 px targets. Mobile landscape layout for ≤ 900 px. Commit, push, tag `v0.9`.
 Guide > Nguồn lists the challenge resources; Guide adds a card 'Bốn phân đoạn sứ mệnh'.
+Part detail cards compute link margins from the current altitude (same function as the Orbit screen).
 P4.2 Write `tests/e2e-checklist.md` (manual): 12 steps covering every screen and edge cases from GDD §12. Run it yourself where possible (build + preview) and fix blockers only.
 CHECK CP4 (15:30): v0.9 live · 3 playtesters complete pre/post quiz (record scores in docs/playtest.md) · BTC progress form sent.
 

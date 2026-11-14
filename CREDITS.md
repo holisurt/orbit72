@@ -12,7 +12,7 @@ ORBIT 72 is not affiliated with or endorsed by NASA. No NASA logos or insignia a
 | CubeSat Design Specification (Cal Poly) | Chassis sizes and constraints |
 | Vargas Domínguez et al., arXiv:2609.24534 | FACSAT-2 lifetime table, J2, storm drag factor ×1.92 |
 | Rideshare 2026 pricing (New Space Economy) | Launch costs |
-| NASA GPM IMERG (GES DISC) | Hourly rainfall over northern Vietnam during Yagi |
+| NASA GPM IMERG Final Run, half-hourly 0.1° (GPM_3IMERGHH v07), NASA GES DISC — DOI [10.5067/GPM/IMERG/3B-HH/07](https://doi.org/10.5067/GPM/IMERG/3B-HH/07) · [data.nasa.gov](https://data.nasa.gov/dataset/gpm-imerg-final-precipitation-l3-half-hourly-0-1-degree-x-0-1-degree-v07-gpm-3imerghh-at-g-fb698) | Hourly rainfall over northern Vietnam during Yagi (Final Run only, not Early/Late) |
 | NASA DONKI | Geomagnetic storm (GST) event records |
 | NASA Small Spacecraft State of the Art 2026 | CubeSat component parameters |
 | Natural Earth (public domain) | World / Vietnam map outlines (`public/data/maps/`) |
