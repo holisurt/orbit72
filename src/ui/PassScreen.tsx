@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { ROLES, ROLE_GROUPS, playerForRole } from '../state/roles';
 import type { PlayerCount, RoleId } from '../state/store';
+import { roleColor } from './roleColor';
 
 interface Props {
   role: RoleId;
@@ -37,7 +38,7 @@ export function PassScreen({ role, count, names, text, onStart }: Props) {
       </span>
       <div
         className="avatar"
-        style={{ width: 96, height: 96, borderRadius: 48, fontSize: 'calc(28rem / 16)', background: ROLES[group[0]].color }}
+        style={{ width: 96, height: 96, borderRadius: 48, fontSize: 'calc(28rem / 16)', background: roleColor(ROLES[group[0]].color) }}
         aria-hidden="true"
       >
         {ab}

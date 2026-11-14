@@ -203,8 +203,8 @@ export function Build() {
           <div className="row" style={{ flex: 1, justifyContent: 'center', gap: 10, minHeight: 220 }}>
             {design.wings && (
               <svg width="70" height="160" viewBox="0 0 90 200" aria-hidden="true" style={{ flex: 'none' }}>
-                <rect x="2" y="10" width="80" height="180" rx="4" fill="#1E3A8A" stroke="#3DD6F5" />
-                <path d="M2 55 H82 M2 100 H82 M2 145 H82 M42 10 V190" stroke="#3DD6F5" strokeWidth="0.8" />
+                <rect x="2" y="10" width="80" height="180" rx="4" fill="#1C2536" stroke="#8E9BAE" />
+                <path d="M2 55 H82 M2 100 H82 M2 145 H82 M42 10 V190" stroke="#8E9BAE" strokeWidth="0.8" />
                 <rect x="82" y="96" width="8" height="8" fill="#9AABC7" />
               </svg>
             )}
@@ -225,8 +225,8 @@ export function Build() {
             </div>
             {design.wings && (
               <svg width="70" height="160" viewBox="0 0 90 200" aria-hidden="true" style={{ flex: 'none' }}>
-                <rect x="8" y="10" width="80" height="180" rx="4" fill="#1E3A8A" stroke="#3DD6F5" />
-                <path d="M8 55 H88 M8 100 H88 M8 145 H88 M48 10 V190" stroke="#3DD6F5" strokeWidth="0.8" />
+                <rect x="8" y="10" width="80" height="180" rx="4" fill="#1C2536" stroke="#8E9BAE" />
+                <path d="M8 55 H88 M8 100 H88 M8 145 H88 M48 10 V190" stroke="#8E9BAE" strokeWidth="0.8" />
                 <rect x="0" y="96" width="8" height="8" fill="#9AABC7" />
               </svg>
             )}

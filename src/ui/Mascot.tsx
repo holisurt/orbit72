@@ -2,10 +2,10 @@
 export function MascotGroup({ transform }: { transform?: string }) {
   return (
     <g transform={transform}>
-      <rect x="-34" y="10" width="22" height="26" rx="2" fill="#1E3A8A" stroke="#3DD6F5" />
-      <path d="M-34 23 H-12 M-23 10 V36" stroke="#3DD6F5" strokeWidth="0.8" />
-      <rect x="44" y="10" width="22" height="26" rx="2" fill="#1E3A8A" stroke="#3DD6F5" />
-      <path d="M44 23 H66 M55 10 V36" stroke="#3DD6F5" strokeWidth="0.8" />
+      <rect x="-34" y="10" width="22" height="26" rx="2" fill="#1C2536" stroke="#8E9BAE" />
+      <path d="M-34 23 H-12 M-23 10 V36" stroke="#8E9BAE" strokeWidth="0.8" />
+      <rect x="44" y="10" width="22" height="26" rx="2" fill="#1C2536" stroke="#8E9BAE" />
+      <path d="M44 23 H66 M55 10 V36" stroke="#8E9BAE" strokeWidth="0.8" />
       <rect x="-12" y="0" width="56" height="52" rx="10" fill="#F5A524" />
       <path d="M-2 0 L3 -12 L9 0Z M25 0 L31 -12 L36 0Z" fill="#FFD27A" />
       <circle cx="5" cy="22" r="7" fill="#FFFFFF" />

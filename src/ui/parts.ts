@@ -4,7 +4,7 @@ import { downlinkBytesPerDay, linkMarginFor, type LinkId } from '../sim/link';
 import { fmt } from './format';
 
 export const CAT_COLOR: Record<PartCat, string> = {
-  bus: '#3DD6F5',
+  bus: '#CBD5E1', // light slate (no cyan in the v1.2 palette)
   pow: '#4ADE80',
   com: '#A78BFA',
   pay: '#F5A524',

@@ -4,6 +4,7 @@ import { useStore, type PlayerCount } from '../state/store';
 import { PassScreen } from '../ui/PassScreen';
 import { TopBar } from '../ui/TopBar';
 import { useT } from '../ui/i18n';
+import { roleColor } from '../ui/roleColor';
 
 const COUNTS: PlayerCount[] = [2, 3, 4];
 
@@ -52,7 +53,7 @@ export function Setup() {
           </div>
           <div className="players" style={{ gridTemplateColumns: `repeat(${groups.length}, minmax(0, 1fr))` }}>
             {groups.map((g, q) => {
-              const col = ROLES[g[0]].color;
+              const col = roleColor(ROLES[g[0]].color);
               return (
                 <section key={q} className="panel player" style={{ borderTop: `3px solid ${col}`, position: 'relative' }} aria-label={`Người chơi ${q + 1}`}>
                   <div className="row" style={{ gap: 10 }}>

@@ -132,7 +132,7 @@ export function Share() {
                   {ln}
                 </text>
               ))}
-              <text x="12" y="57" fontFamily={EXPORT_MONO} fontSize="20" fill="#3DD6F5">
+              <text x="12" y="57" fontFamily={EXPORT_MONO} fontSize="20" fill="#F3F5F8">
                 {p1hRain}%
               </text>
               <text x="244" y="57" textAnchor="end" fontFamily={EXPORT_MONO} fontSize="13" fill="#E8EEF8">
@@ -150,8 +150,8 @@ export function Share() {
               {line}
             </text>
             <g transform="translate(90 368)">
-              <rect x="8" y="46" width="26" height="30" rx="3" fill="#1E3A8A" stroke="#3DD6F5" />
-              <rect x="86" y="46" width="26" height="30" rx="3" fill="#1E3A8A" stroke="#3DD6F5" />
+              <rect x="8" y="46" width="26" height="30" rx="3" fill="#1C2536" stroke="#8E9BAE" />
+              <rect x="86" y="46" width="26" height="30" rx="3" fill="#1C2536" stroke="#8E9BAE" />
               <rect x="34" y="34" width="52" height="56" rx="10" fill="#F5A524" />
               <path d="M44 34 L49 22 L55 34Z M65 34 L71 22 L76 34Z" fill="#FFD27A" />
               <circle cx="50" cy="56" r="7" fill="#FFFFFF" />

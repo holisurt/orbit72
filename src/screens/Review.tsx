@@ -11,6 +11,7 @@ import { TopBar } from '../ui/TopBar';
 import { useT } from '../ui/i18n';
 import { Term } from '../ui/Term';
 import type { TermId } from '../ui/labels';
+import { roleColor } from '../ui/roleColor';
 
 /** FD calls each station (SPEC §8). */
 const CALLS: { call: string; role: RoleId }[] = [
@@ -136,7 +137,7 @@ export function Review() {
             <path d="M150 60 C170 90 176 120 176 160 V330 H124 V160 C124 120 130 90 150 60Z" fill="#E8EEF8" />
             <path d="M124 300 L104 350 H124Z M176 300 L196 350 H176Z" fill="#F87171" />
             <rect x="124" y="200" width="52" height="10" fill="#F5A524" />
-            <circle cx="150" cy="140" r="11" fill="#3DD6F5" stroke="#1E3A8A" strokeWidth="3" />
+            <circle cx="150" cy="140" r="11" fill="#F5A524" stroke="#78350F" strokeWidth="2.5" />
             <path d="M128 330 H172 L166 350 H134Z" fill="#5B6B8F" />
             <text x="150" y="250" textAnchor="middle" fontSize="10" fontWeight="800" fill="#1E3A8A" transform="rotate(-90 150 250)">
               RỒNG CON
@@ -160,7 +161,7 @@ export function Review() {
             return (
               <div key={role} className="col" style={{ gap: 6, padding: '8px 0', borderBottom: '1px solid #1A2647' }}>
                 <div className="row" style={{ gap: 10 }}>
-                  <div className="avatar" style={{ width: 40, height: 40, background: r.color, fontSize: 'calc(13rem / 16)' }} aria-hidden="true">
+                  <div className="avatar" style={{ width: 40, height: 40, background: roleColor(r.color), fontSize: 'calc(13rem / 16)' }} aria-hidden="true">
                     {r.ab}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>

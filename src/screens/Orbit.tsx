@@ -230,9 +230,9 @@ export function Orbit() {
                 cy={tp.y}
                 rx={(lamDeg * 2) / Math.cos(target.lat * DEG)}
                 ry={lamDeg * 2}
-                fill="#3DD6F5"
+                fill="#F3F5F8"
                 fillOpacity="0.08"
-                stroke="#3DD6F5"
+                stroke="#F3F5F8"
                 strokeWidth="1.5"
                 strokeDasharray="5 4"
               />
@@ -255,7 +255,7 @@ export function Orbit() {
             <svg width="100%" height="22" viewBox="0 0 288 22" preserveAspectRatio="none" role="img"
               aria-label={cov ? `Lúc chờ lâu nhất ${fmt(cov.longestGapH, 1)} giờ, tin SOS tới nơi trong 1 giờ ${fmt(cov.p1h, 0)}%` : 'Đang tính'}>
               <rect width="288" height="22" fill="#1A2647" />
-              <path d={bins} fill="#3DD6F5" />
+              <path d={bins} fill="#F3F5F8" fillOpacity="0.85" />
               <path d="M96 0 V22 M192 0 V22" stroke="#7F90AE" strokeWidth="0.6" />
             </svg>
             <div className="mono row" style={{ justifyContent: 'space-between', fontSize: 'calc(10rem / 16)', color: 'var(--dim)' }}>

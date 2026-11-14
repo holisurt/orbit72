@@ -9,7 +9,7 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--cyan);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -41,14 +41,14 @@ button {
 
 .panel {
   background: var(--panel);
-  border: 1px solid rgba(241, 245, 249, 0.09);
+  border: 1px solid var(--hairline);
   border-radius: 14px;
 }
 
 .subtle {
   border-radius: 12px;
   background: #111724;
-  border: 1px solid rgba(241, 245, 249, 0.06);
+  border: 1px solid var(--hairline);
   padding: 10px 12px;
 }
 
@@ -61,15 +61,15 @@ button {
   min-height: 48px;
   padding: 0 22px;
   border-radius: 11px;
-  background: var(--amber);
-  color: #120c02;
+  background: var(--accent);
+  color: var(--accent-ink);
   font-weight: 800;
   font-size: calc(15rem / 16);
   text-decoration: none;
   border: 1px solid rgba(255, 255, 255, 0.22);
   cursor: pointer;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
-  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.16s ease, border-color 0.16s ease, box-shadow 0.16s ease;
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur) ease, border-color var(--dur) ease, box-shadow var(--dur) ease;
 }
 .btn-p:hover {
   background: #ffb433;
@@ -96,12 +96,12 @@ button {
 }
 .btn-p.ghost {
   background: transparent;
-  color: var(--amber);
-  border: 1.5px solid var(--amber);
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
   box-shadow: none;
 }
 .btn-p.ghost:hover {
-  background: rgba(245, 165, 36, 0.08);
+  background: var(--accent-wash);
 }
 
 .btn-s {
@@ -113,17 +113,17 @@ button {
   padding: 0 18px;
   border-radius: 11px;
   color: var(--text);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--fill-control);
   font-weight: 700;
   font-size: calc(14rem / 16);
   text-decoration: none;
-  border: 1px solid rgba(241, 245, 249, 0.14);
+  border: 1px solid var(--line-control);
   cursor: pointer;
-  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.16s ease, border-color 0.16s ease, color 0.16s ease;
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur) ease, border-color var(--dur) ease, color var(--dur) ease;
 }
 .btn-s:hover {
-  background: rgba(255, 255, 255, 0.07);
-  border-color: rgba(241, 245, 249, 0.28);
+  background: var(--fill-hover);
+  border-color: var(--line-control-hover);
   color: #ffffff;
   transform: translateY(-1px);
 }
@@ -140,10 +140,10 @@ button {
   cursor: pointer;
   min-height: 44px;
   padding: 0 6px;
-  transition: color 0.16s ease, transform 0.16s ease;
+  transition: color var(--dur) ease, transform var(--dur) ease;
 }
 .link-btn:hover {
-  color: var(--amber);
+  color: var(--accent);
 }
 
 /* toggle-style buttons: .seg / .chip / .tab — selected state via aria-pressed */
@@ -153,19 +153,19 @@ button {
 .tg {
   min-height: 44px;
   border-radius: 9px;
-  border: 1px solid rgba(241, 245, 249, 0.12);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line-control);
+  background: var(--fill-control);
   color: var(--soft);
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur) ease, border-color var(--dur) ease, color var(--dur) ease;
 }
 .seg:hover:not([aria-pressed='true']),
 .chip:hover:not([aria-pressed='true']),
 .tab:hover:not([aria-pressed='true']),
 .tg:hover:not([aria-pressed='true']) {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(241, 245, 249, 0.24);
+  background: var(--fill-hover);
+  border-color: var(--line-control-hover);
   color: var(--text);
 }
 .seg:active,
@@ -195,21 +195,21 @@ button {
 .chip[aria-pressed='true'],
 .tab[aria-pressed='true'],
 .tg[aria-pressed='true'] {
-  background: var(--amber);
-  border-color: var(--amber);
-  color: #1a1205;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
 }
 .tab.accent {
-  color: var(--amber);
-  border-color: var(--amber);
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 .sq {
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  border: 1px solid #3a4c78;
-  background: #16213d;
+  border: 1px solid var(--line-control);
+  background: var(--panel-elevated);
   color: var(--text);
   font-size: calc(20rem / 16);
   font-weight: 700;
@@ -225,12 +225,12 @@ button {
   min-height: 44px;
   border-radius: 9px;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: var(--amber);
-  color: #120c02;
+  background: var(--accent);
+  color: var(--accent-ink);
   font-weight: 800;
   font-size: calc(18rem / 16);
   cursor: pointer;
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, box-shadow 0.14s ease;
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur) ease, box-shadow var(--dur) ease;
 }
 .add:hover:not([aria-disabled='true']) {
   background: #ffb433;
@@ -251,12 +251,12 @@ button {
   min-width: 44px;
   min-height: 44px;
   border-radius: 8px;
-  border: 1px solid rgba(241, 245, 249, 0.12);
+  border: 1px solid var(--line-control);
   background: transparent;
   color: var(--soft);
   cursor: pointer;
   font-size: calc(18rem / 16);
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, color 0.14s ease, border-color 0.14s ease;
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur) ease, color var(--dur) ease, border-color var(--dur) ease;
 }
 .x:hover {
   background: rgba(248, 113, 113, 0.12);
@@ -273,40 +273,40 @@ button {
   padding: 0 12px;
   border-radius: 9px;
   border: 1px dashed rgba(245, 165, 36, 0.6);
-  background: rgba(245, 165, 36, 0.04);
-  color: var(--amber);
+  background: var(--accent-wash);
+  color: var(--accent);
   font-weight: 700;
   font-size: calc(12rem / 16);
   cursor: pointer;
-  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.16s ease, border-color 0.16s ease;
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur) ease, border-color var(--dur) ease;
 }
 .flip:hover {
-  background: rgba(245, 165, 36, 0.1);
-  border-color: var(--amber);
+  background: var(--accent-wash);
+  border-color: var(--accent);
 }
 .flip:active {
   transform: scale(0.97);
 }
 .flip[aria-pressed='true'] {
   border-style: solid;
-  border-color: var(--amber);
-  background: rgba(245, 165, 36, 0.14);
+  border-color: var(--accent);
+  background: var(--accent-wash);
 }
 
 input[type='text'] {
   font: inherit;
   font-size: calc(14rem / 16);
   min-height: 44px;
-  border: 1px solid rgba(241, 245, 249, 0.14);
+  border: 1px solid var(--line-control);
   border-radius: 9px;
   padding: 0 12px;
   width: 100%;
   background: #0f1523;
   color: var(--text);
-  transition: border-color 0.16s ease, background-color 0.16s ease;
+  transition: border-color var(--dur) ease, background-color var(--dur) ease;
 }
 input[type='text']:focus {
-  border-color: var(--amber);
+  border-color: var(--accent);
   background: #131b2e;
   outline: none;
 }
@@ -314,7 +314,7 @@ input[type='text']:focus {
 input[type='range'] {
   width: 100%;
   min-height: 44px;
-  accent-color: var(--amber);
+  accent-color: var(--accent);
 }
 
 /* ---------- Status ---------- */
@@ -361,14 +361,14 @@ input[type='range'] {
   justify-content: space-between;
   gap: 12px;
   flex-wrap: wrap;
-  border-bottom: 1px solid #1a2647;
+  border-bottom: 1px solid var(--hairline);
 }
 .brand {
   font-weight: 800;
   letter-spacing: 0.06em;
 }
 .brand .amber {
-  color: var(--amber);
+  color: var(--accent);
 }
 .brand .sub {
   font-weight: 600;
@@ -414,9 +414,9 @@ button.step:hover {
   color: var(--text);
 }
 .step[aria-current='step'] {
-  background: var(--amber);
-  color: #1a1205;
-  border-color: var(--amber);
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
 }
 
 .body {
@@ -460,7 +460,7 @@ button.step:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(241, 245, 249, 0.07);
+  border-bottom: 1px solid var(--hairline);
 }
 .home-main {
   flex: 1;
@@ -528,7 +528,7 @@ button.step:hover {
   flex-wrap: wrap;
   font-size: calc(12rem / 16);
   color: var(--dim);
-  border-top: 1px solid rgba(241, 245, 249, 0.08);
+  border-top: 1px solid var(--hairline);
 }
 
 /* ---------- Setup ---------- */
@@ -547,7 +547,7 @@ button.step:hover {
   border-top-width: 3px;
   background: var(--panel);
   border-radius: 14px;
-  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.16s ease;
+  transition: transform var(--dur) var(--ease-spring), box-shadow var(--dur) ease;
 }
 .player:hover {
   transform: translateY(-2px);
@@ -592,7 +592,7 @@ button.step:hover {
 }
 .card {
   border-radius: 14px;
-  border: 1px solid rgba(241, 245, 249, 0.12);
+  border: 1px solid var(--line-control);
   background: var(--panel);
   padding: 16px;
   text-align: left;
@@ -602,10 +602,10 @@ button.step:hover {
   gap: 6px;
   color: var(--text);
   min-height: 44px;
-  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+  transition: transform var(--dur) var(--ease-spring), border-color var(--dur) ease, background-color var(--dur) ease, box-shadow var(--dur) ease;
 }
 .card:hover:not(:disabled) {
-  border-color: rgba(241, 245, 249, 0.28);
+  border-color: var(--line-control-hover);
   transform: translateY(-2px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
@@ -613,9 +613,9 @@ button.step:hover {
   transform: translateY(1px) scale(0.99);
 }
 .card[aria-pressed='true'] {
-  border-color: var(--amber);
-  background: rgba(245, 165, 36, 0.05);
-  box-shadow: 0 0 0 1px var(--amber), 0 4px 16px rgba(0, 0, 0, 0.3);
+  border-color: var(--accent);
+  background: var(--accent-wash);
+  box-shadow: 0 0 0 1px var(--accent), 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 .card:disabled {
   opacity: 0.55;
@@ -637,7 +637,7 @@ button.step:hover {
   align-items: center;
   gap: 10px;
   padding: 8px 0;
-  border-bottom: 1px solid rgba(241, 245, 249, 0.07);
+  border-bottom: 1px solid var(--hairline);
 }
 .req-list > div:last-child {
   border-bottom: 0;
@@ -649,7 +649,7 @@ button.step:hover {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 10px;
-  border-bottom: 1px solid rgba(241, 245, 249, 0.08);
+  border-bottom: 1px solid var(--hairline);
   background: #090e18;
 }
 .hud-item {
@@ -658,23 +658,23 @@ button.step:hover {
   flex-direction: column;
   gap: 6px;
   background: var(--panel);
-  border: 1px solid rgba(241, 245, 249, 0.08);
+  border: 1px solid var(--hairline);
   border-radius: 11px;
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.14s ease;
+  transition: transform var(--dur) var(--ease-spring), border-color var(--dur) ease;
 }
 .hud-item:hover {
-  border-color: rgba(241, 245, 249, 0.2);
+  border-color: var(--line-control-hover);
 }
 .bar {
   height: 5px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--fill-hover);
   overflow: hidden;
 }
 .bar > div {
   height: 5px;
   border-radius: 999px;
-  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width 0.3s var(--ease-spring);
 }
 .build-body {
   grid-template-columns: 290px minmax(0, 1fr) 300px;
@@ -685,14 +685,14 @@ button.step:hover {
   gap: 8px;
   padding: 8px 10px;
   border-radius: 10px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(241, 245, 249, 0.08);
+  background: var(--fill-control);
+  border: 1px solid var(--hairline);
   border-left: 3px solid;
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, border-color 0.14s ease;
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur) ease, border-color var(--dur) ease;
 }
 .part-item:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(241, 245, 249, 0.2);
+  background: var(--fill-hover);
+  border-color: var(--line-control-hover);
   transform: translateY(-1px);
 }
 .part-item .info {
@@ -707,14 +707,14 @@ button.step:hover {
   min-height: 44px;
 }
 .part-item .info[aria-pressed='true'] .pname {
-  color: var(--amber);
+  color: var(--accent);
 }
 .bay {
-  border: 2px solid rgba(241, 245, 249, 0.18);
+  border: 2px solid var(--line-control);
   border-radius: 14px;
   padding: 12px;
   background: #0b111d;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.55), inset 0 0 0 1px var(--fill-hover);
   display: grid;
   gap: 8px;
   max-width: 100%;
@@ -730,11 +730,11 @@ button.step:hover {
   font-size: calc(12rem / 16);
   font-weight: 800;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform var(--dur) var(--ease-spring);
 }
 .bay-cell.empty {
-  border: 1.5px dashed rgba(241, 245, 249, 0.14);
-  background: rgba(255, 255, 255, 0.015);
+  border: 1.5px dashed var(--line-control);
+  background: var(--fill-control);
   box-shadow: none;
 }
 .placed-row {
@@ -743,7 +743,7 @@ button.step:hover {
   gap: 8px;
   font-size: calc(13rem / 16);
   padding: 3px 0;
-  border-bottom: 1px solid #1a2647;
+  border-bottom: 1px solid var(--hairline);
 }
 .dot {
   width: 8px;
@@ -766,7 +766,7 @@ button.step:hover {
   top: 210px;
   width: min(380px, calc(100vw - 32px));
   background: var(--panel);
-  border: 1.5px solid var(--amber);
+  border: 1.5px solid var(--accent);
   border-radius: 16px;
   padding: 18px 20px;
   display: flex;
@@ -777,7 +777,7 @@ button.step:hover {
 .coach-target {
   position: relative;
   z-index: 16;
-  outline: 3px solid var(--amber);
+  outline: 3px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -787,30 +787,30 @@ button.step:hover {
 }
 .lv {
   border-radius: 10px;
-  border: 1px solid rgba(241, 245, 249, 0.12);
+  border: 1px solid var(--line-control);
   padding: 10px 12px;
   text-align: left;
   cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 3px;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--fill-control);
   color: var(--text);
   min-height: 44px;
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.14s ease, background-color 0.14s ease, box-shadow 0.14s ease;
+  transition: transform var(--dur) var(--ease-spring), border-color var(--dur) ease, background-color var(--dur) ease, box-shadow var(--dur) ease;
 }
 .lv:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(241, 245, 249, 0.24);
+  background: var(--fill-hover);
+  border-color: var(--line-control-hover);
   transform: translateY(-1px);
 }
 .lv:active {
   transform: scale(0.98);
 }
 .lv[aria-pressed='true'] {
-  border-color: var(--amber);
-  background: rgba(245, 165, 36, 0.08);
-  box-shadow: 0 0 0 1px var(--amber);
+  border-color: var(--accent);
+  background: var(--accent-wash);
+  box-shadow: 0 0 0 1px var(--accent);
 }
 .metric {
   display: flex;
@@ -818,7 +818,7 @@ button.step:hover {
   align-items: center;
   gap: 8px;
   padding: 6px 0;
-  border-bottom: 1px solid rgba(241, 245, 249, 0.07);
+  border-bottom: 1px solid var(--hairline);
 }
 .metric:last-child {
   border-bottom: 0;
@@ -846,7 +846,7 @@ button.step:hover {
   gap: 8px;
   align-items: center;
   padding: 7px 0;
-  border-bottom: 1px solid #1a2647;
+  border-bottom: 1px solid var(--hairline);
 }
 .ready-row > * {
   min-width: 0;
@@ -948,17 +948,17 @@ button.step:hover {
   min-width: 70px;
   min-height: 44px;
   border-radius: 9px;
-  border: 1px solid rgba(241, 245, 249, 0.16);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line-control);
+  background: var(--fill-control);
   color: var(--text);
   font-weight: 800;
   font-size: calc(13rem / 16);
   cursor: pointer;
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur) ease, border-color var(--dur) ease, box-shadow var(--dur) ease;
 }
 .vote:hover:not([aria-pressed='true']) {
-  background: rgba(255, 255, 255, 0.06);
-  border-color: rgba(241, 245, 249, 0.28);
+  background: var(--fill-hover);
+  border-color: var(--line-control-hover);
   transform: translateY(-1px);
 }
 .vote:active {
@@ -980,17 +980,17 @@ button.step:hover {
   flex: 1;
   min-height: 44px;
   border-radius: 9px;
-  border: 1px solid rgba(241, 245, 249, 0.14);
+  border: 1px solid var(--line-control);
   background: #0f1523;
   color: var(--text);
   font: inherit;
   font-size: calc(13rem / 16);
   padding: 0 10px;
   cursor: pointer;
-  transition: border-color 0.16s ease;
+  transition: border-color var(--dur) ease;
 }
 .select:focus {
-  border-color: var(--amber);
+  border-color: var(--accent);
   outline: none;
 }
 
@@ -1005,7 +1005,7 @@ button.step:hover {
 /* ---------- Ops ---------- */
 .strip-row {
   padding: 8px 24px;
-  border-bottom: 1px solid rgba(241, 245, 249, 0.08);
+  border-bottom: 1px solid var(--hairline);
   background: #090e18;
   gap: 12px;
 }
@@ -1021,7 +1021,7 @@ button.step:hover {
   align-items: center;
   gap: 10px;
   background: rgba(10, 26, 51, 0.85);
-  border: 1px solid rgba(241, 245, 249, 0.12);
+  border: 1px solid var(--line-control);
   border-radius: 10px;
   padding: 0 10px;
 }
@@ -1042,7 +1042,7 @@ button.step:hover {
   gap: 3px;
   padding: 6px 8px;
   background: rgba(9, 14, 24, 0.88);
-  border: 1px solid rgba(241, 245, 249, 0.1);
+  border: 1px solid var(--line-control);
   border-radius: 8px;
 }
 .modal-backdrop {
@@ -1079,8 +1079,8 @@ button.step:hover {
 }
 .opt {
   border-radius: 12px;
-  border: 1px solid rgba(241, 245, 249, 0.14);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line-control);
+  background: var(--fill-control);
   color: var(--text);
   padding: 14px;
   text-align: left;
@@ -1089,11 +1089,11 @@ button.step:hover {
   flex-direction: column;
   gap: 6px;
   min-height: 44px;
-  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+  transition: transform var(--dur) var(--ease-spring), border-color var(--dur) ease, background-color var(--dur) ease, box-shadow var(--dur) ease;
 }
 .opt:hover:not(:disabled) {
-  border-color: rgba(241, 245, 249, 0.28);
-  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--line-control-hover);
+  background: var(--fill-hover);
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
 }
@@ -1101,9 +1101,9 @@ button.step:hover {
   transform: translateY(1px) scale(0.99);
 }
 .opt[aria-pressed='true'] {
-  border-color: var(--amber);
-  background: rgba(245, 165, 36, 0.08);
-  box-shadow: 0 0 0 1px var(--amber), 0 4px 16px rgba(0, 0, 0, 0.4);
+  border-color: var(--accent);
+  background: var(--accent-wash);
+  box-shadow: 0 0 0 1px var(--accent), 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 .opt:disabled {
   opacity: 0.45;
@@ -1130,14 +1130,14 @@ button.step:hover {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
-  border: 1px solid rgba(241, 245, 249, 0.08);
+  border: 1px solid var(--hairline);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.02);
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, border-color 0.14s ease;
+  background: var(--fill-control);
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur) ease, border-color var(--dur) ease;
 }
 .why-row:hover {
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(241, 245, 249, 0.18);
+  background: var(--fill-hover);
+  border-color: var(--line-control);
   transform: translateY(-1px);
 }
 
@@ -1153,7 +1153,7 @@ button.step:hover {
   min-width: 44px;
   padding: 0 10px;
   border-radius: 10px;
-  border: 1px solid #3a4c78;
+  border: 1px solid var(--line-control);
   background: transparent;
   color: var(--text);
   font-weight: 700;
@@ -1161,7 +1161,7 @@ button.step:hover {
   cursor: pointer;
 }
 .tool-btn:hover {
-  background: #16213d;
+  background: var(--panel-elevated);
 }
 .tool-q {
   display: inline-grid;
@@ -1169,7 +1169,7 @@ button.step:hover {
   width: 22px;
   height: 22px;
   border-radius: 11px;
-  background: var(--cyan);
+  background: transparent;
   color: #0b1020;
   font-weight: 800;
 }
@@ -1182,7 +1182,7 @@ button.step:hover {
   flex-direction: column;
   gap: 16px;
   background: var(--panel);
-  border: 1px solid rgba(241, 245, 249, 0.12);
+  border: 1px solid var(--line-control);
   border-radius: 16px;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
 }
@@ -1195,9 +1195,9 @@ button.step:hover {
   padding: 4px 0;
 }
 .seg[role='switch'][aria-checked='true'] {
-  background: var(--amber);
-  border-color: var(--amber);
-  color: #120c02;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 .btn-p.danger {
@@ -1239,9 +1239,9 @@ button.step:hover {
   margin-left: 4px;
   padding: 0;
   border-radius: 9px;
-  border: 1px solid var(--cyan);
+  border: 1px solid var(--muted);
   background: transparent;
-  color: var(--cyan);
+  color: var(--muted);
   font: inherit;
   font-size: calc(11rem / 16);
   font-weight: 800;
@@ -1263,7 +1263,7 @@ button.step:hover {
   padding: 8px 10px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  background: #16213d;
+  background: var(--panel-elevated);
   color: var(--soft);
   font-size: calc(12rem / 16);
   font-weight: 500;
@@ -1277,7 +1277,7 @@ button.step:hover {
   padding: 0;
 }
 .guide-focus {
-  outline: 2px solid var(--amber);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -1297,28 +1297,28 @@ button.step:hover {
 .guide-tab {
   min-height: 48px;
   border-radius: 11px;
-  border: 1px solid rgba(241, 245, 249, 0.1);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line-control);
+  background: var(--fill-control);
   color: var(--soft);
   font-size: calc(15rem / 16);
   font-weight: 700;
   text-align: left;
   padding: 0 16px;
   cursor: pointer;
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, border-color 0.14s ease, color 0.14s ease;
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur) ease, border-color var(--dur) ease, color var(--dur) ease;
 }
 .guide-tab:hover:not([aria-selected='true']) {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(241, 245, 249, 0.22);
+  background: var(--fill-hover);
+  border-color: var(--line-control-hover);
   color: var(--text);
 }
 .guide-tab:active {
   transform: scale(0.98);
 }
 .guide-tab[aria-selected='true'] {
-  background: var(--amber);
-  border-color: var(--amber);
-  color: #120c02;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 .guide-tip {
@@ -1332,10 +1332,10 @@ button.step:hover {
   align-content: start;
 }
 .guide-grid article {
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.14s ease;
+  transition: transform var(--dur) var(--ease-spring), border-color var(--dur) ease;
 }
 .guide-grid article:hover {
-  border-color: rgba(241, 245, 249, 0.22);
+  border-color: var(--line-control-hover);
   transform: translateY(-1px);
 }
 .guide-link {
@@ -1344,7 +1344,7 @@ button.step:hover {
   min-height: 44px;
   font-size: calc(12rem / 16);
   font-weight: 700;
-  color: var(--amber);
+  color: var(--accent);
   text-decoration: none;
 }
 .guide-link:hover {
@@ -1368,7 +1368,7 @@ button.step:hover {
   gap: 8px;
   border-radius: 14px;
   background: var(--panel);
-  border: 1px solid rgba(241, 245, 249, 0.09);
+  border: 1px solid var(--hairline);
 }
 .quiz-legend {
   float: left;
@@ -1386,16 +1386,16 @@ button.step:hover {
   min-height: 46px;
   padding: 8px 12px;
   border-radius: 10px;
-  border: 1px solid rgba(241, 245, 249, 0.12);
-  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--line-control);
+  background: var(--fill-control);
   font-size: calc(14rem / 16);
   color: var(--text);
   cursor: pointer;
-  transition: transform 0.14s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.14s ease, border-color 0.14s ease, box-shadow 0.14s ease;
+  transition: transform var(--dur) var(--ease-spring), background-color var(--dur) ease, border-color var(--dur) ease, box-shadow var(--dur) ease;
 }
 .quiz-opt:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(241, 245, 249, 0.25);
+  background: var(--fill-hover);
+  border-color: var(--line-control-hover);
   transform: translateY(-1px);
 }
 .quiz-opt:active {
@@ -1404,13 +1404,13 @@ button.step:hover {
 .quiz-opt input {
   width: 18px;
   height: 18px;
-  accent-color: var(--amber);
+  accent-color: var(--accent);
   flex: none;
   cursor: pointer;
 }
 .quiz-opt.picked {
-  border-color: var(--amber);
-  background: rgba(245, 165, 36, 0.08);
+  border-color: var(--accent);
+  background: var(--accent-wash);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 .quiz-opt.right {
@@ -1428,6 +1428,102 @@ button.step:hover {
   .rocket {
     transition: none;
   }
+}
+
+/* ---------- Shared chrome (v1.2 "void" palette) — one style for every screen ----------
+   Controls: ghost fill + --line-control border (≥ 3:1), --accent only for active/selected.
+   Transitions 180 ms --ease-spring; the reduced-motion rules in tokens.css switch them off. */
+.btn-s,
+.seg,
+.chip,
+.tab,
+.tg,
+.vote,
+.x,
+.sq,
+.select,
+.opt,
+.quiz-opt,
+.lv,
+.guide-tab,
+.tool-btn,
+input[type='text'] {
+  border-color: var(--line-control);
+}
+.btn-s {
+  background: transparent;
+}
+.btn-s:hover,
+.tool-btn:hover,
+.sq:hover:not(:disabled) {
+  border-color: var(--line-control-hover);
+  background: var(--fill-hover);
+}
+.btn-p:active:not([aria-disabled='true']) {
+  transform: scale(0.98);
+}
+.step {
+  min-height: 44px;
+  border-color: var(--line-control);
+  color: var(--muted);
+  transition: color var(--dur) var(--ease-spring), border-color var(--dur) var(--ease-spring), background-color var(--dur) var(--ease-spring);
+}
+button.step {
+  color: var(--soft);
+}
+button.step:hover {
+  color: var(--text);
+  border-color: var(--line-control-hover);
+  background: var(--fill-hover);
+}
+.step[aria-current='step'] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-ink);
+}
+.tool-btn {
+  background: var(--fill-control);
+  transition: border-color var(--dur) var(--ease-spring), background-color var(--dur) var(--ease-spring);
+}
+.tool-q {
+  background: transparent;
+  border: 1.5px solid var(--muted);
+  color: var(--text);
+}
+.term-q {
+  border-color: var(--muted);
+  color: var(--muted);
+  transition: color var(--dur) var(--ease-spring), border-color var(--dur) var(--ease-spring);
+}
+.term-q:hover,
+.term-q[aria-expanded='true'] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.sq {
+  background: var(--fill-control);
+  border-radius: 10px;
+  transition: border-color var(--dur) var(--ease-spring), background-color var(--dur) var(--ease-spring), transform var(--dur) var(--ease-spring);
+}
+.sq:active:not(:disabled) {
+  transform: scale(0.96);
+}
+.status {
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+}
+.settings-row {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.panel {
+  border-color: var(--hairline);
+}
+.topbar,
+.hud,
+.strip-row {
+  border-bottom-color: var(--hairline);
 }
 
 /* ---------- Long labels (v1.1 plain language) ----------
@@ -1512,7 +1608,7 @@ svg {
     gap: 10px;
     padding: 6px 12px 6px 16px;
     background: #3a2e0e;
-    border-bottom: 1px solid var(--amber);
+    border-bottom: 1px solid var(--accent);
     color: var(--text);
     font-size: calc(13rem / 16);
     font-weight: 700;
