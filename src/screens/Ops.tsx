@@ -11,6 +11,7 @@ import { MapVN, projVN } from '../ui/MapVN';
 import { ictLabel, IMERG_LABEL, RATE_BINS, rainCells } from '../ui/rain';
 import { RainLegend } from '../ui/RainLegend';
 import { HeaderTools } from '../ui/HeaderTools';
+import { Modal } from '../ui/Modal';
 import { useT } from '../ui/i18n';
 
 const SPEEDS = [60, 360, 1440];
@@ -325,8 +326,7 @@ export function Ops() {
       </main>
 
       {ev && (
-        <div className="modal-backdrop">
-          <div className="panel event-card" role="dialog" aria-modal="true" aria-labelledby="ev-title">
+        <Modal labelledBy="ev-title" onClose={() => setModal(null)} className="event-card">
             <div className="row" style={{ justifyContent: 'space-between' }}>
               <span className="lbl" style={{ color: 'var(--bad)' }}>
                 Sự cố {ev.id} · {ev.atH < 0 ? 'khi vào quỹ đạo' : `T0+${ev.atH} h`}
@@ -357,15 +357,14 @@ export function Ops() {
                 )}
               </div>
             </div>
-            <div className="opt-grid" role="radiogroup" aria-label="Phương án">
+            <div className="opt-grid" role="group" aria-label="Phương án">
               {options[ev.id].map((o) => {
                 const opt = ev.options.find((x) => x.k === o.key)!;
                 return (
                   <button
                     key={o.key}
                     className="opt"
-                    role="radio"
-                    aria-checked={pick === o.key}
+                    aria-pressed={pick === o.key}
                     disabled={!o.available}
                     onClick={() => setPick(o.key)}
                   >
@@ -390,8 +389,7 @@ export function Ops() {
                 {t('confirm')}
               </button>
             </div>
-          </div>
-        </div>
+        </Modal>
       )}
     </div>
   );

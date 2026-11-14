@@ -18,7 +18,18 @@ export function PassScreen({ role, count, names, text, onStart }: Props) {
   const ab = group.map((g) => ROLES[g].ab).join('+');
   const nick = names[idx]?.trim();
   const btn = useRef<HTMLButtonElement>(null);
-  useEffect(() => btn.current?.focus(), []);
+  useEffect(() => {
+    btn.current?.focus();
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onStart(); // Esc dismisses the pass-the-device gate
+      if (e.key === 'Tab') {
+        e.preventDefault(); // single action in this dialog: keep focus on it
+        btn.current?.focus();
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onStart]);
   return (
     <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="pass-title">
       <span className="lbl" style={{ color: 'var(--amber)' }}>

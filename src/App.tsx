@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { DataProvider } from './data/context';
 import { StoreProvider, useStore } from './state/store';
 import { Home } from './screens/Home';
@@ -14,11 +15,24 @@ import { Share } from './screens/Share';
 import { Quiz } from './screens/Quiz';
 import { Guide } from './screens/Guide';
 import { SettingsProvider } from './state/settings';
+import { RotateHint } from './ui/RotateHint';
 
 export const APP_TITLE = 'ORBIT 72 - Bắt Sóng Cứu Hộ';
 
 function Router() {
   const { state, dispatch } = useStore();
+  // Logical focus order: after a screen change, keyboard focus starts at the top of the new screen.
+  const first = useRef(true);
+  useEffect(() => {
+    if (first.current) {
+      first.current = false;
+      return;
+    }
+    const el = document.querySelector<HTMLElement>('.screen');
+    if (!el || el.contains(document.activeElement)) return;
+    el.tabIndex = -1;
+    el.focus({ preventScroll: true });
+  }, [state.screen]);
   switch (state.screen) {
     case 'home':
       return <Home />;
@@ -56,6 +70,7 @@ export function App() {
     <SettingsProvider>
       <DataProvider>
         <StoreProvider>
+          <RotateHint />
           <Router />
         </StoreProvider>
       </DataProvider>

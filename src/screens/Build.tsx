@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useGameData } from '../data/context';
 import type { ChassisId, Part, PartCat } from '../data/types';
 import { resolveParts } from '../sim/build';
@@ -122,6 +122,12 @@ export function Build() {
 
   const hasS = hasPart('sband');
   const coach = state.coach.open;
+  useEffect(() => {
+    if (!coach) return;
+    const onKey = (e: KeyboardEvent) => e.key === 'Escape' && dispatch({ type: 'setCoach', open: false });
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [coach, dispatch]);
   const rbpsOf = (id: string) => comp.parts.find((p) => p.id === id)?.rbps ?? 0;
   const sosMB = fmt(comp.parts.find((p) => p.id === 'sos')?.mbPerDay ?? 0, 0);
 

@@ -47,13 +47,13 @@ describe('language (menu labels and buttons only)', () => {
 });
 
 describe('display settings', () => {
-  it('applySettings sets lang, root font size (text uses rem), contrast and motion flags', () => {
-    const root = { lang: '', style: { fontSize: '' }, dataset: {} as Record<string, string> };
+  it('applySettings sets root font size (text uses rem), contrast and motion flags; <html lang> stays vi', () => {
+    const root = { lang: 'vi', style: { fontSize: '' }, dataset: {} as Record<string, string> };
     applySettings({ lang: 'en', textScale: 150, highContrast: true, reduceMotion: true }, root as unknown as HTMLElement);
-    expect(root).toMatchObject({ lang: 'en', style: { fontSize: '150%' }, dataset: { contrast: 'high', motion: 'reduce' } });
+    expect(root).toMatchObject({ lang: 'vi', style: { fontSize: '150%' }, dataset: { lang: 'en', contrast: 'high', motion: 'reduce' } });
     applySettings(DEFAULT_SETTINGS, root as unknown as HTMLElement);
     expect(root).toMatchObject({ lang: 'vi', style: { fontSize: '100%' } });
-    expect(root.dataset).toEqual({});
+    expect(root.dataset).toEqual({ lang: 'vi' });
   });
 
   it('CSS: high-contrast tokens, manual reduced motion and the system preference', () => {

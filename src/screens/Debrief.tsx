@@ -253,7 +253,7 @@ export function Debrief() {
       {/* Off-screen, exportable spec sheet (literal colours). */}
       <div style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
         {/* The PNG is rendered before the exportSpec action, so it prints the level reached by exporting. */}
-        <svg ref={specRef} data-testid="spec-sheet" viewBox={`0 0 600 ${120 + rows.length * 36}`}>
+        <svg ref={specRef} data-testid="spec-sheet" aria-hidden="true" viewBox={`0 0 600 ${120 + rows.length * 36}`}>
           <rect width="600" height={120 + rows.length * 36} fill="#0F1830" />
           <text x="30" y="46" fontFamily={EXPORT_FONT} fontSize="26" fontWeight="800" fill="#E8EEF8">
             ORBIT 72 · Spec sheet · Rồng Con

@@ -31,9 +31,12 @@ export function loadSettings(): Settings {
   }
 }
 
-/** Reflect settings on <html>: lang, root font size (all text uses rem), data-contrast, data-motion. */
+/**
+ * Reflect settings on <html>: root font size (all text uses rem), data-contrast, data-motion, data-lang.
+ * <html lang> stays "vi" because body text is always Vietnamese (only menus/buttons switch).
+ */
 export function applySettings(s: Settings, root: HTMLElement = document.documentElement): void {
-  root.lang = s.lang;
+  root.dataset.lang = s.lang;
   root.style.fontSize = `${s.textScale}%`;
   if (s.highContrast) root.dataset.contrast = 'high';
   else delete root.dataset.contrast;
