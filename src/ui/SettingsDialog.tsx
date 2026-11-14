@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { EN_COMPLETE } from '../i18n';
 import { useSettings, type TextScale } from '../state/settings';
 import { useStore } from '../state/store';
 import { useT } from './i18n';
@@ -12,6 +13,10 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
   const { dispatch } = useStore();
   const t = useT();
   const [confirming, setConfirming] = useState(false);
+  // A player who picked English before it was complete goes back to Vietnamese (no half-English UI).
+  useEffect(() => {
+    if (settings.lang === 'en' && !EN_COMPLETE) update({ lang: 'vi' });
+  }, [settings.lang, update]);
   const [done, setDone] = useState(false);
 
   return (
@@ -30,11 +35,23 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
           {t('language')}
         </span>
         <div className="row" style={{ gap: 6 }}>
-          {(['vi', 'en'] as const).map((l) => (
-            <button key={l} className="seg" lang={l} aria-pressed={settings.lang === l} onClick={() => update({ lang: l })}>
-              {l === 'vi' ? 'Tiếng Việt' : 'English'}
-            </button>
-          ))}
+          {(['vi', 'en'] as const).map((l) => {
+            // English is offered only once every screen is translated (src/i18n EN_COMPLETE).
+            const unavailable = l === 'en' && !EN_COMPLETE;
+            return (
+              <button
+                key={l}
+                className="seg"
+                lang={l}
+                aria-pressed={settings.lang === l}
+                aria-disabled={unavailable || undefined}
+                disabled={unavailable}
+                onClick={() => !unavailable && update({ lang: l })}
+              >
+                {l === 'vi' ? 'Tiếng Việt' : unavailable ? 'English (sắp có)' : 'English'}
+              </button>
+            );
+          })}
         </div>
       </div>
 

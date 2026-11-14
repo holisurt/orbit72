@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { useStore } from '../state/store';
 import { useT } from './i18n';
+import { useEnglishGate } from '../i18n';
 import { SettingsDialog } from './SettingsDialog';
 
 /** "? Sổ tay" and "⚙ Cài đặt" buttons shown in every screen header. */
 export function HeaderTools() {
   const { dispatch } = useStore();
   const t = useT();
+  useEnglishGate();
   const [open, setOpen] = useState(false);
   return (
     <div className="row header-tools">

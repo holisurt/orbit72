@@ -1,14 +1,16 @@
 import { useMaps } from '../data/context';
 import { MascotGroup } from './Mascot';
+import { useTr } from '../i18n';
 
 /** Globe centred on Viet Nam with orbit rings and Hanoi marker (design/HF-Home). */
 export function Globe() {
+  const tr = useTr();
   const maps = useMaps();
   return (
     <svg
       viewBox="-40 -40 500 500"
       role="img"
-      aria-label="Quả địa cầu nhìn từ không gian, tâm là Việt Nam, với các quỹ đạo vệ tinh"
+      aria-label={tr('globe_label')}
     >
       <defs>
         <radialGradient id="globe-oc" cx="40%" cy="35%" r="70%">
