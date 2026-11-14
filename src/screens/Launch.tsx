@@ -60,8 +60,8 @@ export function Launch() {
                 </>
               )}
             </g>
-            {onPad && <path d="M60 330 V120 H72 V330 M60 160 H118 M60 220 H118 M60 280 H118" stroke="#3A4C78" strokeWidth="4" fill="none" />}
-            <path d="M0 330 H300 V400 H0Z" fill="#0B1428" />
+            {onPad && <path d="M60 330 V120 H72 V330 M60 160 H118 M60 220 H118 M60 280 H118" stroke="#646971" strokeWidth="4" fill="none" />}
+            <path d="M0 330 H300 V400 H0Z" fill="#0E131D" />
           </svg>
           <div style={{ position: 'absolute', top: 8, left: 0, right: 0, textAlign: 'center' }}>
             <div className="lbl" style={{ color: 'var(--amber)' }}>
@@ -85,7 +85,7 @@ export function Launch() {
                   style={{ padding: '9px 12px', gap: 10, borderColor: q === k ? 'var(--accent)' : 'var(--hairline)', background: q === k ? 'var(--accent-wash)' : undefined }}
                   aria-current={q === k ? 'step' : undefined}
                 >
-                  <span className="mono" style={{ width: 78, fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>
+                  <span className="mono" style={{ width: 'calc(84rem / 16)', flex: 'none', fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>
                     {t}
                   </span>
                   <span style={{ flex: 1, fontSize: 'calc(13rem / 16)', fontWeight: 600 }}>{n}</span>

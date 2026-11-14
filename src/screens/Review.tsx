@@ -132,8 +132,8 @@ export function Review() {
           aria-label="Bệ phóng"
         >
           <svg width="100%" height="100%" viewBox="0 0 300 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Tên lửa trên bệ phóng chờ lệnh">
-            <path d="M0 380 H300 V420 H0Z" fill="#141F3A" />
-            <path d="M70 380 V150 H84 V380 M70 200 H120 M70 260 H120 M70 320 H120" stroke="#3A4C78" strokeWidth="4" fill="none" />
+            <path d="M0 380 H300 V420 H0Z" fill="#0E131D" />
+            <path d="M70 380 V150 H84 V380 M70 200 H120 M70 260 H120 M70 320 H120" stroke="#646971" strokeWidth="4" fill="none" />
             <path d="M150 60 C170 90 176 120 176 160 V330 H124 V160 C124 120 130 90 150 60Z" fill="#E8EEF8" />
             <path d="M124 300 L104 350 H124Z M176 300 L196 350 H176Z" fill="#F87171" />
             <rect x="124" y="200" width="52" height="10" fill="#F5A524" />

@@ -1600,6 +1600,10 @@ button.step:hover {
   height: 6px;
   border-radius: 999px;
 }
+/* Launch: keep the countdown (absolute, top) clear of the rocket at any text size */
+.launch-body > div:first-child {
+  padding-top: calc(110rem / 16);
+}
 /* Launch stage chips: CHỜ (outlined) · ĐANG (accent) · XONG (ok) — text + colour */
 .stage-chip.wait {
   background: transparent;
