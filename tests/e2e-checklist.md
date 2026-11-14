@@ -34,6 +34,11 @@ that the automated walk passes usually means a browser-only problem (click, keyb
 - **Differences from GDD §12 (not blockers, left as is):**
   - #4 camera/X-band with basic ADCS is a hard R8 error here; the GDD says “warning, 0 valid images”.
   - #5 an incompatible launcher card can still be selected (it shows the reason and Review blocks launch); the GDD says greyed out.
-  - #6 over-budget locks **PHÓNG** at Review, not the Build/Orbit “continue” buttons; event options that cost money are not locked when the budget is short.
+  - #6 over-budget locks **PHÓNG** at Review, not the Build/Orbit “continue” buttons. (Fixed in the final build: event options that cost money are disabled with “Không đủ ngân sách: còn <x>k” — `tests/budget.test.tsx`.)
+
+## Walk log — final build (2026-11-14 14:45)
+
+- Automated walk re-run: `tests/e2e.test.tsx` 14/14, `tests/fullrun.test.tsx` 5/5, `tests/budget.test.tsx` 3/3; full suite 275/275.
+- Blockers found: none. Browser-only items above are still unwalked.
   - #7 with no contact minutes R2 fails, but the exact sentence “Không có lượt liên lạc với Hòa Lạc” was not checked.
   - #8 unreachable with the current components (see step 8).
