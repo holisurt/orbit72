@@ -251,24 +251,43 @@ button {
   min-height: 44px;
   padding: 0 12px;
   border-radius: 9px;
-  border: 1px dashed var(--amber);
-  background: transparent;
+  border: 1px dashed rgba(245, 165, 36, 0.6);
+  background: rgba(245, 165, 36, 0.04);
   color: var(--amber);
   font-weight: 700;
   font-size: calc(12rem / 16);
   cursor: pointer;
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.16s ease, border-color 0.16s ease;
+}
+.flip:hover {
+  background: rgba(245, 165, 36, 0.1);
+  border-color: var(--amber);
+}
+.flip:active {
+  transform: scale(0.97);
+}
+.flip[aria-pressed='true'] {
+  border-style: solid;
+  border-color: var(--amber);
+  background: rgba(245, 165, 36, 0.14);
 }
 
 input[type='text'] {
   font: inherit;
   font-size: calc(14rem / 16);
   min-height: 44px;
-  border: 1px solid #3a4c78;
+  border: 1px solid rgba(241, 245, 249, 0.14);
   border-radius: 9px;
-  padding: 0 10px;
+  padding: 0 12px;
   width: 100%;
-  background: #16213d;
+  background: #0f1523;
   color: var(--text);
+  transition: border-color 0.16s ease, background-color 0.16s ease;
+}
+input[type='text']:focus {
+  border-color: var(--amber);
+  background: #131b2e;
+  outline: none;
 }
 
 input[type='range'] {
@@ -500,29 +519,37 @@ button.step:hover {
   gap: 12px;
 }
 .player {
-  padding: 14px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  border-top-width: 4px;
+  gap: 12px;
+  border-top-width: 3px;
+  background: var(--panel);
+  border-radius: 14px;
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.16s ease;
+}
+.player:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
 }
 .avatar {
   width: 44px;
   height: 44px;
-  border-radius: 22px;
+  border-radius: 12px;
   color: #0b1020;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 800;
   flex: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
 .overlay {
   position: fixed;
   inset: 0;
   z-index: 20;
-  background: radial-gradient(700px 400px at 50% 45%, #13224a, #070d1a);
+  background: radial-gradient(700px 400px at 50% 45%, #0f182c, #07090f);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -530,6 +557,7 @@ button.step:hover {
   gap: 18px;
   text-align: center;
   padding: 24px 16px;
+  backdrop-filter: blur(8px);
 }
 .overlay h2 {
   margin: 0;
