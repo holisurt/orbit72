@@ -13,7 +13,7 @@ describe('About page', () => {
       'Keep everyone connected', 'id="why"', '6,285', 'strategic technologies', 'id="how"', 'Mission', 'Build', 'Orbit', 'Go/No-Go', 'Operations', 'Debrief',
       'id="science"', 'IMERG V07 Final', '10.5067/GPM/IMERG/3B-HH/07', 'https://data.nasa.gov/dataset/gpm-imerg-final', '10 May 2024, Kp 9',
       'Small Spacecraft SOA 2026', 'Design and Develop Science Missions', 'automated tests', 'docs/guidebook.pdf', 'id="faq"',
-      'Team [TEAM NAME]', 'not affiliated with or endorsed by NASA', 'AI use',
+      'Team HDMK', 'not affiliated with or endorsed by NASA', 'AI use',
     ]) expect(about, s).toContain(s);
   });
   it('no NASA logo, no external scripts', () => {
