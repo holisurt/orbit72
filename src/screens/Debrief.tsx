@@ -254,22 +254,22 @@ export function Debrief() {
       <div style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
         {/* The PNG is rendered before the exportSpec action, so it prints the level reached by exporting. */}
         <svg ref={specRef} data-testid="spec-sheet" aria-hidden="true" viewBox={`0 0 600 ${120 + rows.length * 36}`}>
-          <rect width="600" height={120 + rows.length * 36} fill="#0F1830" />
-          <text x="30" y="46" fontFamily={EXPORT_FONT} fontSize="26" fontWeight="800" fill="#E8EEF8">
+          <rect width="600" height={120 + rows.length * 36} fill="#0E131D" />
+          <text x="30" y="46" fontFamily={EXPORT_FONT} fontSize="26" fontWeight="800" fill="#F3F5F8">
             ORBIT 72 · Spec sheet · Rồng Con
           </text>
-          <text x="30" y="78" fontFamily={EXPORT_FONT} fontSize="15" fill="#9AABC7">
+          <text x="30" y="78" fontFamily={EXPORT_FONT} fontSize="15" fill="#8E9BAE">
             {data.scenario.name} · lần chạy {state.run} · {OUTCOME_LABEL[score.outcome]} {score.passed}/8 · CML {cmlOnExport}
           </text>
           {rows.map((r, i) => (
             <g key={r.k} transform={`translate(30 ${118 + i * 36})`}>
-              <text fontFamily={EXPORT_FONT} fontSize="16" fill="#9AABC7">
+              <text fontFamily={EXPORT_FONT} fontSize="16" fill="#8E9BAE">
                 {r.k}
               </text>
-              <text x="540" textAnchor="end" fontFamily={EXPORT_MONO} fontSize="16" fill="#E8EEF8">
+              <text x="540" textAnchor="end" fontFamily={EXPORT_MONO} fontSize="16" fill="#F3F5F8">
                 {r.v}
               </text>
-              <path d="M0 12 H540" stroke="#26355A" />
+              <path d="M0 12 H540" stroke="#292E37" />
             </g>
           ))}
         </svg>
