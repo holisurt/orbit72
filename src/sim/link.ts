@@ -40,6 +40,11 @@ export function linkMarginDb(p: LinkParams, hKm: number, elevDeg: number): numbe
   return ebn0 - p.reqDb;
 }
 
+/** Margin of a named link at altitude h and elevation ε — used by the Orbit R7 panel and the Build part cards. */
+export function linkMarginFor(id: LinkId, hKm: number, elevDeg: number): number {
+  return linkMarginDb(LINKS[id], hKm, elevDeg);
+}
+
 /** Bytes downlinked per day: R_b × contact_min × 60 / 8. */
 export function downlinkBytesPerDay(rbps: number, contactMinPerDay: number): number {
   return (rbps * contactMinPerDay * 60) / 8;

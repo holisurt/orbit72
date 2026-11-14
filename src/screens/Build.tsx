@@ -250,7 +250,7 @@ export function Build() {
               {partStats(selPart)}
             </div>
             <p style={{ margin: '8px 0 0', fontSize: 'calc(13rem / 16)', lineHeight: 1.5, color: 'var(--soft)' }}>
-              {partWhy(selPart, m.contactMinPerDay)}
+              {partWhy(selPart, m.contactMinPerDay, m.orbit.hKm, data.scenario.requirements.elevationDeg)}
             </p>
           </section>
           <section className="panel col" style={{ padding: '10px 12px', gap: 4, flex: 1 }} aria-label="Đã lắp">

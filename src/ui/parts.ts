@@ -1,6 +1,6 @@
 // Part display copy from design/HF-Build (abbreviation + "why" text). Numbers come from data/sim.
 import type { Part, PartCat } from '../data/types';
-import { downlinkBytesPerDay } from '../sim/link';
+import { downlinkBytesPerDay, linkMarginFor, type LinkId } from '../sim/link';
 import { fmt } from './format';
 
 export const CAT_COLOR: Record<PartCat, string> = {
@@ -29,10 +29,19 @@ export function downlinkText(rbps: number, contactMinPerDay: number): string {
   return `≈ ${fmt(mb, mb < 10 ? 2 : 0)} MB/ngày với ${min} phút liên lạc`;
 }
 
-/** Detail-card text for a part; "{dl}" is replaced by its computed downlink. */
-export function partWhy(p: Part, contactMinPerDay: number): string {
-  const why = PART_INFO[p.id]?.why ?? '';
-  return p.rbps ? why.replace('{dl}', downlinkText(p.rbps, contactMinPerDay)) : why;
+/** Parts whose card shows a link margin, and the link they use. */
+export const PART_LINK: Partial<Record<string, LinkId>> = { uhf: 'uhf', sband: 's', sos: 'sos' };
+
+/**
+ * Detail-card text for a part. "{dl}" → computed downlink; "{m}" → link margin to Hoa Lac at the current
+ * altitude and minimum elevation, from the same function as the Orbit screen's R7 panel.
+ */
+export function partWhy(p: Part, contactMinPerDay: number, hKm: number, elevDeg: number): string {
+  let why = PART_INFO[p.id]?.why ?? '';
+  if (p.rbps) why = why.replace('{dl}', downlinkText(p.rbps, contactMinPerDay));
+  const link = PART_LINK[p.id];
+  if (link) why = why.replace('{m}', `${fmt(linkMarginFor(link, hKm, elevDeg), 1)} dB ở ${fmt(hKm, 0)} km, góc ngẩng ${fmt(elevDeg, 0)}°`);
+  return why;
 }
 
 export const PART_INFO: Record<string, { ab: string; why: string }> = {
@@ -44,14 +53,14 @@ export const PART_INFO: Record<string, { ab: string; why: string }> = {
   bat: { ab: 'BAT', why: 'Thêm dung lượng khi tải lớn.' },
   uhf: {
     ab: 'UHF',
-    why: 'Phát 1 W, dipole 0 dBi. Biên tới Hòa Lạc 9,7 dB ở góc ngẩng 10° — thông, nhưng chỉ {dl}.',
+    why: 'Phát 1 W, dipole 0 dBi. Biên tới Hòa Lạc {m} — thông, nhưng chỉ {dl}.',
   },
   sband: {
     ab: 'S',
-    why: 'Phát 2 W, patch 6 dBi; trạm dùng chảo 3 m. Biên 8,4 dB; {dl}.',
+    why: 'Phát 2 W, patch 6 dBi; trạm dùng chảo 3 m. Biên {m}; {dl}.',
   },
   xband: { ab: 'X', why: 'Rất nhanh, cần ADCS chính xác. Link budget chỉ có ở Sandbox.' },
-  sos: { ab: 'SOS', why: 'Nhận tin 300 bps từ máy cầm tay 0,5 W (biên 9,3 dB). Tạo 5 MB/ngày.' },
+  sos: { ab: 'SOS', why: 'Nhận tin 300 bps từ máy cầm tay 0,5 W (biên {m}). Tạo 5 MB/ngày.' },
   ais: { ab: 'AIS', why: 'Theo dõi tàu cá trên biển — như NanoDragon.' },
   cam: { ab: 'CAM', why: '5 W khi chụp, 10% thời gian. 2.000 MB/ngày; vô dụng khi mây dày.' },
   sail: { ab: 'SAIL', why: 'Bung 0,5 m² khi hết nhiệm vụ: tồn lưu = (L − 3) × 0,047 / 0,547.' },

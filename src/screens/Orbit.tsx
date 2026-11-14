@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useGameData } from '../data/context';
 import type { LauncherId } from '../data/types';
-import { buildConstellation, countPasses, groundTrack, type PresetId } from '../sim/coverage';
-import { LINKS, linkMarginDb } from '../sim/link';
+import { buildConstellation, countPasses, ELEV_MIN_DEG, groundTrack, type PresetId } from '../sim/coverage';
+import { linkMarginFor } from '../sim/link';
 import { statusMin, type Requirement } from '../sim/mission';
 import { coverageHalfAngle, DEG, periodMin } from '../sim/orbit';
 import { useMission } from '../state/mission';
@@ -311,7 +311,7 @@ export function Orbit() {
 }
 
 function marginFor(id: 'uhf' | 's' | 'sos', hKm: number): number {
-  return linkMarginDb(LINKS[id], hKm, 10);
+  return linkMarginFor(id, hKm, ELEV_MIN_DEG);
 }
 
 function Counter(props: {
