@@ -109,8 +109,8 @@ describe('why-chain', () => {
   it('lists near/failed requirements with lever, and non-best event choices', () => {
     const { decisions } = play({ ...best, E1: 'A' });
     const w = whyChain(mission, decisions.map((d) => (d.event.id === 'E1' ? { ...d, chosen: 'A' } : d)));
-    expect(w.find((x) => x.cause.startsWith('Khoảng trống'))?.sentence).toMatch(
-      /Khoảng trống liên lạc dài nhất = 3,0 h, ngưỡng ≤ 3,5 h → Sát ngưỡng: .*\. Thử: thêm mặt phẳng/,
+    expect(w.find((x) => x.cause.startsWith('Lúc chờ lâu nhất'))?.sentence).toMatch(
+      /Lúc chờ lâu nhất không có vệ tinh nào nghe được Hà Nội = 3,0 h, ngưỡng ≤ 3,5 h → Sát ngưỡng: .*\. Thử: thêm mặt phẳng/,
     );
     expect(w.some((x) => x.cause.startsWith('E1'))).toBe(true);
   });

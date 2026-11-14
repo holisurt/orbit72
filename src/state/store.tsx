@@ -79,6 +79,7 @@ export interface GameState {
   screen: ScreenId;
   returnTo: ScreenId | null; // for Guide / overlays
   guideTab: number; // tab the Guide opens on (0 Thuật ngữ … 4 Nguồn)
+  guideFocus: string | null; // Guide card title to scroll to (from a "?" term explainer)
   mode: Mode;
   difficulty: DifficultyId;
   tutorial: boolean;
@@ -128,6 +129,7 @@ export const initialState: GameState = {
   screen: 'home',
   returnTo: null,
   guideTab: 0,
+  guideFocus: null,
   mode: 'solo',
   difficulty: 'ky_su',
   tutorial: false,
@@ -147,7 +149,7 @@ export const initialState: GameState = {
 
 export type Action =
   | { type: 'go'; screen: ScreenId }
-  | { type: 'openGuide'; tab?: number }
+  | { type: 'openGuide'; tab?: number; focus?: string }
   | { type: 'closeGuide' }
   | { type: 'setMode'; mode: Mode }
   | { type: 'setDifficulty'; difficulty: DifficultyId }
@@ -189,8 +191,8 @@ export function reducer(s: GameState, a: Action): GameState {
     case 'go':
       return { ...s, screen: a.screen };
     case 'openGuide':
-      if (s.screen === 'guide') return { ...s, guideTab: a.tab ?? s.guideTab };
-      return { ...s, returnTo: s.screen, screen: 'guide', guideTab: a.tab ?? 0 };
+      if (s.screen === 'guide') return { ...s, guideTab: a.tab ?? s.guideTab, guideFocus: a.focus ?? null };
+      return { ...s, returnTo: s.screen, screen: 'guide', guideTab: a.tab ?? 0, guideFocus: a.focus ?? null };
     case 'closeGuide':
       return { ...s, screen: s.returnTo ?? 'home', returnTo: null };
     case 'setMode':

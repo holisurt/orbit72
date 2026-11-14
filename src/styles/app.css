@@ -945,6 +945,58 @@ button.step:hover {
   transition: none;
 }
 
+/* ---------- Term explainers ("?") ---------- */
+.term-q {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  margin-left: 4px;
+  padding: 0;
+  border-radius: 9px;
+  border: 1px solid var(--cyan);
+  background: transparent;
+  color: var(--cyan);
+  font: inherit;
+  font-size: calc(11rem / 16);
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1;
+  vertical-align: middle;
+  cursor: pointer;
+}
+/* 18 px visible, 44 px touch target */
+.term-q::before {
+  content: '';
+  position: absolute;
+  inset: -13px;
+}
+.term-pop {
+  display: block;
+  margin-top: 6px;
+  max-width: 340px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #16213d;
+  color: var(--soft);
+  font-size: calc(12rem / 16);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0;
+  text-transform: none;
+  white-space: normal;
+}
+.term-link {
+  min-height: 44px;
+  padding: 0;
+}
+.guide-focus {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
 /* ---------- Guide ---------- */
 .guide-body {
   grid-template-columns: 250px minmax(0, 1fr);

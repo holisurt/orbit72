@@ -6,6 +6,7 @@ import { BODY_FILL, CELL_EFF, DOD, POWER_LOSS, SOLAR_CONST, bodyPowerW, wingPowe
 import { LINKS, fsplDb, linkMarginDb } from '../sim/link';
 import { INTEGRATION_MONTHS } from '../sim/build';
 import { CML_TEXT, RANK_PENALTY } from '../sim/score';
+import { lifetimeYears } from '../sim/lifetime';
 import { ROLES } from '../state/roles';
 import { fmt } from './format';
 import { IMERG_LABEL } from './rain';
@@ -73,6 +74,11 @@ export function guideTabs(data: GameData): GuideTab[] {
           s: 'NASA JPL · hiện ở màn Báo cáo',
         },
         {
+          t: 'Độ nghiêng · Inclination',
+          d: `Góc giữa đường bay và đường xích đạo. Vệ tinh chỉ bay qua các vĩ độ nhỏ hơn độ nghiêng; quỹ đạo SSO nghiêng ≈ ${fmt(incl, 1)}° ở ${H} km nên đi qua gần hai cực.`,
+          s: 'Màn Quỹ đạo',
+        },
+        {
           t: 'Mặt phẳng quỹ đạo · Orbital plane',
           d: 'Vệ tinh cùng mặt phẳng qua Hà Nội cùng khung giờ — muốn phủ cả ngày phải rải nhiều mặt phẳng.',
           s: 'Màn Quỹ đạo',
@@ -90,13 +96,18 @@ export function guideTabs(data: GameData): GuideTab[] {
           s: 'Màn Quỹ đạo · yêu cầu R7',
         },
         {
+          t: 'Tuổi thọ quỹ đạo',
+          d: `Số năm vệ tinh còn bay trước khi khí quyển mỏng kéo nó rơi và cháy: bay càng thấp, rơi càng sớm (≈ ${fmt(lifetimeYears(data.lifetime, H).years, 1)} năm ở ${H} km). Hợp đồng cần ${req.lifetimeMinY}–${req.lifetimeMaxY} năm.`,
+          s: 'Yêu cầu R4 · bảng FACSAT-2 [NG]',
+        },
+        {
           t: 'Tồn lưu sau nhiệm vụ',
           d: `Tuổi thọ quỹ đạo trừ thời gian vận hành (${data.scenario.opsYears} năm); quy định FCC: ≤ ${fmt(req.residualMaxY, 0)} năm.`,
           s: 'Yêu cầu R4',
         },
         {
-          t: 'P1h và P1h_mưa',
-          d: 'P1h = phần trăm thời gian mà tin SOS gửi lúc đó được nhận trong ≤ 1 giờ. P1h_mưa đặt trọng số lớn hơn cho các giờ mưa to (dữ liệu IMERG).',
+          t: 'Tin SOS tới nơi trong 1 giờ',
+          d: 'Phần trăm thời gian mà một tin SOS gửi lúc đó tới được trạm trong vòng 1 giờ. Bản “tính theo mưa NASA IMERG” cho các giờ mưa to nặng ký hơn, vì lúc đó người dân cần cứu nhất.',
           s: 'Mission Control · sao 2 và sao 3',
         },
       ],
@@ -138,11 +149,11 @@ export function guideTabs(data: GameData): GuideTab[] {
         { t: 'Pin cần', d: `P_dùng × t_tối / ${fmt(DOD, 1)} (độ xả sâu)`, s: '[GA] DoD', mono: true },
         {
           t: 'Trọng số mưa',
-          d: 'w(h) = 1 + R(h)/R̄ ; P1h_mưa = Σ w·ok / Σ w',
+          d: 'w(h) = 1 + R(h)/R̄ ; tin SOS ≤ 1 giờ theo mưa = Σ w·ok / Σ w',
           s: `R = mưa IMERG trung bình ${data.scenario.rainBox.lonMin}–${data.scenario.rainBox.lonMax}°E, ${data.scenario.rainBox.latMin}–${data.scenario.rainBox.latMax}°N`,
           mono: true,
         },
-        { t: 'Giá trị đồng tiền (sao 3)', d: 'VFM = P1h_mưa (%) / chi phí (triệu USD)', s: 'Chi phí thiết kế, không tính sự cố', mono: true },
+        { t: 'Hiệu quả chi phí (sao 3)', d: 'Hiệu quả chi phí = tin SOS ≤ 1 giờ theo mưa (%) / chi phí (triệu USD)', s: 'Chi phí thiết kế, không tính sự cố', mono: true },
       ],
     },
     {
@@ -250,7 +261,7 @@ export function guideTabs(data: GameData): GuideTab[] {
       items: [
         {
           t: IMERG_LABEL,
-          d: 'Lượng mưa từng giờ trên miền Bắc 7–10/9/2024 (chỉ bản Final Run): trọng số P1h_mưa, bản đồ mưa 72 giờ ở màn Nhiệm vụ, lớp mưa Mission Control.',
+          d: 'Lượng mưa từng giờ trên miền Bắc 7–10/9/2024 (chỉ bản Final Run): trọng số cho “tin SOS tới nơi trong 1 giờ”, bản đồ mưa 72 giờ ở màn Nhiệm vụ, lớp mưa Mission Control.',
           s: 'GPM_3IMERGHH v07 · NASA GES DISC',
           link: [
             { href: IMERG_DOI, text: 'DOI 10.5067/GPM/IMERG/3B-HH/07' },

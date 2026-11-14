@@ -12,6 +12,8 @@ import { MapWorld, projWorld } from '../ui/MapWorld';
 import { PassScreen } from '../ui/PassScreen';
 import { StatusChip, STATUS_COLOR } from '../ui/StatusChip';
 import { TopBar } from '../ui/TopBar';
+import { Term } from '../ui/Term';
+import { L_P1H } from '../ui/labels';
 import { useT } from '../ui/i18n';
 
 const PRESETS: { id: PresetId; name: string; launcher: LauncherId }[] = [
@@ -73,32 +75,39 @@ export function Orbit() {
   const cov = m.coverage;
   const iss = o.preset === 'iss';
 
-  const rows: { k: string; v: string; chip?: ReactNode }[] = [
-    { k: 'Chu kỳ · độ nghiêng', v: `${fmt(periodMin(o.hKm), 1)} ph · ${fmt(m.inclDeg, 1)}°` },
-    { k: 'Trong bóng tối', v: `${fmt(m.fEcl * 100, 1)}%` },
-    { k: 'Số vệ tinh N = P × k', v: String(m.satCount) },
+  const rows: { id: string; k: ReactNode; v: string; chip?: ReactNode }[] = [
+    { id: 'incl', k: <>Một vòng bay · <Term id="incl">độ nghiêng</Term></>, v: `${fmt(periodMin(o.hKm), 1)} ph · ${fmt(m.inclDeg, 1)}°` },
+    { id: 'ecl', k: <>Thời gian trong <Term id="eclipse">bóng tối</Term></>, v: `${fmt(m.fEcl * 100, 1)}%` },
+    { id: 'n', k: 'Số vệ tinh N = P × k', v: String(m.satCount) },
     {
-      k: 'Khoảng trống dài nhất · R1',
+      id: 'r1',
+      k: 'Lúc chờ lâu nhất · R1',
       v: cov ? `${fmt(cov.longestGapH, 1)} h` : '—',
       chip: state.tutorial ? undefined : <StatusChip status={r('R1').status} />,
     },
-    { k: 'P1h (tin SOS ≤ 1 giờ)', v: cov ? `${fmt(cov.p1h, 0)}%` : '—' },
-    { k: 'Liên lạc/ngày/vệ tinh', v: cov ? `${fmt(cov.contactMinPerDayPerSat, 0)} phút` : '—' },
+    { id: 'p1h', k: <Term id="p1h">{L_P1H}</Term>, v: cov ? `${fmt(cov.p1h, 0)}%` : '—' },
+    { id: 'contact', k: 'Phút liên lạc mỗi ngày (mỗi vệ tinh)', v: cov ? `${fmt(cov.contactMinPerDayPerSat, 0)} phút` : '—' },
   ];
   if (state.tutorial && cov)
-    rows.push({ k: 'Số lần qua trong ngày đầu', v: String(countPasses(cov.vis.slice(0, 1440))) });
+    rows.push({ id: 'passes', k: 'Số lần qua trong ngày đầu', v: String(countPasses(cov.vis.slice(0, 1440))) });
   rows.push(
     {
-      k: `Tuổi thọ L · R4${m.lifetimeExtrapolated ? ' (ngoại suy)' : ''}`,
+      id: 'r4',
+      k: (
+        <>
+          <Term id="lifetime">Tuổi thọ quỹ đạo</Term> · R4{m.lifetimeExtrapolated ? ' (ngoại suy)' : ''}
+        </>
+      ),
       v: `${fmt(m.lifetimeY, 1)} năm${m.residualY !== null ? ` · tồn lưu ${fmt(m.residualY, 1)}` : ''}`,
       chip: <StatusChip status={r('R4').status} />,
     },
     {
+      id: 'launcher',
       k: 'Tên lửa',
       v: m.launch.compatible ? 'tương thích' : 'không hợp',
       chip: <StatusChip status={m.launch.compatible ? 'DAT' : 'VUOT'} />,
     },
-    { k: 'Tổng chi phí · R5', v: `${fmt(m.totalCostKusd, 0)}k`, chip: <StatusChip status={r('R5').status} /> },
+    { id: 'r5', k: 'Tổng chi phí · R5', v: `${fmt(m.totalCostKusd, 0)}k`, chip: <StatusChip status={r('R5').status} /> },
   );
 
   const launcherCostText = (id: LauncherId) => {
@@ -128,7 +137,9 @@ export function Orbit() {
       />
       <main className="body orbit-body">
         <section className="panel col" style={{ padding: 12, gap: 9 }} aria-label="Thiết lập quỹ đạo">
-          <span className="lbl">Độ nghiêng</span>
+          <span className="lbl">
+            <Term id="incl">Độ nghiêng</Term>
+          </span>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 6 }} role="group" aria-label="Độ nghiêng">
             {PRESETS.map((p) => (
               <button
@@ -161,7 +172,11 @@ export function Orbit() {
           {iss && <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>ISS: cố định 400 km, 1 mặt phẳng</span>}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
             <Counter
-              label="Mặt phẳng P"
+              label={
+            <>
+              <Term id="plane">Mặt phẳng quỹ đạo</Term> P
+            </>
+          }
               value={o.planes}
               min={1}
               max={iss ? 1 : 6}
@@ -238,7 +253,7 @@ export function Orbit() {
               </span>
             </div>
             <svg width="100%" height="22" viewBox="0 0 288 22" preserveAspectRatio="none" role="img"
-              aria-label={cov ? `Khoảng trống dài nhất ${fmt(cov.longestGapH, 1)} giờ, P1h ${fmt(cov.p1h, 0)}%` : 'Đang tính'}>
+              aria-label={cov ? `Lúc chờ lâu nhất ${fmt(cov.longestGapH, 1)} giờ, tin SOS tới nơi trong 1 giờ ${fmt(cov.p1h, 0)}%` : 'Đang tính'}>
               <rect width="288" height="22" fill="#1A2647" />
               <path d={bins} fill="#3DD6F5" />
               <path d="M96 0 V22 M192 0 V22" stroke="#7F90AE" strokeWidth="0.6" />
@@ -258,7 +273,7 @@ export function Orbit() {
               Chỉ số (mô hình GDD mục 6)
             </span>
             {rows.map((row) => (
-              <div key={row.k} className="metric">
+              <div key={row.id} className="metric">
                 <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)' }}>{row.k}</span>
                 <span className="row" style={{ gap: 6 }}>
                   <span className="mono" style={{ fontSize: 'calc(12rem / 16)', fontWeight: 600 }}>
@@ -270,7 +285,9 @@ export function Orbit() {
             ))}
           </section>
           <section className="panel" style={{ padding: '10px 12px' }} aria-label="Biên đường truyền">
-            <span className="lbl">Biên đường truyền tới Hòa Lạc (10°) · R7</span>
+            <span className="lbl">
+            <Term id="margin">Biên đường truyền</Term> tới Hòa Lạc (10°) · R7
+          </span>
             <div className="mono row" style={{ justifyContent: 'space-between', fontSize: 'calc(13rem / 16)', marginTop: 6, flexWrap: 'wrap' }}>
               {allLinks.map((l) => {
                 const s = statusMin(l.margin, data.scenario.requirements.linkMarginDb, 1);
@@ -315,7 +332,7 @@ function marginFor(id: 'uhf' | 's' | 'sos', hKm: number): number {
 }
 
 function Counter(props: {
-  label: string;
+  label: ReactNode;
   value: number;
   min: number;
   max: number;

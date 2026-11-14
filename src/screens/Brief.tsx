@@ -3,6 +3,7 @@ import { useGameData } from '../data/context';
 import type { DifficultyId } from '../data/types';
 import { useStore } from '../state/store';
 import { fmt } from '../ui/format';
+import { REQ_LABEL } from '../sim/mission';
 import { MapVN, projVN } from '../ui/MapVN';
 import { accumulate, IMERG_LABEL, rainCells, TOTAL_BINS } from '../ui/rain';
 import { RainLegend } from '../ui/RainLegend';
@@ -24,14 +25,14 @@ export function Brief() {
   const hanoiTotal = (data.imerg?.hanoi_mmh ?? []).slice(0, 72).reduce((a, b) => a + b, 0);
 
   const reqs = [
-    { id: 'R1', t: 'Khoảng trống liên lạc dài nhất', v: `≤ ${fmt(rules.gapMaxH, 1)} h` },
-    { id: 'R2', t: 'Dữ liệu tạo ra ≤ tải xuống', v: '0 tồn đọng' },
-    { id: 'R3', t: 'Dư công suất, đủ pin bóng tối', v: `≥ ${Math.round((req.powerMargin - 1) * 100)}%` },
-    { id: 'R4', t: 'Tuổi thọ quỹ đạo', v: `${req.lifetimeMinY}–${req.lifetimeMaxY} năm` },
-    { id: 'R5', t: 'Tổng chi phí', v: `≤ ${fmt(rules.budget, 0)}k` },
-    { id: 'R6', t: 'Thời gian phát triển', v: `≤ ${req.devMonthsMax} th` },
-    { id: 'R7', t: 'Biên mọi đường truyền (10°)', v: `≥ ${req.linkMarginDb} dB` },
-    { id: 'R8', t: 'Đủ linh kiện bắt buộc', v: 'Đủ' },
+    { id: 'R1', t: REQ_LABEL.R1, v: `≤ ${fmt(rules.gapMaxH, 1)} h` },
+    { id: 'R2', t: REQ_LABEL.R2, v: '0 tồn đọng' },
+    { id: 'R3', t: REQ_LABEL.R3, v: `≥ ${Math.round((req.powerMargin - 1) * 100)}%` },
+    { id: 'R4', t: REQ_LABEL.R4, v: `${req.lifetimeMinY}–${req.lifetimeMaxY} năm` },
+    { id: 'R5', t: REQ_LABEL.R5, v: `≤ ${fmt(rules.budget, 0)}k` },
+    { id: 'R6', t: REQ_LABEL.R6, v: `≤ ${req.devMonthsMax} th` },
+    { id: 'R7', t: REQ_LABEL.R7, v: `≥ ${req.linkMarginDb} dB` },
+    { id: 'R8', t: REQ_LABEL.R8, v: 'Đủ' },
   ];
 
   const back = () => dispatch({ type: 'go', screen: state.mode === 'coop' ? 'setup' : 'home' });

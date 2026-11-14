@@ -49,7 +49,7 @@ function Router() {
     case 'orbit':
       return <Orbit />;
     case 'guide':
-      return <Guide key={state.guideTab} initialTab={state.guideTab} />;
+      return <Guide key={`${state.guideTab}-${state.guideFocus ?? ''}`} initialTab={state.guideTab} focus={state.guideFocus} />;
     case 'review':
       return <Review />;
     case 'launch':

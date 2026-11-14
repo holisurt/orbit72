@@ -3,6 +3,7 @@ import { useGameData } from '../data/context';
 import { STATUS_LABEL, type Status } from '../sim/mission';
 import { OUTCOME_LABEL, type Outcome } from '../sim/score';
 import { cardHeader, phaseSquares, PHASES, runLine } from '../ui/share';
+import { L_P1H, L_P1H_RAIN } from '../ui/labels';
 import { useRun } from '../state/run';
 import { useStore } from '../state/store';
 import { downloadBlob, EXPORT_FONT, EXPORT_MONO, shareOrDownload, svgToPng } from '../ui/exportPng';
@@ -34,11 +35,13 @@ export function Share() {
   const no = `lan${state.run}`; // file names: orbit72-lan1-the.png
   const header = cardHeader(data.scenario.name, state.difficulty);
   const p1hRain = Math.round(run.ops.p1hRain);
-  const p1hLabel = run.weightsSource === 'imerg' ? 'P1h_mưa (IMERG)' : 'P1h_mưa (w = 1)';
+  const p1hLabel = run.weightsSource === 'imerg' ? L_P1H_RAIN : `${L_P1H} (chưa có dữ liệu mưa)`;
+  // Tile label on two lines (SVG has no wrapping): "Tin SOS tới nơi trong 1 giờ" / "(tính theo mưa NASA IMERG)"
+  const tileLines = run.weightsSource === 'imerg' ? [L_P1H, '(tính theo mưa NASA IMERG)'] : [L_P1H, '(chưa có dữ liệu mưa)'];
   const stars = starGlyphs(run.score.overall);
   const line = runLine(m);
   const url = typeof window !== 'undefined' ? `${window.location.origin}${import.meta.env.BASE_URL}` : '';
-  const shareText = `ORBIT 72 · ${header}\n${squares.map((s) => EMOJI[s]).join('')} ${stars}\n${p1hLabel} ${p1hRain}% · ${m.satCount} vệ tinh · ${OUTCOME_LABEL[run.score.outcome]} · CML ${run.cml}\n${url} #Orbit72`;
+  const shareText = `ORBIT 72 · ${header}\n${squares.map((s) => EMOJI[s]).join('')} ${stars}\n${p1hLabel}: ${p1hRain}% · ${m.satCount} vệ tinh · ${OUTCOME_LABEL[run.score.outcome]} · CML ${run.cml}\n${url} #Orbit72`;
 
   const copy = async () => {
     try {
@@ -122,20 +125,20 @@ export function Share() {
             <text x="22" y="196" fontFamily={EXPORT_FONT} fontSize="24" letterSpacing="3" fill="#F5A524">
               {stars}
             </text>
-            {[
-              { k: p1hLabel, v: `${p1hRain}%`, x: 22 },
-              { k: 'Vệ tinh', v: String(m.satCount), x: 154 },
-            ].map((b) => (
-              <g key={b.k} transform={`translate(${b.x} 212)`}>
-                <rect width="124" height="58" rx="10" fill="#0F1830" stroke="#26355A" />
-                <text x="10" y="20" fontFamily={EXPORT_MONO} fontSize="12" fill="#9AABC7">
-                  {b.k}
+            <g transform="translate(22 208)">
+              <rect width="256" height="66" rx="10" fill="#0F1830" stroke="#26355A" />
+              {tileLines.map((ln, q) => (
+                <text key={q} x="12" y={19 + q * 14} fontFamily={EXPORT_FONT} fontSize="11" fill="#9AABC7">
+                  {ln}
                 </text>
-                <text x="10" y="46" fontFamily={EXPORT_MONO} fontSize="20" fill="#3DD6F5">
-                  {b.v}
-                </text>
-              </g>
-            ))}
+              ))}
+              <text x="12" y="57" fontFamily={EXPORT_MONO} fontSize="20" fill="#3DD6F5">
+                {p1hRain}%
+              </text>
+              <text x="244" y="57" textAnchor="end" fontFamily={EXPORT_MONO} fontSize="13" fill="#E8EEF8">
+                {m.satCount} vệ tinh
+              </text>
+            </g>
             {/* CML badge + one line from the run (fills the band above the mascot) */}
             <g transform="translate(22 288)">
               <rect width="124" height="32" rx="16" fill="#3A2E0E" stroke="#F5A524" />
@@ -191,7 +194,7 @@ export function Share() {
               {t('playAnother')}
             </button>
           </div>
-          <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--dim)' }}>P1h sau sự cố: {fmt(run.ops.p1h, 1)}%.</span>
+          <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--dim)' }}>{L_P1H} sau sự cố (chưa tính mưa): {fmt(run.ops.p1h, 1)}%.</span>
         </div>
       </main>
     </div>

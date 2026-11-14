@@ -8,6 +8,7 @@ import { quizSummary } from '../state/quiz';
 import { downloadBlob, EXPORT_FONT, EXPORT_MONO, svgToPng } from '../ui/exportPng';
 import { fmt } from '../ui/format';
 import { TopBar } from '../ui/TopBar';
+import { Term } from '../ui/Term';
 import { useT } from '../ui/i18n';
 
 import { LEVEL_NAME } from '../ui/share';
@@ -43,8 +44,8 @@ export function specRows(run: RunView, data: GameData, quizText = '—'): { k: s
     { k: 'Công suất sinh · dùng', v: `${fmt(b.pGenW, 1)} · ${fmt(b.pUseW, 1)} W` },
     { k: 'Pin', v: `${fmt(b.batteryHaveWh, 0)} Wh (cần ${fmt(b.batteryNeedWh, 1)})` },
     { k: 'Tải xuống', v: tx ? tx.name : '—' },
-    { k: 'Biên tới Hòa Lạc', v: Number.isFinite(minMargin) ? `${fmt(minMargin, 1)} dB (10°)` : '—' },
-    { k: 'Tuổi thọ · tồn lưu', v: `${fmt(m.lifetimeY, 1)} · ${fmt(residual, 1)} năm` },
+    { k: 'Biên đường truyền tới Hòa Lạc', v: Number.isFinite(minMargin) ? `${fmt(minMargin, 1)} dB (10°)` : '—' },
+    { k: 'Tuổi thọ quỹ đạo · tồn lưu', v: `${fmt(m.lifetimeY, 1)} · ${fmt(residual, 1)} năm` },
     { k: 'Chi phí', v: cost.length > 1 ? `${cost.join(' + ')} = ${fmt(run.totalCostKusd, 0)}k` : cost[0] },
     { k: 'Phát triển', v: `${b.devMonths} tháng` },
     { k: 'Quiz trước → sau', v: quizText },
@@ -178,7 +179,7 @@ export function Debrief() {
           <section className="panel col" style={{ padding: '12px 14px', gap: 4, fontSize: 'calc(12rem / 16)' }} aria-label="Huy hiệu CML">
             <div className="row" style={{ justifyContent: 'space-between' }}>
               <span className="lbl" style={{ color: 'var(--amber)' }}>
-                Huy hiệu CML · JPL
+                Huy hiệu <Term id="cml">CML</Term> · JPL
               </span>
               <span className="mono" style={{ fontSize: 'calc(18rem / 16)', fontWeight: 600, color: cml ? 'var(--amber)' : 'var(--muted)' }}>
                 CML {cml}

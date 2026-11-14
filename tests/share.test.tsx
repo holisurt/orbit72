@@ -1,4 +1,4 @@
-// CP4.5 Share card polish: phase squares by result, CML band + run line, header by mode, P1h_mưa tile.
+// Share card: phase squares by result, CML band + run line, header, plain-language SOS tile.
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { DataProvider } from '../src/data/context';
@@ -65,10 +65,11 @@ describe('share card (S1 run)', () => {
   });
 
 
-  it('P1h tile is labelled P1h_mưa (IMERG) and shows P1h_rain after events', () => {
-    expect(h).toContain('>P1h_mưa (IMERG)</text>');
+  it('SOS tile: plain label on two lines, value = P1h_rain after events', () => {
+    expect(h).toContain('>Tin SOS tới nơi trong 1 giờ</text>');
+    expect(h).toContain('>(tính theo mưa NASA IMERG)</text>');
     expect(h).toContain('>44%</text>'); // 43,8 % with IMERG weights after E0-A, E1-B, E2-A
-    expect(render(s1(), data)).toContain('>P1h_mưa (w = 1)</text>');
+    expect(render(s1(), data)).toContain('>(chưa có dữ liệu mưa)</text>');
   });
 });
 

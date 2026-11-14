@@ -8,7 +8,7 @@ import { useT } from '../ui/i18n';
 const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
 
 /** Sổ tay (design/HF-Guide): Thuật ngữ · Công thức · Science · Hồ sơ Rồng · Nguồn, with search across all tabs. */
-export function Guide({ initialTab = 0 }: { initialTab?: number }) {
+export function Guide({ initialTab = 0, focus = null }: { initialTab?: number; focus?: string | null }) {
   const data = useGameData();
   const { dispatch } = useStore();
   const t = useT();
@@ -19,13 +19,18 @@ export function Guide({ initialTab = 0 }: { initialTab?: number }) {
   const close = () => dispatch({ type: 'closeGuide' });
 
   useEffect(() => {
-    closeRef.current?.focus();
+    // From a "?" explainer: jump to that card; otherwise start on the close button.
+    const card = focus ? document.querySelector<HTMLElement>(`[data-card="${CSS.escape(focus)}"]`) : null;
+    if (card) {
+      card.scrollIntoView({ block: 'center' });
+      card.focus();
+    } else closeRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') dispatch({ type: 'closeGuide' });
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [dispatch]);
+  }, [dispatch, focus]);
 
   const query = norm(q.trim());
   const cur = tabs[tab];
@@ -89,7 +94,13 @@ export function Guide({ initialTab = 0 }: { initialTab?: number }) {
           </span>
           <div className="guide-grid">
             {items.map((it) => (
-              <article key={`${it.tab ?? ''}${it.t}`} className="panel col" style={{ padding: '12px 14px', gap: 5 }}>
+              <article
+                key={`${it.tab ?? ''}${it.t}`}
+                data-card={it.t}
+                tabIndex={it.t === focus ? -1 : undefined}
+                className={`panel col${it.t === focus ? ' guide-focus' : ''}`}
+                style={{ padding: '12px 14px', gap: 5 }}
+              >
                 <h2 style={{ margin: 0, fontSize: 'calc(15rem / 16)', fontWeight: 800 }}>{it.t}</h2>
                 <p className={it.mono ? 'mono' : undefined} style={{ margin: 0, fontSize: 'calc(13rem / 16)', lineHeight: 1.5, color: 'var(--soft)' }}>
                   {it.d}

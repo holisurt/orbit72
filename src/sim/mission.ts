@@ -14,6 +14,18 @@ import { LINKS, linkMarginDb, type LinkId } from './link';
 import { lifetimeYears, sailResidualYears } from './lifetime';
 
 export type Status = 'DAT' | 'SAT' | 'VUOT';
+/** R1–R8 as plain sentences (codes stay). Shared by Brief, Review, Debrief and the why-chain. */
+export const REQ_LABEL: Record<Requirement['id'], string> = {
+  R1: 'Lúc chờ lâu nhất không có vệ tinh nào nghe được Hà Nội',
+  R2: 'Dữ liệu tạo ra mỗi ngày phải tải hết về trạm',
+  R3: 'Đủ điện, kể cả khi vệ tinh nằm trong bóng Trái Đất',
+  R4: 'Vệ tinh bay đủ lâu nhưng không thành rác vũ trụ',
+  R5: 'Tổng chi phí không vượt ngân sách',
+  R6: 'Chế tạo xong trước mùa bão',
+  R7: 'Tín hiệu vẫn đủ mạnh khi vệ tinh thấp trên chân trời',
+  R8: 'Có đủ bộ phận bắt buộc và vừa khung vệ tinh',
+};
+
 export const STATUS_LABEL: Record<Status, string> = { DAT: 'ĐẠT', SAT: 'SÁT', VUOT: 'VƯỢT' };
 
 /** Round as displayed (SPEC §7). */
@@ -199,7 +211,7 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   const reqs: Requirement[] = [];
   reqs.push({
     id: 'R1',
-    name: 'Khoảng trống liên lạc dài nhất',
+    name: REQ_LABEL.R1,
     value: coverage ? `${vn1(coverage.longestGapH)} h` : '—',
     limit: `≤ ${vn1(rules.gapMaxH)} h`,
     status: coverage ? statusMax(coverage.longestGapH, rules.gapMaxH, 1) : 'SAT',
@@ -209,9 +221,9 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   const down = roundTo(build.dataDownlinkMB, 1);
   reqs.push({
     id: 'R2',
-    name: 'Dữ liệu tạo ≤ dữ liệu tải xuống',
+    name: REQ_LABEL.R2,
     value: `${vn1(build.dataProducedMB)} / ${vn1(build.dataDownlinkMB)} MB/ngày`,
-    limit: 'không tồn đọng',
+    limit: 'tải hết, không tồn đọng',
     status: down > 0 ? statusFromRatio(prod / down) : 'VUOT',
     hard: false,
   });
@@ -220,7 +232,7 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   const batt = roundTo(build.batteryHaveWh, 1);
   reqs.push({
     id: 'R3',
-    name: 'Năng lượng & pin',
+    name: REQ_LABEL.R3,
     value: `${vn1(build.pGenW)} / ${vn1(build.pUseW)} W · pin ${vn1(build.batteryHaveWh)}/${vn1(build.batteryNeedWh)} Wh`,
     limit: `P ≥ ${vn1(req.powerMargin)}× · pin đủ`,
     status: worst(
@@ -232,7 +244,7 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   const lowStatus = statusMin(lt.years, req.lifetimeMinY, 1);
   reqs.push({
     id: 'R4',
-    name: 'Tuổi thọ quỹ đạo',
+    name: REQ_LABEL.R4,
     value:
       `${vn1(lt.years)} năm` +
       (lt.extrapolated ? ' (ngoại suy)' : '') +
@@ -251,7 +263,7 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   });
   reqs.push({
     id: 'R5',
-    name: 'Tổng chi phí',
+    name: REQ_LABEL.R5,
     value: `${vn0(totalCostKusd)}k`,
     limit: `≤ ${vn0(rules.budget)}k`,
     status: statusMax(totalCostKusd, rules.budget, 0),
@@ -259,7 +271,7 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   });
   reqs.push({
     id: 'R6',
-    name: 'Thời gian phát triển',
+    name: REQ_LABEL.R6,
     value: `${build.devMonths} tháng`,
     limit: `≤ ${req.devMonthsMax} tháng`,
     status: statusMax(build.devMonths, req.devMonthsMax, 0),
@@ -268,7 +280,7 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   const minMargin = links.length ? Math.min(...links.map((l) => l.margin10)) : -Infinity;
   reqs.push({
     id: 'R7',
-    name: 'Biên đường truyền @10°',
+    name: REQ_LABEL.R7,
     value: links.length ? links.map((l) => `${vn1(l.margin10)}`).join(' / ') + ' dB' : '—',
     limit: `≥ ${req.linkMarginDb} dB`,
     status: links.length ? statusMin(minMargin, req.linkMarginDb, 1) : 'VUOT',
@@ -276,7 +288,7 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   });
   reqs.push({
     id: 'R8',
-    name: 'Đủ hệ thống bắt buộc · ô & khối lượng',
+    name: REQ_LABEL.R8,
     value: build.hardErrors.length ? `${build.hardErrors.length} lỗi` : 'đủ',
     limit: 'OBC · EPS · ADCS · máy phát · SOS',
     status: build.hardErrors.length ? 'VUOT' : 'DAT',

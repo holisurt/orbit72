@@ -12,6 +12,7 @@ import { ictLabel, IMERG_LABEL, RATE_BINS, rainCells } from '../ui/rain';
 import { RainLegend } from '../ui/RainLegend';
 import { HeaderTools } from '../ui/HeaderTools';
 import { Modal } from '../ui/Modal';
+import { L_P1H, L_P1H_RAIN } from '../ui/labels';
 import { useT } from '../ui/i18n';
 
 const SPEEDS = [60, 360, 1440];
@@ -155,7 +156,7 @@ export function Ops() {
           Liên lạc Hà Nội
         </span>
         <svg width="100%" height="26" viewBox="0 0 288 26" preserveAspectRatio="none" role="img"
-          aria-label={`Dòng thời gian 72 giờ: P1h ${fmt(ops.p1h, 0)}%, khoảng trống dài nhất ${fmt(ops.longestGapH, 1)} giờ`}>
+          aria-label={`Dòng thời gian 72 giờ: tin SOS tới nơi trong 1 giờ ${fmt(ops.p1h, 0)}%, khoảng trống dài nhất ${fmt(ops.longestGapH, 1)} giờ`}>
           <rect width="288" height="26" fill="#1A2647" />
           <path d={strip.bins} fill="#3DD6F5" />
           <path d={strip.lost} fill="#F87171" fillOpacity="0.75" />
@@ -187,13 +188,13 @@ export function Ops() {
           <section className="panel col" style={{ padding: '10px 12px', gap: 8 }} aria-label="Chỉ số sau sự cố">
             <span className="lbl">Chỉ số sau sự cố</span>
             <div>
-              <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>P1h · tin SOS ≤ 1 giờ</div>
+              <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>{L_P1H}</div>
               <div className="mono" style={{ fontSize: 'calc(26rem / 16)', fontWeight: 600, color: 'var(--cyan)' }}>
                 {fmt(ops.p1h, 0)}%
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>P1h_mưa · trọng số IMERG</div>
+              <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>{L_P1H_RAIN}</div>
               <div className="mono" style={{ fontSize: 'calc(20rem / 16)', fontWeight: 600, color: 'var(--cyan)' }}>
                 {fmt(ops.p1hRain, 1)}%
               </div>
@@ -297,7 +298,7 @@ export function Ops() {
                 <span style={{ fontSize: 'calc(14rem / 16)', fontWeight: 700 }}>{e.title}</span>
                 {chosen && out && (
                   <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)' }}>
-                    {chosen} — {e.options.find((o) => o.k === chosen)?.text} · P1h {out.p1hDisplay}%
+                    {chosen} — {e.options.find((o) => o.k === chosen)?.text} · tin SOS ≤ 1 giờ {out.p1hDisplay}%
                   </span>
                 )}
                 {isNext && clock >= triggerMin(e) && (
@@ -375,7 +376,7 @@ export function Ops() {
                     <span style={{ fontSize: 'calc(15rem / 16)', fontWeight: 800 }}>{opt.text}</span>
                     <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)', lineHeight: 1.45 }}>{optionDetail(ev, o.key, run.hasShield)}</span>
                     <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--cyan)' }}>
-                      P1h {o.p1hDisplay}% · trống {fmt(o.longestGapH, 1)} h
+                      Tin SOS tới nơi trong 1 giờ: {o.p1hDisplay}% · chờ lâu nhất {fmt(o.longestGapH, 1)} h
                     </span>
                   </button>
                 );
@@ -383,7 +384,7 @@ export function Ops() {
             </div>
             <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
               <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)', flex: 1, minWidth: 200 }}>
-                P1h và khoảng trống tính trực tiếp trên dòng thời gian 72 giờ của chòm vệ tinh (mỗi phương án xét riêng). Phương án có P1h cao nhất được xếp “tốt”.
+                Phần trăm tin SOS tới nơi trong 1 giờ và lúc chờ lâu nhất được tính trên dòng thời gian 72 giờ của chòm vệ tinh (mỗi phương án xét riêng). Phương án giữ được nhiều tin SOS nhất được xếp “tốt”.
               </span>
               <button className="btn-p" aria-disabled={!pick} onClick={confirm}>
                 {t('confirm')}

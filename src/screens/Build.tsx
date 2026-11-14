@@ -79,7 +79,7 @@ export function Build() {
       text: `${fmt(b.pUseW, 2)} / ${fmt(b.pGenW, 1)} W`,
     },
     {
-      name: 'Pin bóng tối',
+      name: 'Pin cho lúc trong bóng tối',
       ratio: b.batteryHaveWh ? b.batteryNeedWh / b.batteryHaveWh : 9,
       status: b.batteryHaveWh ? statusFromRatio(roundTo(b.batteryNeedWh, 1) / b.batteryHaveWh) : 'VUOT',
       text: `cần ${fmt(b.batteryNeedWh, 1)} / ${fmt(b.batteryHaveWh, 0)} Wh`,
