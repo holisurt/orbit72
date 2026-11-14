@@ -219,7 +219,7 @@ export function Orbit() {
           <section className="panel col" style={{ padding: 10, gap: 6 }} aria-label="Bản đồ vết quỹ đạo">
             <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
               <span className="lbl">Vết quỹ đạo 2 vòng · mỗi mặt phẳng một đường</span>
-              <span className="lbl" style={{ color: 'var(--cyan)' }}>
+              <span className="lbl" style={{ color: 'var(--soft)' }}>
                 vòng nét đứt: {targetName} nhìn thấy vệ tinh (ε ≥ {data.scenario.requirements.elevationDeg}°)
               </span>
             </div>
