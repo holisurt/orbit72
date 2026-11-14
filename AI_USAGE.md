@@ -6,3 +6,4 @@ One line per checkpoint. Every AI-assisted change is reviewed by a human before 
 |---|---|---|---|
 | CP0 | Claude Code | repo structure and docs setup | reviewed by mentor |
 | CP1 | Claude Code | challenge resources doc, SPEC §12 (segments + CML badge), credits, prompt notes | to be reviewed by mentor |
+| CP1 | Claude Code | Vite + React + TS + Vitest scaffold, design tokens, placeholder screen, Pages deploy workflow | to be reviewed by mentor |
