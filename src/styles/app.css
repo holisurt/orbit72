@@ -1177,11 +1177,14 @@ button.step:hover {
 /* ---------- Settings ---------- */
 .settings-card {
   width: min(480px, 100%);
-  padding: 20px 22px;
+  padding: 22px 24px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
+  gap: 16px;
+  background: var(--panel);
+  border: 1px solid rgba(241, 245, 249, 0.12);
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
 }
 .settings-row {
   display: flex;
@@ -1189,16 +1192,22 @@ button.step:hover {
   justify-content: space-between;
   gap: 10px;
   flex-wrap: wrap;
+  padding: 4px 0;
 }
 .seg[role='switch'][aria-checked='true'] {
   background: var(--amber);
   border-color: var(--amber);
-  color: #1a1205;
+  color: #120c02;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 .btn-p.danger {
   background: var(--bad);
-  color: #0b1020;
-  box-shadow: none;
+  color: #120506;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.btn-p.danger:hover {
+  background: #fca5a5;
 }
 :root[data-contrast='high'] .seg,
 :root[data-contrast='high'] .chip,
