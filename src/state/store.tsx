@@ -44,6 +44,38 @@ export interface RunRecord {
   overall?: number;
 }
 
+export type Vote = 'go' | 'no' | null;
+export type RCode = 'R1' | 'R2' | 'R3' | 'R4' | 'R5' | 'R6' | 'R7' | 'R8';
+
+export interface LaunchRecord {
+  lostPlanes: number[];
+  extraCostKusd: number;
+  extraMonths: number;
+  inOrbit: boolean;
+  attempts: { launch: number; failed: boolean; replaced: boolean }[];
+  launchedWithVuot: boolean;
+  launchedWithNoGo: boolean;
+  unanimousGo: boolean;
+}
+
+export interface OpsState {
+  votes: Record<RoleId, Vote>;
+  reasons: Partial<Record<RoleId, RCode>>; // NO-GO requires a reason (SPEC §8)
+  launch: LaunchRecord | null;
+  choices: Record<string, string>; // event id → option
+  clockMin: number; // ops clock, resumes on reload
+  done: boolean;
+}
+
+export const EMPTY_OPS: OpsState = {
+  votes: { FD: null, VT: null, KH: null, QD: null },
+  reasons: {},
+  launch: null,
+  choices: {},
+  clockMin: 0,
+  done: false,
+};
+
 export interface GameState {
   v: 1;
   screen: ScreenId;
@@ -55,13 +87,14 @@ export interface GameState {
   contract: { id: ContractId; accepted: boolean };
   design: DesignInput;
   orbit: OrbitState;
-  ops: { choices: Record<string, string> };
+  ops: OpsState;
   runs: RunRecord[];
   run: number;
   quiz: { pre: number[] | null; post: number[] | null };
   coach: { open: boolean };
   /** Distinct configurations tried (chassis/planes/altitude) — for the CML3 badge (SPEC §12). */
   configs: string[];
+  specExported: boolean;
 }
 
 /**
@@ -96,12 +129,13 @@ export const initialState: GameState = {
   contract: { id: 'golden72', accepted: false },
   design: DEFAULT_DESIGN,
   orbit: DEFAULT_ORBIT,
-  ops: { choices: {} },
+  ops: EMPTY_OPS,
   runs: [],
   run: 1,
   quiz: { pre: null, post: null },
   coach: { open: false },
   configs: [],
+  specExported: false,
 };
 
 export type Action =
@@ -125,6 +159,15 @@ export type Action =
   | { type: 'setCoach'; open: boolean }
   | { type: 'setOrbit'; patch: Partial<OrbitState> }
   | { type: 'chooseOrbit' }
+  | { type: 'vote'; role: RoleId; vote: Vote }
+  | { type: 'reason'; role: RoleId; code: RCode }
+  | { type: 'launch'; record: LaunchRecord }
+  | { type: 'chooseEvent'; id: string; key: string }
+  | { type: 'setClock'; min: number }
+  | { type: 'finishOps' }
+  | { type: 'recordRun'; overall: number }
+  | { type: 'rerun' }
+  | { type: 'exportSpec' }
   | { type: 'reset' };
 
 const ORDER_BEFORE_LAUNCH: ScreenId[] = ['brief', 'build', 'orbit'];
@@ -215,6 +258,29 @@ export function reducer(s: GameState, a: Action): GameState {
     }
     case 'chooseOrbit':
       return trackConfig({ ...s, orbit: { ...s.orbit, chosen: true } });
+    case 'vote': {
+      const reasons = { ...s.ops.reasons };
+      if (a.vote !== 'no') delete reasons[a.role];
+      return { ...s, ops: { ...s.ops, votes: { ...s.ops.votes, [a.role]: a.vote }, reasons } };
+    }
+    case 'reason':
+      return { ...s, ops: { ...s.ops, reasons: { ...s.ops.reasons, [a.role]: a.code } } };
+    case 'launch':
+      return { ...s, ops: { ...s.ops, launch: a.record, choices: {}, clockMin: 0, done: false }, screen: 'launch' };
+    case 'chooseEvent':
+      return { ...s, ops: { ...s.ops, choices: { ...s.ops.choices, [a.id]: a.key } } };
+    case 'setClock':
+      return { ...s, ops: { ...s.ops, clockMin: a.min } };
+    case 'finishOps':
+      return { ...s, ops: { ...s.ops, done: true, clockMin: 72 * 60 }, screen: 'debrief' };
+    case 'recordRun':
+      if (s.runs.some((r) => r.run === s.run)) return s;
+      return { ...s, runs: [...s.runs, { run: s.run, design: s.design, orbit: s.orbit, overall: a.overall }] };
+    case 'rerun':
+      // "Sửa & chạy lại": Debrief → Build, keeps design + orbit, resets ops/events, run++ (SPEC §1)
+      return { ...s, ops: EMPTY_OPS, run: s.run + 1, specExported: false, screen: 'build' };
+    case 'exportSpec':
+      return { ...s, specExported: true };
     case 'reset':
       return initialState;
   }
@@ -235,7 +301,8 @@ export function loadState(): GameState {
     if (!raw) return initialState;
     const parsed = JSON.parse(raw) as Partial<GameState>;
     if (parsed.v !== 1) return initialState;
-    return { ...initialState, ...parsed } as GameState;
+    // older CP2 saves had ops = { choices } only
+    return { ...initialState, ...parsed, ops: { ...EMPTY_OPS, ...(parsed.ops ?? {}) } } as GameState;
   } catch {
     return initialState;
   }
