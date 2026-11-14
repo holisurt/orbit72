@@ -55,7 +55,7 @@ export function Home() {
             <div className="home-sub">Bắt Sóng Cứu Hộ</div>
           </div>
           <p className="home-lead">
-            Siêu bão sắp đổ bộ. Bạn có 18 tháng để ráp CubeSat, chọn quỹ đạo, phóng chòm vệ tinh — và giữ cho các xã bị
+            Siêu bão sắp đổ bộ. Bạn có {data.scenario.requirements.devMonthsMax} tháng để ráp CubeSat, chọn quỹ đạo, phóng chòm vệ tinh — và giữ cho các xã bị
             cô lập không “mất sóng” trong 72 giờ vàng.
           </p>
           <div className="col" style={{ gap: 10 }}>

@@ -307,14 +307,66 @@ export function canJump(from: ScreenId, to: ScreenId): boolean {
   return ORDER_BEFORE_LAUNCH.includes(from) && ORDER_BEFORE_LAUNCH.includes(to);
 }
 
+const SCREENS: ScreenId[] = ['home', 'setup', 'quiz_pre', 'brief', 'build', 'orbit', 'review', 'launch', 'ops', 'debrief', 'quiz_post', 'share', 'guide'];
+/** Parts and events removed in v1.1 — dropped from older saves. */
+const REMOVED_PARTS = ['obc2', 'adcs2', 'xband', 'ais', 'cam', 'prop'];
+const REMOVED_EVENTS = ['E3', 'E4'];
+const isObj = (x: unknown): x is Record<string, unknown> => typeof x === 'object' && x !== null && !Array.isArray(x);
+const isNum = (x: unknown): x is number => typeof x === 'number' && Number.isFinite(x);
+const isAnswers = (x: unknown) => x === null || x === 'skip' || (Array.isArray(x) && x.every((n) => Number.isInteger(n)));
+
+/**
+ * Validate a saved game. Anything malformed → a fresh game (never a crash); older v1.0 saves are migrated
+ * (Giám đốc → Kỹ sư, removed parts/events dropped, launch record reduced to the vote outcome).
+ */
+export function sanitizeState(parsed: unknown): GameState {
+  if (!isObj(parsed) || parsed.v !== 1) return initialState;
+  const p = parsed as Partial<GameState>;
+  const d = p.design as Partial<DesignInput> | undefined;
+  const o = p.orbit as Partial<OrbitState> | undefined;
+  const ops = isObj(p.ops) ? (p.ops as Partial<OpsState>) : {};
+  const valid =
+    SCREENS.includes(p.screen as ScreenId) &&
+    (p.mode === undefined || p.mode === 'solo' || p.mode === 'coop') &&
+    isObj(d) && ['3U', '6U', '12U'].includes(d.chassis as string) && Array.isArray(d.parts) && d.parts.every((x) => typeof x === 'string') &&
+    isObj(o) && ['sso', 'iss', 'low20', 'leo53'].includes(o.preset as string) && ['rideshare', 'iss', 'dedicated'].includes(o.launcher as string) &&
+    isNum(o.hKm) && isNum(o.planes) && isNum(o.perPlane) &&
+    (p.run === undefined || (Number.isInteger(p.run) && (p.run as number) >= 1)) &&
+    (p.runs === undefined || Array.isArray(p.runs)) &&
+    (p.contract === undefined || isObj(p.contract)) &&
+    (p.players === undefined || (isObj(p.players) && Array.isArray(p.players.names))) &&
+    (p.quiz === undefined || (isObj(p.quiz) && isAnswers(p.quiz.pre) && isAnswers(p.quiz.post))) &&
+    (ops.votes === undefined || isObj(ops.votes)) &&
+    (ops.choices === undefined || isObj(ops.choices)) &&
+    (ops.launch === undefined || ops.launch === null || isObj(ops.launch));
+  if (!valid) return initialState;
+
+  const clampN = (x: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, Math.round(x)));
+  const choices = Object.fromEntries(Object.entries(ops.choices ?? {}).filter(([k, v]) => !REMOVED_EVENTS.includes(k) && typeof v === 'string'));
+  const l = ops.launch;
+  return {
+    ...initialState,
+    ...p,
+    difficulty: p.difficulty === 'hoc_vien' ? 'hoc_vien' : 'ky_su',
+    design: { ...DEFAULT_DESIGN, ...d, parts: d.parts!.filter((id) => !REMOVED_PARTS.includes(id)), wings: !!d.wings, envTest: !!d.envTest },
+    orbit: { ...DEFAULT_ORBIT, ...o, hKm: clampN(o.hKm!, 300, 800), planes: clampN(o.planes!, 1, 6), perPlane: clampN(o.perPlane!, 1, 3), chosen: !!o.chosen },
+    ops: {
+      ...EMPTY_OPS,
+      ...ops,
+      votes: { ...EMPTY_OPS.votes, ...(ops.votes ?? {}) },
+      choices,
+      launch: l ? { launchedWithVuot: !!l.launchedWithVuot, launchedWithNoGo: !!l.launchedWithNoGo, unanimousGo: !!l.unanimousGo } : null,
+      clockMin: isNum(ops.clockMin) ? Math.min(72 * 60, Math.max(0, ops.clockMin)) : 0,
+    },
+    designChanges: isNum(p.designChanges) ? p.designChanges : 0,
+  } as GameState;
+}
+
 export function loadState(): GameState {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return initialState;
-    const parsed = JSON.parse(raw) as Partial<GameState>;
-    if (parsed.v !== 1) return initialState;
-    // older CP2 saves had ops = { choices } only
-    return { ...initialState, ...parsed, ops: { ...EMPTY_OPS, ...(parsed.ops ?? {}) } } as GameState;
+    return sanitizeState(JSON.parse(raw));
   } catch {
     return initialState;
   }

@@ -233,6 +233,11 @@ export function guideTabs(data: GameData): GuideTab[] {
           s: '[GA] · events.json · bản ghi bão từ thật: NASA DONKI',
         },
         {
+          t: 'Các mốc phóng',
+          d: 'Thời gian T−10 s → T+1:30:00 trên màn Phóng chỉ để minh họa (tùy tên lửa); không ảnh hưởng điểm.',
+          s: 'Minh họa · design/HF-Launch',
+        },
+        {
           t: 'Thang màu bản đồ mưa',
           d: 'Các mức màu (0,5 · 2 · 5 · 10 · 20 mm/h và 25 · 50 · 100 · 200 · 300 mm) chỉ để vẽ bản đồ, không dùng để chấm điểm.',
           s: 'Hiển thị · số mưa từ NASA IMERG [NG]',
