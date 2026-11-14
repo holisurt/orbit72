@@ -19,6 +19,9 @@ const CALLS: { call: string; role: RoleId }[] = [
 ];
 const R_CODES: RCode[] = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8'];
 
+/** Lower-case only the first letter, so proper names (Hà Nội, Trái Đất) keep their capitals. */
+const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
+
 export function Review() {
   const data = useGameData();
   const { state, dispatch } = useStore();
@@ -62,7 +65,7 @@ export function Review() {
   };
 
   return (
-    <div className="screen">
+    <div className="screen review-screen">
       <TopBar
         subtitle={data.scenario.name}
         step="review"
@@ -73,7 +76,7 @@ export function Review() {
         }
       />
       <main className="body review-body">
-        <section className="panel col" style={{ padding: '14px 16px', gap: 4 }} aria-label="Flight Readiness">
+        <section className="panel col review-checklist" style={{ padding: '14px 16px', gap: 4 }} aria-label="Flight Readiness">
           <div className="row" style={{ justifyContent: 'space-between', marginBottom: 4, flexWrap: 'wrap' }}>
             <span className="lbl">Flight Readiness · R1–R8</span>
             <span className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>
@@ -85,16 +88,18 @@ export function Review() {
               <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--amber)', fontWeight: 600 }}>
                 {r.id}
               </span>
-              <span style={{ fontSize: 'calc(13rem / 16)' }}>{r.name}</span>
-              <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)', textAlign: 'right' }}>
+              <span className="ready-label" style={{ fontSize: 'calc(13rem / 16)' }}>
+                {r.name}
+              </span>
+              <span className="mono ready-value" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)' }}>
                 {r.value} <span style={{ color: 'var(--muted)' }}>({r.limit})</span>
               </span>
               <StatusChip status={r.status} />
             </div>
           ))}
           <div
+            className="bottleneck"
             style={{
-              marginTop: 'auto',
               borderRadius: 12,
               background: vuot.length ? '#3A1518' : '#2A2310',
               border: `1px solid ${vuot.length ? '#7F2A30' : '#6B5320'}`,
@@ -108,9 +113,9 @@ export function Review() {
             </span>
             <br />
             {vuot.length
-              ? `${vuot.length} mục VƯỢT: ${vuot.map((r) => `${r.id} ${r.name.toLowerCase()} (${r.value})`).join('; ')}.`
+              ? `${vuot.length} mục VƯỢT: ${vuot.map((r) => `${r.id} ${lowerFirst(r.name)} (${r.value})`).join('; ')}.`
               : sat.length
-                ? `Không có mục VƯỢT. Sát nhất: ${sat.map((r) => `${r.id} ${r.name.toLowerCase()} ${r.value}`).join('; ')}.`
+                ? `Không có mục VƯỢT. Sát nhất: ${sat.map((r) => `${r.id} ${lowerFirst(r.name)} ${r.value}`).join('; ')}.`
                 : 'Không có mục VƯỢT hay SÁT — thiết kế còn dư địa ở mọi yêu cầu.'}
           </div>
         </section>

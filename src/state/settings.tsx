@@ -38,6 +38,7 @@ export function loadSettings(): Settings {
 export function applySettings(s: Settings, root: HTMLElement = document.documentElement): void {
   root.dataset.lang = s.lang;
   root.style.fontSize = `${s.textScale}%`;
+  root.dataset.text = String(s.textScale); // lets CSS widen fixed side columns for enlarged text
   if (s.highContrast) root.dataset.contrast = 'high';
   else delete root.dataset.contrast;
   if (s.reduceMotion) root.dataset.motion = 'reduce';

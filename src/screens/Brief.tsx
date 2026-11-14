@@ -95,11 +95,12 @@ export function Brief() {
               <path d="M-6 -6 Q0 -14 6 -6 M6 6 Q0 14 -6 6" stroke="#F87171" strokeWidth="2.5" fill="none" />
             </g>
             <circle cx={hn.x} cy={hn.y} r="5" fill="#F5A524" />
-            <text x="200" y="176" fontSize="11" fontWeight="700" fill="#FFFFFF">
+            {/* centred under the dot so a narrow (cropped) map never cuts it */}
+            <text x={hn.x} y={hn.y + 18} textAnchor="middle" fontSize="11" fontWeight="700" fill="#FFFFFF">
               Hà Nội · Hòa Lạc
             </text>
             <circle cx="261" cy="154.5" r="4" fill="#F87171" />
-            <text x="270" y="170" fontSize="10" fill="#FCA5A5">
+            <text x="272" y="146" fontSize="10" fill="#FCA5A5">
               Đổ bộ T0
             </text>
           </MapVN>

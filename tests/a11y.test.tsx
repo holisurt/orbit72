@@ -145,11 +145,11 @@ describe('text contrast ≥ 4.5:1', () => {
 
 describe('layout', () => {
   it('≤ 900 px: all screen bodies stack in one column (reading order), HUD wraps', () => {
-    const block = appCss.slice(appCss.indexOf('@media (max-width: 900px)'));
+    const block = appCss.slice(appCss.indexOf('@media (max-width: 900px) {\n  .topbar'));
     for (const b of ['.brief-body', '.build-body', '.orbit-body', '.review-body', '.launch-body', '.ops-body', '.debrief-body', '.share-body', '.setup-body'])
       expect(block).toContain(b);
     expect(block).toMatch(/grid-template-columns: minmax\(0, 1fr\);/);
-    expect(block).toMatch(/\.hud \{\s*grid-template-columns: repeat\(auto-fit, minmax\(150px, 1fr\)\)/);
+    expect(block).toMatch(/\.hud \{\s*grid-template-columns: repeat\(auto-fit, minmax\(calc\(150rem \/ 16\), 1fr\)\)/);
   });
 
   it('no CSS reordering that would break focus order (no grid-row/order on panels)', () => {

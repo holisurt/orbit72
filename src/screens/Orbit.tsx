@@ -170,7 +170,7 @@ export function Orbit() {
             onChange={(e) => dispatch({ type: 'setOrbit', patch: { hKm: Number(e.target.value) } })}
           />
           {iss && <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>ISS: cố định 400 km, 1 mặt phẳng</span>}
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 8 }}>
+          <div className="counters">
             <Counter
               label={
             <>
@@ -185,7 +185,7 @@ export function Orbit() {
               onChange={(v) => dispatch({ type: 'setOrbit', patch: { planes: v } })}
             />
             <Counter
-              label="Vệ tinh/MP k"
+              label="Vệ tinh mỗi mặt phẳng k"
               value={o.perPlane}
               min={1}
               max={3}
