@@ -121,8 +121,8 @@ Segment mapping (from "Design and Develop Science Missions"):
 | Space | CubeSat build (§3: chassis, parts, wings, env test) |
 | Ground | Hoa Lac station, link budget (§5, R7), event E2 |
 | User | rescue centre and SOS villages, scored by P1h_rain (§6) |
-CML badge (JPL Concept Maturity Levels) shown in Debrief. The badge is the highest level reached, and each level requires the ones below it:
+CML badge (JPL Concept Maturity Levels) shown in Debrief. The badge is the highest level whose condition holds:
 - CML1: contract accepted.
 - CML2: all hard constraints pass (R8, and budget at signing, R5).
-- CML3: the player compared ≥ 2 configurations (changed planes, chassis or altitude) or did ≥ 1 rerun.
-- CML4: launched with R1–R8 all ĐẠT and exported the spec sheet.
+- CML3: CML2 holds and the player compared ≥ 2 configurations (changed planes, chassis or altitude) or did ≥ 1 rerun.
+- CML4: launched with R1–R8 all passed (ĐẠT or SÁT, none VƯỢT — 8/8) and exported the spec sheet. CML4 implies CML2 but does not require CML3 (§10: an S1 run with spec sheet export → CML4).

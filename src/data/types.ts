@@ -149,6 +149,31 @@ export interface Maps {
   seaLand: string;
 }
 
+/** public/data/imerg_yagi.json — built by data_prep/prepare_imerg.py (optional). */
+export interface Imerg {
+  source?: { product: string; doi: string; catalog: string; host: string };
+  hours: string[]; // ISO UTC, hour 0 = T0
+  hanoi_mmh: number[];
+  box_mean_mmh: number[];
+  grid?: {
+    lon0: number; // centre of first column (°E)
+    lat0: number; // centre of first row (°N); rows go north
+    step: number;
+    cols: number;
+    rows: number;
+    frames: number[][]; // hourly, row-major [r * cols + c], mm/h
+  };
+}
+
+/** public/data/donki_gst.json — built by data_prep/fetch_donki.py (optional). */
+export interface DonkiGst {
+  startTime: string;
+  kpIndex: number;
+  link: string;
+  gstID?: string;
+  source?: string;
+}
+
 export interface GameData {
   components: Components;
   launchers: Launchers;
@@ -156,4 +181,6 @@ export interface GameData {
   lifetime: LifetimeTable;
   events: Events;
   quiz: Quiz;
+  imerg?: Imerg | null;
+  donki?: DonkiGst | null;
 }

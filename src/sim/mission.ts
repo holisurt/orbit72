@@ -133,6 +133,7 @@ export interface MissionResult {
   orbit: OrbitInput; // normalised (ISS forces P=1, h=400)
   inclDeg: number;
   build: BuildSummary;
+  envTest: boolean;
   coverage: CoverageResult | null;
   fEcl: number;
   contactMinPerDay: number;
@@ -286,6 +287,7 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
     orbit,
     inclDeg,
     build,
+    envTest: input.design.envTest,
     coverage,
     fEcl,
     contactMinPerDay,
