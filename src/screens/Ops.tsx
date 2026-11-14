@@ -157,7 +157,7 @@ export function Ops() {
         </span>
         <svg width="100%" height="26" viewBox="0 0 288 26" preserveAspectRatio="none" role="img"
           aria-label={`Dòng thời gian 72 giờ: tin SOS tới nơi trong 1 giờ ${fmt(ops.p1h, 0)}%, khoảng trống dài nhất ${fmt(ops.longestGapH, 1)} giờ`}>
-          <rect width="288" height="26" fill="#1A2647" />
+          <rect width="288" height="26" fill="#141B2A" />
           <path d={strip.bins} fill="#F3F5F8" fillOpacity="0.85" />
           <path d={strip.lost} fill="#F87171" fillOpacity="0.75" />
           <rect x="0" y="0" width={clock / 15} height="26" fill="#FFFFFF" fillOpacity="0.08" />

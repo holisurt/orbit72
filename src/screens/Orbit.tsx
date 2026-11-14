@@ -256,7 +256,7 @@ export function Orbit() {
             </div>
             <svg width="100%" height="22" viewBox="0 0 288 22" preserveAspectRatio="none" role="img"
               aria-label={cov ? `Lúc chờ lâu nhất ${fmt(cov.longestGapH, 1)} giờ, tin SOS tới nơi trong 1 giờ ${fmt(cov.p1h, 0)}%` : 'Đang tính'}>
-              <rect width="288" height="22" fill="#1A2647" />
+              <rect width="288" height="22" fill="#141B2A" />
               <path d={bins} fill="#F3F5F8" fillOpacity="0.85" />
               <path d="M96 0 V22 M192 0 V22" stroke="#7F90AE" strokeWidth="0.6" />
             </svg>
