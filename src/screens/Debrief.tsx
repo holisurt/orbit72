@@ -14,9 +14,9 @@ import { useT } from '../ui/i18n';
 import { LEVEL_NAME } from '../ui/share';
 
 export const OUTCOME_STYLE: Record<Outcome, { color: string; bg: string; border: string }> = {
-  THANH_CONG: { color: '#4ADE80', bg: 'linear-gradient(90deg, #11361F, #0F1830 70%)', border: '#2E6B45' },
-  MOT_PHAN: { color: '#FBBF24', bg: 'linear-gradient(90deg, #3A2E0E, #0F1830 70%)', border: '#6B5320' },
-  THAT_BAI: { color: '#F87171', bg: 'linear-gradient(90deg, #3A1518, #0F1830 70%)', border: '#7F2A30' },
+  THANH_CONG: { color: '#4ADE80', bg: 'linear-gradient(90deg, #0c2616, var(--panel) 70%)', border: 'rgba(74, 222, 128, 0.35)' },
+  MOT_PHAN: { color: '#FBBF24', bg: 'linear-gradient(90deg, #281d06, var(--panel) 70%)', border: 'rgba(251, 191, 36, 0.35)' },
+  THAT_BAI: { color: '#F87171', bg: 'linear-gradient(90deg, #280b0f, var(--panel) 70%)', border: 'rgba(248, 113, 113, 0.35)' },
 };
 
 export function starGlyphs(n: number): string {
@@ -123,13 +123,17 @@ export function Debrief() {
             5 sao · GDD mục 10
           </span>
           {score.stars.map((s) => (
-            <div key={s.n} style={{ padding: '8px 0', borderBottom: '1px solid #1A2647' }}>
+            <div key={s.n} style={{ padding: '8px 0', borderBottom: '1px solid var(--hairline)' }}>
               <div className="row" style={{ justifyContent: 'space-between' }}>
                 <span style={{ fontSize: 'calc(14rem / 16)', fontWeight: 800 }}>
                   {s.n} · {s.name}
                 </span>
-                <span style={{ fontSize: 'calc(18rem / 16)', letterSpacing: 2, color: 'var(--amber)' }} aria-label={`${s.stars} trên 5 sao`}>
-                  {starGlyphs(s.stars)}
+                <span className="stars" role="img" aria-label={`${s.stars} trên 5 sao`}>
+                  {[...starGlyphs(s.stars)].map((g, q) => (
+                    <span key={q} aria-hidden="true" className={g === '★' ? 'star on' : 'star'}>
+                      {g}
+                    </span>
+                  ))}
                 </span>
               </div>
               <div className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)', marginTop: 2 }}>
@@ -181,13 +185,11 @@ export function Debrief() {
               <span className="lbl" style={{ color: 'var(--amber)' }}>
                 Huy hiệu <Term id="cml">CML</Term> · JPL
               </span>
-              <span className="mono" style={{ fontSize: 'calc(18rem / 16)', fontWeight: 600, color: cml ? 'var(--amber)' : 'var(--muted)' }}>
-                CML {cml}
-              </span>
+              <span className={`mono cml-pill${cml ? ' on' : ''}`}>CML {cml}</span>
             </div>
             <div className="row" style={{ gap: 4 }} aria-hidden="true">
               {[1, 2, 3, 4].map((l) => (
-                <div key={l} style={{ flex: 1, height: 8, borderRadius: 4, background: l <= cml ? 'var(--amber)' : '#1A2647' }} />
+                <div key={l} className="cml-seg" style={{ background: l <= cml ? 'var(--accent)' : 'var(--hairline)' }} />
               ))}
             </div>
             {([1, 2, 3, 4] as const).map((l) => (
@@ -208,7 +210,7 @@ export function Debrief() {
               </svg>
             </div>
             {rows.map((r) => (
-              <div key={r.k} className="row" style={{ justifyContent: 'space-between', gap: 8, padding: '3px 0', borderBottom: '1px solid #1A2647' }}>
+              <div key={r.k} className="row" style={{ justifyContent: 'space-between', gap: 8, padding: '3px 0', borderBottom: '1px solid var(--hairline)' }}>
                 <span style={{ color: 'var(--muted)' }}>{r.k}</span>
                 <span className="mono" style={{ textAlign: 'right' }}>
                   {r.v}
@@ -252,22 +254,22 @@ export function Debrief() {
       <div style={{ position: 'absolute', width: 0, height: 0, overflow: 'hidden' }} aria-hidden="true">
         {/* The PNG is rendered before the exportSpec action, so it prints the level reached by exporting. */}
         <svg ref={specRef} data-testid="spec-sheet" aria-hidden="true" viewBox={`0 0 600 ${120 + rows.length * 36}`}>
-          <rect width="600" height={120 + rows.length * 36} fill="#0F1830" />
-          <text x="30" y="46" fontFamily={EXPORT_FONT} fontSize="26" fontWeight="800" fill="#E8EEF8">
+          <rect width="600" height={120 + rows.length * 36} fill="#0E131D" />
+          <text x="30" y="46" fontFamily={EXPORT_FONT} fontSize="26" fontWeight="800" fill="#F3F5F8">
             ORBIT 72 · Spec sheet · Rồng Con
           </text>
-          <text x="30" y="78" fontFamily={EXPORT_FONT} fontSize="15" fill="#9AABC7">
+          <text x="30" y="78" fontFamily={EXPORT_FONT} fontSize="15" fill="#8E9BAE">
             {data.scenario.name} · lần chạy {state.run} · {OUTCOME_LABEL[score.outcome]} {score.passed}/8 · CML {cmlOnExport}
           </text>
           {rows.map((r, i) => (
             <g key={r.k} transform={`translate(30 ${118 + i * 36})`}>
-              <text fontFamily={EXPORT_FONT} fontSize="16" fill="#9AABC7">
+              <text fontFamily={EXPORT_FONT} fontSize="16" fill="#8E9BAE">
                 {r.k}
               </text>
-              <text x="540" textAnchor="end" fontFamily={EXPORT_MONO} fontSize="16" fill="#E8EEF8">
+              <text x="540" textAnchor="end" fontFamily={EXPORT_MONO} fontSize="16" fill="#F3F5F8">
                 {r.v}
               </text>
-              <path d="M0 12 H540" stroke="#26355A" />
+              <path d="M0 12 H540" stroke="#292E37" />
             </g>
           ))}
         </svg>

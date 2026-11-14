@@ -59,9 +59,9 @@ export const Patch = forwardRef<SVGSVGElement, Props>(function Patch({ theme, te
       <circle cx="200" cy="200" r="100" fill="none" stroke={t.acc} strokeOpacity="0.4" strokeWidth="1.5" strokeDasharray="10 5" />
       <polygon points={starPoints()} fill={t.acc} />
       <circle cx="200" cy="200" r="16" fill={t.c2} stroke={t.acc} strokeWidth="3" />
-      <ellipse cx="200" cy="200" rx="150" ry="44" fill="none" stroke="#3DD6F5" strokeWidth="3" transform="rotate(-20 200 200)" />
+      <ellipse cx="200" cy="200" rx="150" ry="44" fill="none" stroke={t.acc} strokeWidth="2.5" strokeDasharray="6 4" transform="rotate(-20 200 200)" />
       {dots.map((d, k) => (
-        <circle key={k} cx={d.x.toFixed(1)} cy={d.y.toFixed(1)} r="7" fill="#FFFFFF" stroke="#3DD6F5" strokeWidth="3" />
+        <circle key={k} cx={d.x.toFixed(1)} cy={d.y.toFixed(1)} r="7" fill="#FFFFFF" stroke={t.acc} strokeWidth="2.5" />
       ))}
       <g fill="#F9A8D4" stroke={t.c1} strokeWidth="2">
         <path d="M200 332 C186 312 186 292 200 276 C214 292 214 312 200 332Z" />

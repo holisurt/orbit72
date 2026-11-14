@@ -4,6 +4,8 @@ import { quizScore } from '../state/quiz';
 import { useStore, type QuizPhase } from '../state/store';
 import { TopBar } from '../ui/TopBar';
 import { useT } from '../ui/i18n';
+import { useLang, useTr } from '../i18n';
+import { enQuiz } from '../i18n/en';
 
 /**
  * Quiz before Brief (pre) and after Debrief (post), same questions (SPEC §9). Answers are stored only as
@@ -13,6 +15,8 @@ export function Quiz({ phase }: { phase: QuizPhase }) {
   const { quiz } = useGameData();
   const { state, dispatch } = useStore();
   const t = useT();
+  const tr = useTr();
+  const lang = useLang();
   const qs = quiz.questions;
   const [answers, setAnswers] = useState<(number | null)[]>(() => qs.map(() => null));
   const [review, setReview] = useState(false);
@@ -28,16 +32,16 @@ export function Quiz({ phase }: { phase: QuizPhase }) {
 
   return (
     <div className="screen">
-      <TopBar subtitle={phase === 'pre' ? 'Quiz trước nhiệm vụ' : 'Quiz sau nhiệm vụ'} />
+      <TopBar subtitle={phase === 'pre' ? tr('quiz_titlePre') : tr('quiz_titlePost')} />
       <main className="body quiz-body">
         <div className="col" style={{ gap: 6 }}>
           <h1 style={{ margin: 0, fontSize: 'calc(24rem / 16)', fontWeight: 800 }}>
-            {phase === 'pre' ? '5 câu hỏi nhanh trước khi nhận hợp đồng' : 'Cùng 5 câu hỏi — bạn đã học được gì?'}
+            {phase === 'pre' ? tr('quiz_headPre') : tr('quiz_headPost')}
           </h1>
           <p style={{ margin: 0, fontSize: 'calc(14rem / 16)', color: 'var(--soft)' }}>
             {phase === 'pre'
-              ? 'Không tính điểm sao. Đáp án sẽ hiện sau nhiệm vụ, khi bạn làm lại đúng các câu này.'
-              : 'So sánh với lần trước để thấy mức tiến bộ. Chỉ lưu đáp án trên máy này, không lưu tên.'}
+              ? tr('quiz_notePre')
+              : tr('quiz_notePost')}
           </p>
         </div>
 
@@ -47,11 +51,11 @@ export function Quiz({ phase }: { phase: QuizPhase }) {
               <span className="mono" style={{ color: 'var(--amber)' }}>
                 {i + 1}/{qs.length}
               </span>{' '}
-              {q.q}
+              {lang === 'en' ? (enQuiz[i]?.q ?? q.q) : q.q}
             </legend>
             {q.options.map((o, k) => {
               const picked = answers[i] === k;
-              const mark = review ? (k === q.answer ? 'ĐÚNG' : picked ? 'SAI' : '') : '';
+              const mark = review ? (k === q.answer ? 'right' : picked ? 'wrong' : '') : '';
               return (
                 <label key={k} className={`quiz-opt${picked ? ' picked' : ''}${review && k === q.answer ? ' right' : ''}`}>
                   <input
@@ -61,8 +65,8 @@ export function Quiz({ phase }: { phase: QuizPhase }) {
                     disabled={review}
                     onChange={() => setAnswers((a) => a.map((x, j) => (j === i ? k : x)))}
                   />
-                  <span style={{ flex: 1 }}>{o}</span>
-                  {mark && <span className={`status ${mark === 'ĐÚNG' ? 'DAT' : 'VUOT'}`}>{mark}</span>}
+                  <span style={{ flex: 1 }}>{lang === 'en' ? (enQuiz[i]?.options[k] ?? o) : o}</span>
+                  {mark && <span className={`status ${mark === 'right' ? 'DAT' : 'VUOT'}`}>{mark === 'right' ? tr('quiz_right') : tr('quiz_wrong')}</span>}
                 </label>
               );
             })}
@@ -72,10 +76,12 @@ export function Quiz({ phase }: { phase: QuizPhase }) {
         {review && score !== null ? (
           <div className="panel col" style={{ padding: 14, gap: 8 }} role="status">
             <span className="lbl" style={{ color: 'var(--amber)' }}>
-              Kết quả
+              {tr('quiz_result')}
             </span>
             <span style={{ fontSize: 'calc(20rem / 16)', fontWeight: 800 }}>
-              {pre !== null ? `Quiz trước → sau: ${pre} → ${score} / ${qs.length} (${score - pre < 0 ? '−' : '+'}${Math.abs(score - pre)})` : `Quiz sau: ${score} / ${qs.length}`}
+              {pre !== null
+                ? tr('quiz_prePost', { pre, post: score, n: qs.length, gain: `${score - pre < 0 ? '−' : '+'}${Math.abs(score - pre)}` })
+                : tr('quiz_postOnly', { post: score, n: qs.length })}
             </span>
             <button className="btn-p" onClick={() => dispatch({ type: 'answerQuiz', phase, answers: answers as number[] })}>
               {t('continue')} →

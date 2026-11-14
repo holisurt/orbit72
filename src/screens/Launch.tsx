@@ -30,9 +30,9 @@ export function Launch() {
   return (
     <div
       className="screen"
-      style={{ background: `linear-gradient(180deg, ${night ? '#030612' : '#0B1B3D'} 0%, ${night ? '#070D1A' : '#1B3A6B'} 100%)` }}
+      style={{ background: night ? 'var(--bg)' : 'linear-gradient(180deg, var(--bg) 0%, var(--panel-elevated) 100%)' }}
     >
-      <header className="topbar" style={{ borderBottomColor: 'rgba(255,255,255,.08)' }}>
+      <header className="topbar">
         <span className="brand">
           ORBIT <span className="amber">72</span>{' '}
           <span className="sub">
@@ -51,7 +51,7 @@ export function Launch() {
               <path d="M150 40 C170 70 176 100 176 140 V300 H124 V140 C124 100 130 70 150 40Z" fill="#E8EEF8" />
               <path d="M124 270 L102 320 H124Z M176 270 L198 320 H176Z" fill="#F87171" />
               <rect x="124" y="180" width="52" height="8" fill="#F5A524" />
-              <circle cx="150" cy="120" r="10" fill="#3DD6F5" stroke="#1E3A8A" strokeWidth="3" />
+              <circle cx="150" cy="120" r="10" fill="#F5A524" stroke="#78350F" strokeWidth="2.5" />
               <path d="M128 300 H172 L166 318 H134Z" fill="#5B6B8F" />
               {fire && (
                 <>
@@ -60,8 +60,8 @@ export function Launch() {
                 </>
               )}
             </g>
-            {onPad && <path d="M60 330 V120 H72 V330 M60 160 H118 M60 220 H118 M60 280 H118" stroke="#3A4C78" strokeWidth="4" fill="none" />}
-            <path d="M0 330 H300 V400 H0Z" fill="#0B1428" />
+            {onPad && <path d="M60 330 V120 H72 V330 M60 160 H118 M60 220 H118 M60 280 H118" stroke="#646971" strokeWidth="4" fill="none" />}
+            <path d="M0 330 H300 V400 H0Z" fill="#0E131D" />
           </svg>
           <div style={{ position: 'absolute', top: 8, left: 0, right: 0, textAlign: 'center' }}>
             <div className="lbl" style={{ color: 'var(--amber)' }}>
@@ -82,14 +82,14 @@ export function Launch() {
                 <li
                   key={t}
                   className="panel row"
-                  style={{ padding: '9px 12px', gap: 10, borderColor: q === k ? 'var(--amber)' : undefined, background: q === k ? '#16213D' : undefined }}
+                  style={{ padding: '9px 12px', gap: 10, borderColor: q === k ? 'var(--accent)' : 'var(--hairline)', background: q === k ? 'var(--accent-wash)' : undefined }}
                   aria-current={q === k ? 'step' : undefined}
                 >
-                  <span className="mono" style={{ width: 78, fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>
+                  <span className="mono" style={{ width: 'calc(84rem / 16)', flex: 'none', fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>
                     {t}
                   </span>
                   <span style={{ flex: 1, fontSize: 'calc(13rem / 16)', fontWeight: 600 }}>{n}</span>
-                  <span className="status" style={{ background: q < k ? 'var(--ok)' : q === k ? 'var(--amber)' : '#3A4C78' }}>
+                  <span className={`status stage-chip ${q < k ? 'done' : q === k ? 'now' : 'wait'}`}>
                     {st}
                   </span>
                 </li>

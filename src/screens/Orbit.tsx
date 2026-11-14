@@ -10,7 +10,7 @@ import { useStore } from '../state/store';
 import { fmt } from '../ui/format';
 import { MapWorld, projWorld } from '../ui/MapWorld';
 import { PassScreen } from '../ui/PassScreen';
-import { StatusChip, STATUS_COLOR } from '../ui/StatusChip';
+import { StatusChip } from '../ui/StatusChip';
 import { TopBar } from '../ui/TopBar';
 import { Term } from '../ui/Term';
 import { L_P1H } from '../ui/labels';
@@ -109,6 +109,8 @@ export function Orbit() {
     },
     { id: 'r5', k: 'Tổng chi phí · R5', v: `${fmt(m.totalCostKusd, 0)}k`, chip: <StatusChip status={r('R5').status} /> },
   );
+
+  const HERO = ['r1', 'p1h', 'r4', 'r5'];
 
   const launcherCostText = (id: LauncherId) => {
     const l = m.launches.find((x) => x.launcher.id === id)!;
@@ -219,7 +221,7 @@ export function Orbit() {
           <section className="panel col" style={{ padding: 10, gap: 6 }} aria-label="Bản đồ vết quỹ đạo">
             <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
               <span className="lbl">Vết quỹ đạo 2 vòng · mỗi mặt phẳng một đường</span>
-              <span className="lbl" style={{ color: 'var(--cyan)' }}>
+              <span className="lbl" style={{ color: 'var(--soft)' }}>
                 vòng nét đứt: {targetName} nhìn thấy vệ tinh (ε ≥ {data.scenario.requirements.elevationDeg}°)
               </span>
             </div>
@@ -230,9 +232,9 @@ export function Orbit() {
                 cy={tp.y}
                 rx={(lamDeg * 2) / Math.cos(target.lat * DEG)}
                 ry={lamDeg * 2}
-                fill="#3DD6F5"
+                fill="#F3F5F8"
                 fillOpacity="0.08"
-                stroke="#3DD6F5"
+                stroke="#F3F5F8"
                 strokeWidth="1.5"
                 strokeDasharray="5 4"
               />
@@ -254,8 +256,8 @@ export function Orbit() {
             </div>
             <svg width="100%" height="22" viewBox="0 0 288 22" preserveAspectRatio="none" role="img"
               aria-label={cov ? `Lúc chờ lâu nhất ${fmt(cov.longestGapH, 1)} giờ, tin SOS tới nơi trong 1 giờ ${fmt(cov.p1h, 0)}%` : 'Đang tính'}>
-              <rect width="288" height="22" fill="#1A2647" />
-              <path d={bins} fill="#3DD6F5" />
+              <rect width="288" height="22" fill="#141B2A" />
+              <path d={bins} fill="#F3F5F8" fillOpacity="0.85" />
               <path d="M96 0 V22 M192 0 V22" stroke="#7F90AE" strokeWidth="0.6" />
             </svg>
             <div className="mono row" style={{ justifyContent: 'space-between', fontSize: 'calc(10rem / 16)', color: 'var(--dim)' }}>
@@ -268,11 +270,23 @@ export function Orbit() {
         </div>
 
         <div className="col" style={{ gap: 8 }}>
+          {/* Hero numbers: the four key metrics (same rows, same values; shown large) */}
+          <section className="hero-metrics" aria-label="Chỉ số chính">
+            {rows
+              .filter((row) => HERO.includes(row.id))
+              .map((row) => (
+                <div key={row.id} className="panel hero-metric">
+                  <span className="hero-label">{row.k}</span>
+                  <span className="hero-value mono">{row.v}</span>
+                  {row.chip && <span className="hero-chip">{row.chip}</span>}
+                </div>
+              ))}
+          </section>
           <section className="panel col" style={{ padding: '10px 12px', gap: 0 }} aria-label="Chỉ số">
             <span className="lbl" style={{ marginBottom: 4 }}>
               Chỉ số (mô hình GDD mục 6)
             </span>
-            {rows.map((row) => (
+            {rows.filter((row) => !HERO.includes(row.id)).map((row) => (
               <div key={row.id} className="metric">
                 <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)' }}>{row.k}</span>
                 <span className="row" style={{ gap: 6 }}>
@@ -292,7 +306,7 @@ export function Orbit() {
               {allLinks.map((l) => {
                 const s = statusMin(l.margin, data.scenario.requirements.linkMarginDb, 1);
                 return (
-                  <span key={l.id} style={{ color: l.installed ? STATUS_COLOR[s] : 'var(--muted)' }}
+                  <span key={l.id} data-status={s} style={{ color: l.installed ? 'var(--text)' : 'var(--muted)' }}
                     title={l.installed ? undefined : 'chưa lắp'}>
                     {l.id === 'uhf' ? 'UHF' : l.id === 's' ? 'S' : 'SOS'} {fmt(l.margin, 1)}
                     {l.id === 'sos' ? ' dB' : ''}

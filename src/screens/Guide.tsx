@@ -4,6 +4,7 @@ import { useStore } from '../state/store';
 import { guideTabs, type GuideItem } from '../ui/guide';
 import { Mascot } from '../ui/Mascot';
 import { useT } from '../ui/i18n';
+import { useEnglishGate } from '../i18n';
 
 const norm = (s: string) => s.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/đ/g, 'd').replace(/Đ/g, 'D').toLowerCase();
 
@@ -12,6 +13,7 @@ export function Guide({ initialTab = 0, focus = null }: { initialTab?: number; f
   const data = useGameData();
   const { dispatch } = useStore();
   const t = useT();
+  useEnglishGate();
   const tabs = useMemo(() => guideTabs(data), [data]);
   const [tab, setTab] = useState(initialTab);
   const [q, setQ] = useState('');

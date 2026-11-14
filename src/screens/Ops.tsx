@@ -157,8 +157,8 @@ export function Ops() {
         </span>
         <svg width="100%" height="26" viewBox="0 0 288 26" preserveAspectRatio="none" role="img"
           aria-label={`Dòng thời gian 72 giờ: tin SOS tới nơi trong 1 giờ ${fmt(ops.p1h, 0)}%, khoảng trống dài nhất ${fmt(ops.longestGapH, 1)} giờ`}>
-          <rect width="288" height="26" fill="#1A2647" />
-          <path d={strip.bins} fill="#3DD6F5" />
+          <rect width="288" height="26" fill="#141B2A" />
+          <path d={strip.bins} fill="#F3F5F8" fillOpacity="0.85" />
           <path d={strip.lost} fill="#F87171" fillOpacity="0.75" />
           <rect x="0" y="0" width={clock / 15} height="26" fill="#FFFFFF" fillOpacity="0.08" />
           <path d={ordered.map((e) => `M${triggerMin(e) / 15} 0 V26`).join(' ')} stroke="#F5A524" strokeWidth="1.2" />
@@ -189,13 +189,13 @@ export function Ops() {
             <span className="lbl">Chỉ số sau sự cố</span>
             <div>
               <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>{L_P1H}</div>
-              <div className="mono" style={{ fontSize: 'calc(26rem / 16)', fontWeight: 600, color: 'var(--cyan)' }}>
+              <div className="mono" style={{ fontSize: 'calc(26rem / 16)', fontWeight: 700, color: 'var(--text)' }}>
                 {fmt(ops.p1h, 0)}%
               </div>
             </div>
             <div>
               <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>{L_P1H_RAIN}</div>
-              <div className="mono" style={{ fontSize: 'calc(20rem / 16)', fontWeight: 600, color: 'var(--cyan)' }}>
+              <div className="mono" style={{ fontSize: 'calc(20rem / 16)', fontWeight: 700, color: 'var(--text)' }}>
                 {fmt(ops.p1hRain, 1)}%
               </div>
             </div>
@@ -239,8 +239,8 @@ export function Ops() {
               return (
                 <g key={p.i} transform={`translate(${q.x} ${q.y})`} opacity={on ? 1 : 0.6}>
                   <rect x="-7" y="-7" width="14" height="14" rx="3" fill="#F5A524" />
-                  <rect x="-19" y="-4" width="10" height="8" fill="#3DD6F5" />
-                  <rect x="9" y="-4" width="10" height="8" fill="#3DD6F5" />
+                  <rect x="-19" y="-4" width="10" height="8" fill="#8E9BAE" />
+                  <rect x="9" y="-4" width="10" height="8" fill="#8E9BAE" />
                   <text x="16" y="15" fontSize="10" fontWeight="700" fill="#F5A524">
                     Rồng Con-{p.i + 1}
                   </text>
@@ -352,7 +352,7 @@ export function Ops() {
                 </p>
                 {ev.id === 'E1' && data.donki?.link && (
                   <a href={data.donki.link} target="_blank" rel="noopener noreferrer"
-                    style={{ fontSize: 'calc(12rem / 16)', color: 'var(--cyan)', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>
+                    style={{ fontSize: 'calc(12rem / 16)', color: 'var(--accent)', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>
                     {data.donki.source ?? 'NASA DONKI'} · {data.donki.gstID ?? 'xem bản ghi'} ↗
                   </a>
                 )}
@@ -375,7 +375,7 @@ export function Ops() {
                     </span>
                     <span style={{ fontSize: 'calc(15rem / 16)', fontWeight: 800 }}>{opt.text}</span>
                     <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)', lineHeight: 1.45 }}>{optionDetail(ev, o.key, run.hasShield)}</span>
-                    <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--cyan)' }}>
+                    <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--text)', fontWeight: 600 }}>
                       Tin SOS tới nơi trong 1 giờ: {o.p1hDisplay}% · chờ lâu nhất {fmt(o.longestGapH, 1)} h
                     </span>
                   </button>

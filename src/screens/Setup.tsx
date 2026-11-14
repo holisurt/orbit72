@@ -4,6 +4,7 @@ import { useStore, type PlayerCount } from '../state/store';
 import { PassScreen } from '../ui/PassScreen';
 import { TopBar } from '../ui/TopBar';
 import { useT } from '../ui/i18n';
+import { roleColor } from '../ui/roleColor';
 
 const COUNTS: PlayerCount[] = [2, 3, 4];
 
@@ -52,16 +53,16 @@ export function Setup() {
           </div>
           <div className="players" style={{ gridTemplateColumns: `repeat(${groups.length}, minmax(0, 1fr))` }}>
             {groups.map((g, q) => {
-              const col = ROLES[g[0]].color;
+              const col = roleColor(ROLES[g[0]].color);
               return (
-                <section key={q} className="panel player" style={{ borderTop: `4px solid ${col}` }} aria-label={`Người chơi ${q + 1}`}>
+                <section key={q} className="panel player" style={{ borderTop: `3px solid ${col}`, position: 'relative' }} aria-label={`Người chơi ${q + 1}`}>
                   <div className="row" style={{ gap: 10 }}>
-                    <div className="avatar" style={{ background: col }} aria-hidden="true">
+                    <div className="avatar" style={{ background: col, color: 'var(--bg)', fontWeight: 800, fontSize: 'calc(13rem / 16)' }} aria-hidden="true">
                       {g.map((k) => ROLES[k].ab).join('+')}
                     </div>
                     <div>
-                      <div className="lbl">Người chơi {q + 1}</div>
-                      <div style={{ fontSize: 'calc(15rem / 16)', fontWeight: 800, lineHeight: 1.25 }}>
+                      <div className="lbl" style={{ color: 'var(--muted)' }}>Người chơi {q + 1}</div>
+                      <div style={{ fontSize: 'calc(15rem / 16)', fontWeight: 800, lineHeight: 1.25, color: 'var(--text)' }}>
                         {g.map((k) => ROLES[k].name).join(' + ')}
                       </div>
                     </div>

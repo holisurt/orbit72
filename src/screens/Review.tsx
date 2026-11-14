@@ -11,6 +11,7 @@ import { TopBar } from '../ui/TopBar';
 import { useT } from '../ui/i18n';
 import { Term } from '../ui/Term';
 import type { TermId } from '../ui/labels';
+import { roleColor } from '../ui/roleColor';
 
 /** FD calls each station (SPEC §8). */
 const CALLS: { call: string; role: RoleId }[] = [
@@ -127,16 +128,16 @@ export function Review() {
 
         <section
           className="panel review-pad"
-          style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(420px 360px at 50% 70%, #1B2A55, #0F1830)' }}
+          style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(420px 360px at 50% 70%, var(--panel-elevated), var(--panel))' }}
           aria-label="Bệ phóng"
         >
           <svg width="100%" height="100%" viewBox="0 0 300 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Tên lửa trên bệ phóng chờ lệnh">
-            <path d="M0 380 H300 V420 H0Z" fill="#141F3A" />
-            <path d="M70 380 V150 H84 V380 M70 200 H120 M70 260 H120 M70 320 H120" stroke="#3A4C78" strokeWidth="4" fill="none" />
+            <path d="M0 380 H300 V420 H0Z" fill="#0E131D" />
+            <path d="M70 380 V150 H84 V380 M70 200 H120 M70 260 H120 M70 320 H120" stroke="#646971" strokeWidth="4" fill="none" />
             <path d="M150 60 C170 90 176 120 176 160 V330 H124 V160 C124 120 130 90 150 60Z" fill="#E8EEF8" />
             <path d="M124 300 L104 350 H124Z M176 300 L196 350 H176Z" fill="#F87171" />
             <rect x="124" y="200" width="52" height="10" fill="#F5A524" />
-            <circle cx="150" cy="140" r="11" fill="#3DD6F5" stroke="#1E3A8A" strokeWidth="3" />
+            <circle cx="150" cy="140" r="11" fill="#F5A524" stroke="#78350F" strokeWidth="2.5" />
             <path d="M128 330 H172 L166 350 H134Z" fill="#5B6B8F" />
             <text x="150" y="250" textAnchor="middle" fontSize="10" fontWeight="800" fill="#1E3A8A" transform="rotate(-90 150 250)">
               RỒNG CON
@@ -158,9 +159,9 @@ export function Review() {
             const r = ROLES[role];
             const v = votes[role];
             return (
-              <div key={role} className="col" style={{ gap: 6, padding: '8px 0', borderBottom: '1px solid #1A2647' }}>
+              <div key={role} className="col" style={{ gap: 6, padding: '8px 0', borderBottom: '1px solid var(--hairline)' }}>
                 <div className="row" style={{ gap: 10 }}>
-                  <div className="avatar" style={{ width: 40, height: 40, background: r.color, fontSize: 'calc(13rem / 16)' }} aria-hidden="true">
+                  <div className="avatar" style={{ width: 40, height: 40, background: roleColor(r.color), fontSize: 'calc(13rem / 16)' }} aria-hidden="true">
                     {r.ab}
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
@@ -203,9 +204,6 @@ export function Review() {
               </div>
             );
           })}
-          <div role="status" style={{ fontSize: 'calc(14rem / 16)', fontWeight: 700, color: summary.color, marginTop: 4 }}>
-            {summary.text}
-          </div>
           {blockers.length > 0 && (
             <ul style={{ margin: 0, paddingLeft: 18, fontSize: 'calc(12rem / 16)', color: 'var(--warn)', lineHeight: 1.5 }}>
               {blockers.map((b) => (
@@ -213,7 +211,11 @@ export function Review() {
               ))}
             </ul>
           )}
-          <div className="row" style={{ marginTop: 'auto' }}>
+          {/* Consensus banner directly above PHÓNG (same text and colour as before) */}
+          <div role="status" className="consensus-banner" style={{ color: summary.color, borderLeftColor: summary.color, marginTop: 'auto' }}>
+            {summary.text}
+          </div>
+          <div className="row">
             <button className="btn-s" aria-label={t('back')} onClick={() => dispatch({ type: 'go', screen: 'orbit' })}>
               ←
             </button>

@@ -20,7 +20,7 @@ Trước khi lên sân khấu: mở trang chơi, bấm ⚙ **Cài đặt → Xó
 ## Số liệu cần nhớ
 
 - Khoảng trống dài nhất (SSO 520 km, 4 mặt phẳng × 1): **3,0 h**
-- Tin SOS tới nơi trong 1 giờ: **49,1 %** · Tin SOS tới nơi trong 1 giờ (tính theo mưa NASA IMERG): **48,1 %**
+- Tin SOS tới nơi trong 1 giờ: **49 %** · Tin SOS tới nơi trong 1 giờ (tính theo mưa NASA IMERG): **48,1 %**
 - Chi phí lời giải S1: **2.640k USD** (ngân sách Kỹ sư 3.000k)
 - Tuổi thọ quỹ đạo ở 520 km: **L = 6,5 năm**
 - Biên đường truyền ở 520 km, góc ngẩng 10°: **UHF 9,7 · S 8,4 · SOS 9,3 dB**
