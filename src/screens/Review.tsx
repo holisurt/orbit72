@@ -9,6 +9,8 @@ import { PassScreen } from '../ui/PassScreen';
 import { StatusChip } from '../ui/StatusChip';
 import { TopBar } from '../ui/TopBar';
 import { useT } from '../ui/i18n';
+import { Term } from '../ui/Term';
+import type { TermId } from '../ui/labels';
 
 /** FD calls each station (SPEC §8). */
 const CALLS: { call: string; role: RoleId }[] = [
@@ -18,6 +20,9 @@ const CALLS: { call: string; role: RoleId }[] = [
   { call: 'COMMS?', role: 'QD' },
 ];
 const R_CODES: RCode[] = ['R1', 'R2', 'R3', 'R4', 'R5', 'R6', 'R7', 'R8'];
+
+/** Requirements whose plain sentence still rests on a technical term → "?" explainer. */
+const REQ_TERM: Partial<Record<string, TermId>> = { R3: 'eclipse', R4: 'lifetime', R7: 'margin' };
 
 /** Lower-case only the first letter, so proper names (Hà Nội, Trái Đất) keep their capitals. */
 const lowerFirst = (s: string) => s.charAt(0).toLowerCase() + s.slice(1);
@@ -89,7 +94,7 @@ export function Review() {
                 {r.id}
               </span>
               <span className="ready-label" style={{ fontSize: 'calc(13rem / 16)' }}>
-                {r.name}
+                {REQ_TERM[r.id] ? <Term id={REQ_TERM[r.id]!}>{r.name}</Term> : r.name}
               </span>
               <span className="mono ready-value" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)' }}>
                 {r.value} <span style={{ color: 'var(--muted)' }}>({r.limit})</span>

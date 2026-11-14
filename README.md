@@ -19,6 +19,17 @@ Solo or pass-the-device co-op (2–4 players), two difficulty levels (Học viê
 
 For a high-school / first-year audience, v1.1 removed: the Giám đốc difficulty (launch failures, replacement launches, debris event E4, solar-max lifetimes), the Daily mission, the camera payload and flood-imaging bonus, the cloud event E3, and the parts X-band, AIS receiver, edge-processing OBC, small electric thruster and precise ADCS. The remaining 9 parts (+ deployable wings), 3 events, 3 chassis sizes and 4 inclination presets keep every SPEC §10 reference value unchanged.
 
+## Screenshots
+
+Laptop, 1440 × 900, 100 % text (S1 solution: 6U with S-band, SSO 520 km, 4 planes × 1).
+
+| | |
+|---|---|
+| ![Home: choose mode and difficulty](docs/screens/home-1440x900-100.png) **Home** | ![Brief: contract, 72 h NASA IMERG rain map, R1–R8](docs/screens/brief-1440x900-100.png) **Mission brief** |
+| ![Build: CubeSat bay and live HUD](docs/screens/build-1440x900-100.png) **Build** | ![Orbit: ground tracks, coverage and link margins](docs/screens/orbit-1440x900-100.png) **Orbit** |
+| ![Review: R1–R8 checklist and Go/No-Go poll](docs/screens/review-1440x900-100.png) **Go/No-Go** | ![Ops: Mission Control with the E1 geomagnetic-storm card](docs/screens/ops-1440x900-100.png) **Operations** |
+| ![Debrief: five stars, why-chain, CML badge, spec sheet](docs/screens/debrief-1440x900-100.png) **Debrief** | ![Share: mission patch and result card](docs/screens/share-1440x900-100.png) **Share** |
+
 ## Science & validation
 
 All constants come from [`docs/SPEC.md`](docs/SPEC.md) (derived from the GDD) and carry a provenance tag: [CT] physics, [NG] sourced, [GA] game assumption. Every [GA] assumption is listed in the in-game Guide → Science tab.

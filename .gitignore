@@ -10,3 +10,9 @@ data_prep/raw/
 Thumbs.db
 dist-offline/
 *.zip
+
+# Screenshots: only the 1440x900 / 100 % set is kept in the repo
+docs/screens/*-844x390*
+docs/screens/*-1280x720*
+docs/screens/*-1920x1080*
+docs/screens/*-150.png
