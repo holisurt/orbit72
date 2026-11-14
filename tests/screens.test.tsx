@@ -12,7 +12,7 @@ import { Setup } from '../src/screens/Setup';
 import { Brief } from '../src/screens/Brief';
 import { Build } from '../src/screens/Build';
 import { Orbit } from '../src/screens/Orbit';
-import { data } from './fixtures';
+import { data, REF_DESIGN } from './fixtures';
 import type { ReactElement } from 'react';
 
 const maps = { world, vn, globe, seaLand };
@@ -26,7 +26,9 @@ function render(el: ReactElement, state: GameState): string {
   return html.replace(/<!-- -->/g, '');
 }
 
-const S1: GameState = reducer(reducer(initialState, { type: 'startMission' }), { type: 'chooseOrbit' });
+const fresh: GameState = reducer(initialState, { type: 'startMission' });
+/** S1 after the player swaps UHF → S-band (reference design, SPEC §10), orbit chosen. */
+const S1: GameState = reducer({ ...fresh, design: REF_DESIGN }, { type: 'chooseOrbit' });
 
 describe('screens render (CP2)', () => {
   it('Home', () => {
@@ -54,6 +56,20 @@ describe('screens render (CP2)', () => {
     expect(h).toContain('310k × 4 + phóng = 2.640k');
     expect(h).toContain('11 / 18 tháng');
     expect(h).toContain('R8 ĐẠT');
+  });
+
+  it('Build fresh default: Data bar VƯỢT, UHF card uses 17 min default', () => {
+    const h = render(<Build />, fresh);
+    expect(h).toMatch(/Dữ liệu<\/span><span class="status VUOT">VƯỢT/);
+    expect(h).toContain('5 / 1,22 MB/ngày');
+    expect(h).toContain('≈ 1,22 MB/ngày với 17 phút liên lạc');
+    expect(h).not.toContain('~1,2 MB');
+  });
+
+  it('Build S-band card uses simulated contact minutes once an orbit exists', () => {
+    const h = render(<Build />, S1);
+    expect(/với ([\d,]+) phút liên lạc/.exec(h)?.[1]).toBe('16,7');
+    expect(h).toMatch(/≈ 25\d MB\/ngày với 16,7 phút liên lạc/);
   });
 
   it('Build reports missing parts (R8)', () => {

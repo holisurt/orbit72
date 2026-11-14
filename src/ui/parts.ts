@@ -1,5 +1,7 @@
 // Part display copy from design/HF-Build (abbreviation + "why" text). Numbers come from data/sim.
-import type { PartCat } from '../data/types';
+import type { Part, PartCat } from '../data/types';
+import { downlinkBytesPerDay } from '../sim/link';
+import { fmt } from './format';
 
 export const CAT_COLOR: Record<PartCat, string> = {
   bus: '#3DD6F5',
@@ -17,6 +19,22 @@ export const CAT_TABS: { id: PartCat; name: string }[] = [
   { id: 'ext', name: 'Phụ trợ' },
 ];
 
+/**
+ * Downlink per day at the given contact minutes — same rule as the HUD Data bar
+ * (2 decimals below 10 MB, else integer). E.g. "≈ 250 MB/ngày với 16,7 phút liên lạc".
+ */
+export function downlinkText(rbps: number, contactMinPerDay: number): string {
+  const mb = downlinkBytesPerDay(rbps, contactMinPerDay) / 1e6;
+  const min = Number.isInteger(contactMinPerDay) ? fmt(contactMinPerDay, 0) : fmt(contactMinPerDay, 1);
+  return `≈ ${fmt(mb, mb < 10 ? 2 : 0)} MB/ngày với ${min} phút liên lạc`;
+}
+
+/** Detail-card text for a part; "{dl}" is replaced by its computed downlink. */
+export function partWhy(p: Part, contactMinPerDay: number): string {
+  const why = PART_INFO[p.id]?.why ?? '';
+  return p.rbps ? why.replace('{dl}', downlinkText(p.rbps, contactMinPerDay)) : why;
+}
+
 export const PART_INFO: Record<string, { ab: string; why: string }> = {
   obc: { ab: 'OBC', why: 'Máy tính chính: chạy phần mềm bay, lưu tin SOS chờ tải xuống.' },
   obc2: { ab: 'AI', why: 'Xử lý ảnh ngay trên vệ tinh: dữ liệu camera còn 40%.' },
@@ -26,11 +44,11 @@ export const PART_INFO: Record<string, { ab: string; why: string }> = {
   bat: { ab: 'BAT', why: 'Thêm dung lượng khi tải lớn.' },
   uhf: {
     ab: 'UHF',
-    why: 'Phát 1 W, dipole 0 dBi. Biên tới Hòa Lạc 9,7 dB ở góc ngẩng 10° — thông, nhưng chỉ ~1,2 MB/ngày.',
+    why: 'Phát 1 W, dipole 0 dBi. Biên tới Hòa Lạc 9,7 dB ở góc ngẩng 10° — thông, nhưng chỉ {dl}.',
   },
   sband: {
     ab: 'S',
-    why: 'Phát 2 W, patch 6 dBi; trạm dùng chảo 3 m. Biên 8,4 dB; ~255 MB/ngày với 17 phút liên lạc.',
+    why: 'Phát 2 W, patch 6 dBi; trạm dùng chảo 3 m. Biên 8,4 dB; {dl}.',
   },
   xband: { ab: 'X', why: 'Rất nhanh, cần ADCS chính xác. Link budget chỉ có ở Sandbox.' },
   sos: { ab: 'SOS', why: 'Nhận tin 300 bps từ máy cầm tay 0,5 W (biên 9,3 dB). Tạo 5 MB/ngày.' },

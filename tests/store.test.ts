@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
-import { initialState, reducer, canJump, DEFAULT_DESIGN, type GameState } from '../src/state/store';
+import { initialState, reducer, canJump, loadState, DEFAULT_DESIGN, type GameState } from '../src/state/store';
 import { dealCards, playerForRole } from '../src/state/roles';
+
+function localStorageMock(value: string | null) {
+  (globalThis as unknown as { localStorage: Pick<Storage, 'getItem'> }).localStorage = { getItem: () => value };
+}
 
 const run = (s: GameState, ...actions: Parameters<typeof reducer>[1][]) => actions.reduce(reducer, s);
 
@@ -10,10 +14,17 @@ describe('store reducer', () => {
     expect(run(initialState, { type: 'setMode', mode: 'coop' }, { type: 'startMission' }).screen).toBe('setup');
   });
 
-  it('defaults to S1: reference design, SSO 520 4×1 rideshare', () => {
+  it('fresh default: HF-Build design (UHF, no S-band) and S1 orbit SSO 520 4×1 rideshare', () => {
     const s = run(initialState, { type: 'startMission' });
     expect(s.design).toEqual(DEFAULT_DESIGN);
+    expect(s.design.parts).toEqual(['obc', 'eps', 'adcs', 'uhf', 'sos']);
     expect(s.orbit).toMatchObject({ preset: 'sso', hKm: 520, planes: 4, perPlane: 1, launcher: 'rideshare' });
+  });
+
+  it('a saved game keeps its own design', () => {
+    const saved = { ...initialState, design: { ...DEFAULT_DESIGN, parts: ['obc', 'eps', 'adcs', 'sband', 'sos'] } };
+    localStorageMock(JSON.stringify(saved));
+    expect(loadState().design.parts).toContain('sband');
   });
 
   it('ISS preset forces P = 1, h = 400', () => {

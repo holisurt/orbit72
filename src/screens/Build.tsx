@@ -9,7 +9,7 @@ import { useStore } from '../state/store';
 import { fmt } from '../ui/format';
 import { Hud, type HudBar } from '../ui/Hud';
 import { PassScreen } from '../ui/PassScreen';
-import { CAT_COLOR, CAT_TABS, PART_INFO } from '../ui/parts';
+import { CAT_COLOR, CAT_TABS, PART_INFO, downlinkText, partWhy } from '../ui/parts';
 import { TopBar } from '../ui/TopBar';
 
 const BAY_WIDTH: Record<ChassisId, string> = { '3U': '300px', '6U': '380px', '12U': '470px' };
@@ -120,6 +120,8 @@ export function Build() {
 
   const hasS = hasPart('sband');
   const coach = state.coach.open;
+  const rbpsOf = (id: string) => comp.parts.find((p) => p.id === id)?.rbps ?? 0;
+  const sosMB = fmt(comp.parts.find((p) => p.id === 'sos')?.mbPerDay ?? 0, 0);
 
   return (
     <div className="screen">
@@ -245,7 +247,9 @@ export function Build() {
             <div className="mono" style={{ fontSize: 11, color: 'var(--muted)', marginTop: 2 }}>
               {partStats(selPart)}
             </div>
-            <p style={{ margin: '8px 0 0', fontSize: 13, lineHeight: 1.5, color: '#C9D4E8' }}>{PART_INFO[selPart.id]?.why}</p>
+            <p style={{ margin: '8px 0 0', fontSize: 13, lineHeight: 1.5, color: '#C9D4E8' }}>
+              {partWhy(selPart, m.contactMinPerDay)}
+            </p>
           </section>
           <section className="panel col" style={{ padding: '10px 12px', gap: 4, flex: 1 }} aria-label="Đã lắp">
             <span className="lbl">
@@ -304,8 +308,8 @@ export function Build() {
             </div>
             <p style={{ margin: 0, fontSize: 14, lineHeight: 1.55, color: '#C9D4E8' }}>
               {hasS
-                ? 'S-band tải ~255 MB/ngày, đủ cho 5 MB dữ liệu SOS. Bộ phát chỉ tốn điện khi liên lạc, nên thanh Công suất gần như không đổi. Tiếp theo: bấm “Chọn quỹ đạo”.'
-                : 'UHF chỉ tải xuống ~1,2 MB/ngày, ít hơn 5 MB tin SOS tạo ra. Mở tab Liên lạc và bấm + ở “S-band 2,2 GHz”.'}
+                ? `S-band tải ${downlinkText(rbpsOf('sband'), m.contactMinPerDay)}, đủ cho ${sosMB} MB dữ liệu SOS. Bộ phát chỉ tốn điện khi liên lạc, nên thanh Công suất gần như không đổi. Tiếp theo: bấm “Chọn quỹ đạo”.`
+                : `UHF chỉ tải xuống ${downlinkText(rbpsOf('uhf'), m.contactMinPerDay)}, ít hơn ${sosMB} MB tin SOS tạo ra. Mở tab Liên lạc và bấm + ở “S-band 2,2 GHz”.`}
             </p>
             <div className="row" style={{ justifyContent: 'flex-end' }}>
               <button className="tab" onClick={() => dispatch({ type: 'setCoach', open: false })}>

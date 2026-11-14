@@ -64,16 +64,11 @@ export interface GameState {
   configs: string[];
 }
 
-/** Reference design (SPEC §10) — default for the main contract. */
+/**
+ * Fresh starting design (design/HF-Build): OBC, EPS, ADCS basic, UHF, SOS — no S-band, so the
+ * Data bar starts VƯỢT and the tutorial step "add S-band" applies. Saved games keep their own design.
+ */
 export const DEFAULT_DESIGN: DesignInput = {
-  chassis: '6U',
-  parts: ['obc', 'eps', 'adcs', 'sband', 'sos'],
-  wings: false,
-  envTest: false,
-};
-
-/** Tutorial starts with UHF so the coach can teach the Data bar (HF-Build). */
-export const TUTORIAL_DESIGN: DesignInput = {
   chassis: '6U',
   parts: ['obc', 'eps', 'adcs', 'uhf', 'sos'],
   wings: false,
@@ -172,7 +167,7 @@ export function reducer(s: GameState, a: Action): GameState {
         difficulty: 'hoc_vien',
         tutorial: true,
         contract: { id: 'matbien', accepted: true },
-        design: TUTORIAL_DESIGN,
+        design: DEFAULT_DESIGN,
         coach: { open: true },
         screen: 'build',
       };
