@@ -1,5 +1,6 @@
 import { useMaps } from '../data/context';
 import { MascotGroup } from './Mascot';
+import { SI_LABEL } from './labels';
 import { useTr } from '../i18n';
 
 /** Globe centred on Viet Nam with orbit rings and Hanoi marker (design/HF-Home). */
@@ -50,6 +51,9 @@ export function Globe() {
       <MascotGroup transform="translate(330 20) rotate(12)" />
       <text x="300" y="104" fontSize="13" fontWeight="700" fill="#F5A524">
         Rồng Con
+      </text>
+      <text x="300" y="120" fontSize="10" fill="#C9D4E8" stroke="#07090F" strokeWidth="3" paintOrder="stroke">
+        {SI_LABEL}
       </text>
     </svg>
   );

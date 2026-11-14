@@ -1,5 +1,6 @@
 import { forwardRef } from 'react';
 import { EXPORT_FONT } from './exportPng';
+import { SI_LABEL } from './labels';
 
 export const PATCH_THEMES = [
   { name: 'Night blue', c1: '#0B1F45', c2: '#13285A', acc: '#F5A524' },
@@ -68,6 +69,10 @@ export const Patch = forwardRef<SVGSVGElement, Props>(function Patch({ theme, te
         <path d="M200 332 C176 322 166 302 172 284 C190 290 200 310 200 332Z" />
         <path d="M200 332 C224 322 234 302 228 284 C210 290 200 310 200 332Z" />
       </g>
+      {/* corner outside the round patch, mid-grey so it reads on light and dark backgrounds */}
+      <text x="398" y="396" textAnchor="end" fontSize="10" fill="#8E9BAE" fontFamily={EXPORT_FONT}>
+        {SI_LABEL}
+      </text>
     </svg>
   );
 });

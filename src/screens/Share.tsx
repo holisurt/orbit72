@@ -3,7 +3,7 @@ import { useGameData } from '../data/context';
 import { STATUS_LABEL, type Status } from '../sim/mission';
 import { OUTCOME_LABEL, type Outcome } from '../sim/score';
 import { cardHeader, phaseSquares, PHASES, runLine } from '../ui/share';
-import { L_P1H, L_P1H_RAIN } from '../ui/labels';
+import { L_P1H, L_P1H_RAIN, SI_LABEL } from '../ui/labels';
 import { useRun } from '../state/run';
 import { useStore } from '../state/store';
 import { downloadBlob, EXPORT_FONT, EXPORT_MONO, shareOrDownload, svgToPng } from '../ui/exportPng';
@@ -162,6 +162,9 @@ export function Share() {
             </g>
             <text x="22" y="505" fontFamily={EXPORT_FONT} fontSize="11" fontWeight="700" fill="#F3F5F8">
               Play: {url.replace(/^https?:\/\//, '')} · #Orbit72
+            </text>
+            <text x="272" y="522" textAnchor="end" fontFamily={EXPORT_FONT} fontSize="8" fill="#8E9BAE">
+              {SI_LABEL}
             </text>
           </svg>
         </div>

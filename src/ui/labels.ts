@@ -3,6 +3,9 @@ export const L_P1H = 'SOS delivered within 1 h';
 export const L_P1H_RAIN = 'SOS delivered within 1 h (weighted by NASA IMERG rain)';
 export const L_VFM = 'Cost efficiency';
 
+/** Space Apps SI rule: the mascot, rocket, satellite and patch SVGs were drawn with Claude's assistance. */
+export const SI_LABEL = 'SI-assisted artwork';
+
 export type TermId = 'incl' | 'plane' | 'eclipse' | 'margin' | 'lifetime' | 'cml' | 'p1h';
 
 /** One-sentence explanation + the Guide card it links to (tab index, card title). */

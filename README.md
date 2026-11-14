@@ -88,6 +88,8 @@ Code, tests and documentation were drafted with Claude Code (Anthropic) and revi
 
 Data sources, challenge resources, references and fonts: [CREDITS.md](CREDITS.md).
 
+SI-assisted artwork: Vector illustrations (mascot, rocket, satellite, mission patch) were drawn as SVG code with Claude's assistance. The exported PNGs (mission patch, result card, spec sheet), the Home mascot and the About page carry a small “SI-assisted artwork” label.
+
 ## License
 
 [MIT](LICENSE) © 2026 ORBIT 72 team.

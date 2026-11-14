@@ -12,6 +12,7 @@ import { Term } from '../ui/Term';
 import { useT } from '../ui/i18n';
 
 import { LEVEL_NAME } from '../ui/share';
+import { SI_LABEL } from '../ui/labels';
 
 export const OUTCOME_STYLE: Record<Outcome, { color: string; bg: string; border: string }> = {
   THANH_CONG: { color: '#4ADE80', bg: 'linear-gradient(90deg, #0c2616, var(--panel) 70%)', border: 'rgba(74, 222, 128, 0.35)' },
@@ -272,6 +273,9 @@ export function Debrief() {
               <path d="M0 12 H540" stroke="#292E37" />
             </g>
           ))}
+          <text x="570" y={112 + rows.length * 36} textAnchor="end" fontFamily={EXPORT_FONT} fontSize="11" fill="#8E9BAE">
+            {SI_LABEL}
+          </text>
         </svg>
       </div>
     </div>
