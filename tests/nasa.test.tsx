@@ -27,7 +27,7 @@ describe('imerg_yagi.json (GPM IMERG V07 Final Run)', () => {
     expect(imerg.hours).toHaveLength(72);
     expect(imerg.hours[0]).toBe('2024-09-07T07:00:00Z');
     expect(imerg.hours[71]).toBe('2024-09-10T06:00:00Z');
-    expect(ictLabel(imerg.hours[0])).toBe('07/09 14:00');
+    expect(ictLabel(imerg.hours[0])).toBe('7 Sep 14:00');
     expect(imerg.hanoi_mmh).toHaveLength(72);
     expect(imerg.box_mean_mmh).toHaveLength(72);
     expect([...imerg.hanoi_mmh, ...imerg.box_mean_mmh].every((x) => Number.isFinite(x) && x >= 0)).toBe(true);
@@ -56,8 +56,8 @@ describe('donki_gst.json (NASA DONKI GST)', () => {
   it('E1 card shows the real record (date, Kp)', () => {
     const e1 = data.events.events.find((e) => e.id === 'E1') as GameEvent;
     const text = eventIntro(e1, { hasShield: false, donki });
-    expect(text).toContain('Bản ghi thật từ NASA DONKI: bão địa từ ngày 10/05/2024 15:00 UTC, Kp 9.');
-    expect(eventIntro(e1, { hasShield: false, donki: null })).toContain('chưa được tải');
+    expect(text).toContain('Real NASA DONKI record: geomagnetic storm from 10 May 2024 15:00 UTC, Kp 9.');
+    expect(eventIntro(e1, { hasShield: false, donki: null })).toContain('not loaded');
   });
 });
 
@@ -103,15 +103,15 @@ describe('Brief map uses the real 72 h rain', () => {
 
   it('with IMERG: label, legend, Hanoi total, no illustrative rain', () => {
     const h = render(dataNasa);
-    expect(h).toContain('NASA GPM IMERG V07 Final · 7–10/9/2024');
-    expect(h).toContain('Mưa tích lũy 72 h');
+    expect(h).toContain('NASA GPM IMERG V07 Final · 7–10 Sep 2024');
+    expect(h).toContain('72 h total rain');
     expect(h).toContain('Hà Nội 197 mm / 72 h');
-    expect(h).not.toContain('minh họa');
+    expect(h).not.toContain('illustrative');
     expect(h).not.toContain('<ellipse');
   });
 
   it('without IMERG: says the layer is missing', () => {
-    expect(render(data)).toContain('Chưa có lớp mưa IMERG');
+    expect(render(data)).toContain('No IMERG rain layer yet');
   });
 });
 
@@ -134,11 +134,11 @@ describe('Ops map shows the hourly IMERG layer with the time slider', () => {
   ).replace(/<!-- -->/g, '');
 
   it('hour 0 = 07/09 14:00 giờ VN, legend, label, rain cells, IMERG weights note', () => {
-    expect(h).toContain('Thời gian · giờ 0 · 07/09 14:00 giờ VN · mưa Hà Nội');
-    expect(h).toContain('Mưa IMERG · 07/09 14:00');
-    expect(h).toContain('Lớp mưa: NASA GPM IMERG V07 Final · 7–10/9/2024 (DOI 10.5067/GPM/IMERG/3B-HH/07, lưới 0,5°)');
+    expect(h).toContain('Time · hour 0 · 7 Sep 14:00 Vietnam time · Hà Nội rain');
+    expect(h).toContain('IMERG rain · 7 Sep 14:00');
+    expect(h).toContain('Rain layer: NASA GPM IMERG V07 Final · 7–10 Sep 2024 (DOI 10.5067/GPM/IMERG/3B-HH/07, 0.5° grid)');
     expect(h).toMatch(/<rect[^>]*fill="#3DD6F5" fill-opacity="0\.\d+"/);
     expect(h).toContain('id="ops-time"');
-    expect(h).toContain('Trọng số mưa w(h) = 1 + R(h)/R̄');
+    expect(h).toContain('Rain weight w(h) = 1 + R(h)/R̄');
   });
 });

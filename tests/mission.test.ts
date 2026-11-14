@@ -21,7 +21,7 @@ describe('mission (SPEC §10)', () => {
   it('S1 passes R1–R8 (CP2 check values)', () => {
     const r = evaluateMission(data, { difficulty: 'ky_su', design: REF_DESIGN, orbit: S1, orbitChosen: true });
     expect(r.reqs.map((q) => q.status)).not.toContain('VUOT');
-    expect(r.reqs.find((q) => q.id === 'R1')!.value).toBe('3,0 h');
+    expect(r.reqs.find((q) => q.id === 'R1')!.value).toBe('3.0 h');
     expect(Math.round(r.coverage!.p1h)).toBe(49);
     expect(r.lifetimeY).toBeCloseTo(6.5, 1);
     expect(r.links.map((l) => l.margin10.toFixed(1))).toEqual(['8.4', '9.3']);

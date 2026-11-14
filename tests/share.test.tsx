@@ -47,7 +47,7 @@ describe('share card (S1 run)', () => {
   it('phase squares coloured by result; Vận hành (Star 2 = 3) is yellow', () => {
     // Nhiệm vụ R5/R8 · Ráp (R2,R3,R6,R8) · Quỹ đạo (R1, R5 SÁT) · Go/No-Go 4/4 · Vận hành ★3 · Báo cáo THÀNH CÔNG
     expect(squares(h)).toEqual([C.SAT, C.DAT, C.SAT, C.DAT, C.SAT, C.DAT]);
-    expect(h).toContain('<title>Vận hành: SÁT</title>');
+    expect(h).toContain('<title>Operations: NEAR</title>');
   });
 
   it('Vận hành stays yellow without IMERG (w = 1)', () => {
@@ -56,20 +56,20 @@ describe('share card (S1 run)', () => {
 
   it('CML badge and run line fill the band above the mascot', () => {
     expect(h).toContain('CML 4 · JPL');
-    expect(h).toContain('4 mặt phẳng → khoảng trống 3,0 h');
+    expect(h).toContain('4 orbital planes → coverage gap 3.0 h');
   });
 
   it('header shows scenario · difficulty', () => {
-    expect(h).toContain('>72 GIỜ VÀNG · KỸ SƯ</text>');
-    expect(h).not.toContain('NHIỆM VỤ HÔM NAY');
+    expect(h).toContain('>72 GOLDEN HOURS · ENGINEER</text>');
+    expect(h).not.toContain('TODAY’S MISSION');
   });
 
 
   it('SOS tile: plain label on two lines, value = P1h_rain after events', () => {
-    expect(h).toContain('>Tin SOS tới nơi trong 1 giờ</text>');
-    expect(h).toContain('>(tính theo mưa NASA IMERG)</text>');
+    expect(h).toContain('>SOS delivered within 1 h</text>');
+    expect(h).toContain('>(weighted by NASA IMERG rain)</text>');
     expect(h).toContain('>44%</text>'); // 43,8 % with IMERG weights after E0-A, E1-B, E2-A
-    expect(render(s1(), data)).toContain('>(chưa có dữ liệu mưa)</text>');
+    expect(render(s1(), data)).toContain('>(no rain data yet)</text>');
   });
 });
 
@@ -78,7 +78,7 @@ describe('share helpers', () => {
     expect([5, 4, 3, 2, 1].map(starStatus)).toEqual(['DAT', 'DAT', 'SAT', 'VUOT', 'VUOT']);
   });
   it('cardHeader', () => {
-    expect(cardHeader('72 Giờ Vàng', 'hoc_vien')).toBe('72 GIỜ VÀNG · HỌC VIÊN');
-    expect(cardHeader('72 Giờ Vàng', 'ky_su')).toBe('72 GIỜ VÀNG · KỸ SƯ');
+    expect(cardHeader('72 Golden Hours', 'hoc_vien')).toBe('72 GOLDEN HOURS · CADET');
+    expect(cardHeader('72 Golden Hours', 'ky_su')).toBe('72 GOLDEN HOURS · ENGINEER');
   });
 });

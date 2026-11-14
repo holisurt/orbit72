@@ -25,13 +25,13 @@ export function DataProvider({ children, initial }: Props) {
   if (error)
     return (
       <main className="center-msg" role="alert">
-        Không tải được dữ liệu trò chơi ({error}). Hãy tải lại trang.
+        Could not load the game data ({error}). Please reload the page.
       </main>
     );
   if (!data)
     return (
       <main className="center-msg" aria-busy="true">
-        Đang tải dữ liệu…
+        Loading data…
       </main>
     );
   return (

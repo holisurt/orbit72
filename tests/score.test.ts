@@ -57,7 +57,7 @@ describe('score: star formulas on S1 (SPEC §7)', () => {
   });
 
   it('star 3: cost efficiency = 49.1 / 2.64 ≈ 18.6 → 4 stars (nominal, events excluded)', () => {
-    expect(score.stars[2].formula).toMatch(/Hiệu quả chi phí = 49,1 \/ 2,64 = 18,6/);
+    expect(score.stars[2].formula).toMatch(/Cost efficiency = 49\.1 \/ 2\.64 = 18\.6/);
     expect(score.stars[2].stars).toBe(4);
   });
 
@@ -109,8 +109,8 @@ describe('why-chain', () => {
   it('lists near/failed requirements with lever, and non-best event choices', () => {
     const { decisions } = play({ ...best, E1: 'A' });
     const w = whyChain(mission, decisions.map((d) => (d.event.id === 'E1' ? { ...d, chosen: 'A' } : d)));
-    expect(w.find((x) => x.cause.startsWith('Lúc chờ lâu nhất'))?.sentence).toMatch(
-      /Lúc chờ lâu nhất không có vệ tinh nào nghe được Hà Nội = 3,0 h, ngưỡng ≤ 3,5 h → Sát ngưỡng: .*\. Thử: thêm mặt phẳng/,
+    expect(w.find((x) => x.cause.startsWith('Longest coverage gap'))?.sentence).toMatch(
+      /Longest coverage gap: no satellite can hear Hà Nội = 3\.0 h, limit ≤ 3\.5 h → Near the limit: .*\. Try: add an orbital plane/,
     );
     expect(w.some((x) => x.cause.startsWith('E1'))).toBe(true);
   });

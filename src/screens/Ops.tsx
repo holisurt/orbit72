@@ -18,7 +18,7 @@ import { useT } from '../ui/i18n';
 const SPEEDS = [60, 360, 1440];
 const END = 72 * 60;
 const TICK_MS = 200;
-const RANK_LABEL = { best: 'TỐT NHẤT', middle: 'TRUNG BÌNH', worst: 'KÉM NHẤT' } as const;
+const RANK_LABEL = { best: 'BEST', middle: 'MEDIUM', worst: 'WORST' } as const;
 
 function clockText(min: number): string {
   const h = Math.floor(min / 60);
@@ -104,10 +104,10 @@ export function Ops() {
   const satRows = sats.map((_s, i) => {
     const plane = Math.floor(i / mission.orbit.perPlane) + 1;
     const name = `Rồng Con-${i + 1}`;
-    if (ops.satLost[i]) return { name, plane, color: 'var(--bad)', text: 'mất' };
-    if (ops.satEff[i][minute]) return { name, plane, color: 'var(--amber)', text: 'đang qua HN' };
-    if (run.ctx.perSat[i][minute]) return { name, plane, color: 'var(--warn)', text: 'tắt (an toàn)' };
-    return { name, plane, color: 'var(--ok)', text: 'chờ lượt' };
+    if (ops.satLost[i]) return { name, plane, color: 'var(--bad)', text: 'lost' };
+    if (ops.satEff[i][minute]) return { name, plane, color: 'var(--amber)', text: 'over Hà Nội' };
+    if (run.ctx.perSat[i][minute]) return { name, plane, color: 'var(--warn)', text: 'off (safe mode)' };
+    return { name, plane, color: 'var(--ok)', text: 'waiting' };
   });
   const satPts = sats.map((s, i) => ({ i, ...subSatellitePoint(s, minute * 60) }));
 
@@ -130,9 +130,9 @@ export function Ops() {
         </span>
         <span className="mono" style={{ fontSize: 'calc(22rem / 16)', fontWeight: 600 }} aria-live="off">
           {clockText(clock)}{' '}
-          <span style={{ fontSize: 'calc(12rem / 16)', color: playing ? 'var(--ok)' : 'var(--bad)' }}>● {playing ? 'ĐANG CHẠY' : 'TẠM DỪNG'}</span>
+          <span style={{ fontSize: 'calc(12rem / 16)', color: playing ? 'var(--ok)' : 'var(--bad)' }}>● {playing ? 'RUNNING' : 'PAUSED'}</span>
         </span>
-        <div className="row" style={{ gap: 6 }} role="group" aria-label="Tốc độ mô phỏng">
+        <div className="row" style={{ gap: 6 }} role="group" aria-label="Simulation speed">
           <button
             className="chip"
             aria-pressed={playing}
@@ -153,10 +153,10 @@ export function Ops() {
 
       <div className="row strip-row">
         <span className="lbl" style={{ flex: 'none' }}>
-          Liên lạc Hà Nội
+          Hà Nội contact
         </span>
         <svg width="100%" height="26" viewBox="0 0 288 26" preserveAspectRatio="none" role="img"
-          aria-label={`Dòng thời gian 72 giờ: tin SOS tới nơi trong 1 giờ ${fmt(ops.p1h, 0)}%, khoảng trống dài nhất ${fmt(ops.longestGapH, 1)} giờ`}>
+          aria-label={`72-hour timeline: SOS delivered within 1 h ${fmt(ops.p1h, 0)}%, longest coverage gap ${fmt(ops.longestGapH, 1)} h`}>
           <rect width="288" height="26" fill="#141B2A" />
           <path d={strip.bins} fill="#F3F5F8" fillOpacity="0.85" />
           <path d={strip.lost} fill="#F87171" fillOpacity="0.75" />
@@ -171,22 +171,22 @@ export function Ops() {
 
       <main className="body ops-body">
         <div className="col">
-          <section className="panel" style={{ padding: '10px 12px' }} aria-label="Chòm vệ tinh">
+          <section className="panel" style={{ padding: '10px 12px' }} aria-label="Constellation">
             <span className="lbl">
-              Chòm Rồng Con · {mission.orbit.planes} MP
+              Rồng Con constellation · {mission.orbit.planes} planes
             </span>
             {satRows.map((s) => (
               <div key={s.name} className="placed-row" style={{ padding: '6px 0' }}>
                 <span className="dot" style={{ background: s.color }} aria-hidden="true" />
                 <span style={{ flex: 1 }}>{s.name}</span>
                 <span className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>
-                  MP{s.plane} · {s.text}
+                  Plane {s.plane} · {s.text}
                 </span>
               </div>
             ))}
           </section>
-          <section className="panel col" style={{ padding: '10px 12px', gap: 8 }} aria-label="Chỉ số sau sự cố">
-            <span className="lbl">Chỉ số sau sự cố</span>
+          <section className="panel col" style={{ padding: '10px 12px', gap: 8 }} aria-label="Numbers after events">
+            <span className="lbl">Numbers after events</span>
             <div>
               <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>{L_P1H}</div>
               <div className="mono" style={{ fontSize: 'calc(26rem / 16)', fontWeight: 700, color: 'var(--text)' }}>
@@ -200,23 +200,23 @@ export function Ops() {
               </div>
             </div>
             <div>
-              <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>Khoảng trống dài nhất</div>
+              <div style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>Longest coverage gap</div>
               <div className="mono" style={{ fontSize: 'calc(26rem / 16)', fontWeight: 600, color: ops.longestGapH <= data.scenario.difficulty[state.difficulty].gapMaxH ? 'var(--ok)' : 'var(--bad)' }}>
                 {fmt(ops.longestGapH, 1)} h
               </div>
             </div>
             <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--dim)' }}>
-              Tính lại từ mô phỏng 72 h ({mission.orbit.planes} MP × {mission.orbit.perPlane}, {mission.orbit.hKm} km) với mặt nạ sự cố. Sự cố chỉ ảnh hưởng sao 2 và sao 4;
-              R1 chấm trên thiết kế danh nghĩa ({mission.coverage ? fmt(mission.coverage.longestGapH, 1) : '—'} h).
+              Recomputed from the 72 h simulation ({mission.orbit.planes} planes × {mission.orbit.perPlane}, {mission.orbit.hKm} km) with the event masks. Events only affect stars 2 and 4;
+              R1 is scored on the nominal design ({mission.coverage ? fmt(mission.coverage.longestGapH, 1) : '—'} h).
               {run.weightsSource === 'none'
-                ? ' Chưa có tệp IMERG nên trọng số mưa w = 1.'
-                : ' Trọng số mưa w(h) = 1 + R(h)/R̄ từ mưa IMERG trung bình vùng 103–108°E, 20–23°N.'}
+                ? ' No IMERG file, so the rain weight is w = 1.'
+                : ' Rain weight w(h) = 1 + R(h)/R̄ from mean IMERG rain over 103–108°E, 20–23°N.'}
             </span>
           </section>
         </div>
 
-        <section className="panel map-panel" aria-label="Bản đồ vận hành">
-          <MapVN label="Bản đồ miền Bắc, lớp mưa IMERG, điểm SOS, vệ tinh và trạm Hòa Lạc">
+        <section className="panel map-panel" aria-label="Operations map">
+          <MapVN label="Map of northern Vietnam with the IMERG rain layer, SOS points, satellites and the Hòa Lạc station">
             {rain?.map((c, k) => <rect key={k} x={c.x} y={c.y} width={c.s} height={c.s} fill="#3DD6F5" fillOpacity={c.o} />)}
             <g fill="#F87171">
               <circle cx="196" cy="104" r="4" />
@@ -250,14 +250,14 @@ export function Ops() {
           </MapVN>
           {grid && (
             <div style={{ position: 'absolute', right: 12, top: 10 }}>
-              <RainLegend bins={RATE_BINS} unit="mm/h" title={`Mưa IMERG · ${hourLocal}`} />
+              <RainLegend bins={RATE_BINS} unit="mm/h" title={`IMERG rain · ${hourLocal}`} />
             </div>
           )}
           <div className="map-slider">
             <label htmlFor="ops-time" className="lbl">
-              Thời gian · giờ {hour}
-              {hourLocal && ` · ${hourLocal} giờ VN`}
-              {hanoiRate !== undefined && ` · mưa Hà Nội ${fmt(hanoiRate, 1)} mm/h`}
+              Time · hour {hour}
+              {hourLocal && ` · ${hourLocal} Vietnam time`}
+              {hanoiRate !== undefined && ` · Hà Nội rain ${fmt(hanoiRate, 1)} mm/h`}
             </label>
             <input
               id="ops-time"
@@ -271,16 +271,16 @@ export function Ops() {
             />
           </div>
           <span style={{ position: 'absolute', left: 12, bottom: 8, right: 12, fontSize: 'calc(10rem / 16)', color: 'var(--dim)' }}>
-            Bản đồ: Natural Earth ·{' '}
+            Map: Natural Earth ·{' '}
             {grid
-              ? `Lớp mưa: ${IMERG_LABEL} (DOI ${data.imerg?.source?.doi ?? '10.5067/GPM/IMERG/3B-HH/07'}, lưới ${fmt(grid.step, 1)}°)`
-              : 'Chưa có lớp mưa IMERG (data_prep/prepare_imerg.py)'}{' '}
-            · Điểm SOS minh họa
+              ? `Rain layer: ${IMERG_LABEL} (DOI ${data.imerg?.source?.doi ?? '10.5067/GPM/IMERG/3B-HH/07'}, ${fmt(grid.step, 1)}° grid)`
+              : 'No IMERG rain layer yet (data_prep/prepare_imerg.py)'}{' '}
+            · SOS points are illustrative
           </span>
         </section>
 
         <div className="col">
-          <span className="lbl">Hàng đợi điều phối</span>
+          <span className="lbl">Dispatch queue</span>
           {ordered.map((e) => {
             const chosen = choices[e.id];
             const isNext = pending?.id === e.id;
@@ -292,13 +292,13 @@ export function Ops() {
                 style={{ padding: 12, gap: 4, borderColor: isNext ? 'var(--bad)' : undefined, opacity: chosen || isNext ? 1 : 0.7 }}
               >
                 <span className="lbl" style={{ color: isNext ? 'var(--bad)' : undefined }}>
-                  {e.id} · {e.atH < 0 ? 'khi vào quỹ đạo' : `T0+${e.atH} h`}
-                  {isNext ? ' · cần quyết định' : chosen ? ' · đã chọn' : ''}
+                  {e.id} · {e.atH < 0 ? 'on reaching orbit' : `T0+${e.atH} h`}
+                  {isNext ? ' · decision needed' : chosen ? ' · chosen' : ''}
                 </span>
                 <span style={{ fontSize: 'calc(14rem / 16)', fontWeight: 700 }}>{e.title}</span>
                 {chosen && out && (
                   <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)' }}>
-                    {chosen} — {e.options.find((o) => o.k === chosen)?.text} · tin SOS ≤ 1 giờ {out.p1hDisplay}%
+                    {chosen} — {e.options.find((o) => o.k === chosen)?.text} · SOS ≤ 1 h {out.p1hDisplay}%
                   </span>
                 )}
                 {isNext && clock >= triggerMin(e) && (
@@ -330,7 +330,7 @@ export function Ops() {
         <Modal labelledBy="ev-title" onClose={() => setModal(null)} className="event-card">
             <div className="row" style={{ justifyContent: 'space-between' }}>
               <span className="lbl" style={{ color: 'var(--bad)' }}>
-                Sự cố {ev.id} · {ev.atH < 0 ? 'khi vào quỹ đạo' : `T0+${ev.atH} h`}
+                Event {ev.id} · {ev.atH < 0 ? 'on reaching orbit' : `T0+${ev.atH} h`}
               </span>
               <button className="chip" onClick={() => setModal(null)}>
                 {t('close')}
@@ -353,12 +353,12 @@ export function Ops() {
                 {ev.id === 'E1' && data.donki?.link && (
                   <a href={data.donki.link} target="_blank" rel="noopener noreferrer"
                     style={{ fontSize: 'calc(12rem / 16)', color: 'var(--accent)', display: 'inline-flex', alignItems: 'center', minHeight: 44 }}>
-                    {data.donki.source ?? 'NASA DONKI'} · {data.donki.gstID ?? 'xem bản ghi'} ↗
+                    {data.donki.source ?? 'NASA DONKI'} · {data.donki.gstID ?? 'see the record'} ↗
                   </a>
                 )}
               </div>
             </div>
-            <div className="opt-grid" role="group" aria-label="Phương án">
+            <div className="opt-grid" role="group" aria-label="Options">
               {options[ev.id].map((o) => {
                 const opt = ev.options.find((x) => x.k === o.key)!;
                 return (
@@ -371,12 +371,12 @@ export function Ops() {
                   >
                     <span className="lbl" style={{ color: 'var(--amber)' }}>
                       {o.key}
-                      {o.available ? ` · ${RANK_LABEL[o.rank]}` : ` · ${run.blocked[ev.id]?.[o.key] ?? 'không chọn được'}`}
+                      {o.available ? ` · ${RANK_LABEL[o.rank]}` : ` · ${run.blocked[ev.id]?.[o.key] ?? 'not available'}`}
                     </span>
                     <span style={{ fontSize: 'calc(15rem / 16)', fontWeight: 800 }}>{opt.text}</span>
                     <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--soft)', lineHeight: 1.45 }}>{optionDetail(ev, o.key, run.hasShield)}</span>
                     <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--text)', fontWeight: 600 }}>
-                      Tin SOS tới nơi trong 1 giờ: {o.p1hDisplay}% · chờ lâu nhất {fmt(o.longestGapH, 1)} h
+                      SOS delivered within 1 h: {o.p1hDisplay}% · longest gap {fmt(o.longestGapH, 1)} h
                     </span>
                   </button>
                 );
@@ -384,7 +384,7 @@ export function Ops() {
             </div>
             <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
               <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)', flex: 1, minWidth: 200 }}>
-                Phần trăm tin SOS tới nơi trong 1 giờ và lúc chờ lâu nhất được tính trên dòng thời gian 72 giờ của chòm vệ tinh (mỗi phương án xét riêng). Phương án giữ được nhiều tin SOS nhất được xếp “tốt”.
+                SOS delivered within 1 h and the longest coverage gap are computed on the constellation’s 72-hour timeline, separately for each option. The option that keeps the most SOS messages is ranked “best”.
               </span>
               <button className="btn-p" aria-disabled={!pick} onClick={confirm}>
                 {t('confirm')}

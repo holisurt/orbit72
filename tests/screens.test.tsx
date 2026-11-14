@@ -33,65 +33,65 @@ const S1: GameState = reducer({ ...fresh, design: REF_DESIGN }, { type: 'chooseO
 describe('screens render (CP2)', () => {
   it('Home', () => {
     const h = render(<Home />, initialState);
-    expect(h).toContain('Bắt Sóng Cứu Hộ');
-    expect(h).toContain('Bắt đầu sứ mệnh');
+    expect(h).toContain('Keep Them Connected');
+    expect(h).toContain('Start mission');
   });
 
   it('Setup (co-op 4)', () => {
     const h = render(<Setup />, { ...initialState, mode: 'coop', screen: 'setup' });
-    expect(h).toContain('Kỹ sư Quỹ đạo &amp; Liên lạc');
-    expect(h).toContain('đang úp');
+    expect(h).toContain('Orbit &amp; Comms Engineer');
+    expect(h).toContain('face down');
   });
 
   it('Brief shows contract values for Kỹ sư', () => {
     const h = render(<Brief />, { ...S1, screen: 'brief' });
-    expect(h).toContain('≤ 3,5 h');
-    expect(h).toContain('3.000k');
+    expect(h).toContain('≤ 3.5 h');
+    expect(h).toContain('3,000k');
   });
 
   it('Build HUD for the reference design', () => {
     const h = render(<Build />, { ...S1, orbit: { ...S1.orbit, chosen: false } });
-    expect(h).toContain('3,27 / 9,8 W');
-    expect(h).toContain('cần 6,5 / 20 Wh');
-    expect(h).toContain('310k × 4 + phóng = 2.640k');
-    expect(h).toContain('11 / 18 tháng');
-    expect(h).toContain('R8 ĐẠT');
+    expect(h).toContain('3.27 / 9.8 W');
+    expect(h).toContain('need 6.5 / 20 Wh');
+    expect(h).toContain('310k × 4 + launch = 2,640k');
+    expect(h).toContain('11 / 18 months');
+    expect(h).toContain('R8 PASS');
   });
 
   it('Build fresh default: Data bar VƯỢT, UHF card uses 17 min default', () => {
     const h = render(<Build />, fresh);
-    expect(h).toMatch(/Dữ liệu<\/span><span class="status VUOT">VƯỢT/);
-    expect(h).toContain('5 / 1,22 MB/ngày');
-    expect(h).toContain('≈ 1,22 MB/ngày với 17 phút liên lạc');
-    expect(h).not.toContain('~1,2 MB');
+    expect(h).toMatch(/Data<\/span><span class="status VUOT">OVER/);
+    expect(h).toContain('5 / 1.22 MB/day');
+    expect(h).toContain('≈ 1.22 MB/day with 17 min of contact');
+    expect(h).not.toContain('~1.2 MB');
   });
 
   it('Build S-band card uses simulated contact minutes once an orbit exists', () => {
     const h = render(<Build />, S1);
-    expect(/với ([\d,]+) phút liên lạc/.exec(h)?.[1]).toBe('16,7');
-    expect(h).toMatch(/≈ 25\d MB\/ngày với 16,7 phút liên lạc/);
+    expect(/with ([\d.]+) min of contact/.exec(h)?.[1]).toBe('16.7');
+    expect(h).toMatch(/≈ 25\d MB\/day with 16\.7 min of contact/);
   });
 
   it('Build reports missing parts (R8)', () => {
     const h = render(<Build />, { ...S1, design: { ...S1.design, parts: ['obc'] } });
-    expect(h).toContain('Thiếu hệ nguồn EPS.');
+    expect(h).toContain('Missing the EPS power system.');
   });
 
   it('Orbit shows the CP2 check values for S1', () => {
     const h = render(<Orbit />, S1);
-    expect(h).toContain('3,0 h');
+    expect(h).toContain('3.0 h');
     expect(h).toContain('49%');
-    expect(h).toContain('2.640k');
-    expect(h).toContain('6,5 năm');
-    expect(h).toMatch(/UHF 9,7/);
-    expect(h).toMatch(/S 8,4/);
-    expect(h).toMatch(/SOS 9,3/);
-    expect(h).toContain('TƯƠNG THÍCH');
+    expect(h).toContain('2,640k');
+    expect(h).toContain('6.5 years');
+    expect(h).toMatch(/UHF 9\.7/);
+    expect(h).toMatch(/S 8\.4/);
+    expect(h).toMatch(/SOS 9\.3/);
+    expect(h).toContain('COMPATIBLE');
   });
 
   it('Orbit tutorial shows 3 passes on day 1', () => {
     const t = reducer(reducer(initialState, { type: 'startTutorial' }), { type: 'chooseOrbit' });
     const h = render(<Orbit />, { ...t, orbit: { ...t.orbit, planes: 1 } });
-    expect(h).toMatch(/Số lần qua trong ngày đầu.*?>3</);
+    expect(h).toMatch(/Passes on day 1.*?>3</);
   });
 });

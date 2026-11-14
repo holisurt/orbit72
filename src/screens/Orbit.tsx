@@ -18,8 +18,8 @@ import { useT } from '../ui/i18n';
 
 const PRESETS: { id: PresetId; name: string; launcher: LauncherId }[] = [
   { id: 'sso', name: 'SSO', launcher: 'rideshare' },
-  { id: 'iss', name: 'ISS 51,6°', launcher: 'iss' },
-  { id: 'low20', name: 'Thấp 20°', launcher: 'dedicated' },
+  { id: 'iss', name: 'ISS 51.6°', launcher: 'iss' },
+  { id: 'low20', name: 'Low 20°', launcher: 'dedicated' },
   { id: 'leo53', name: 'LEO 53°', launcher: 'dedicated' },
 ];
 
@@ -36,7 +36,7 @@ export function Orbit() {
   }, [state.orbit.chosen, dispatch]);
 
   const target = state.tutorial ? data.scenario.tutorial.target : data.scenario.target;
-  const targetName = state.tutorial ? 'Biển Đông' : 'Hà Nội';
+  const targetName = state.tutorial ? 'East Sea' : 'Hà Nội';
   const tp = projWorld(target.lat, target.lon);
   const lamDeg = coverageHalfAngle(o.hKm, data.scenario.requirements.elevationDeg) / DEG;
 
@@ -76,48 +76,48 @@ export function Orbit() {
   const iss = o.preset === 'iss';
 
   const rows: { id: string; k: ReactNode; v: string; chip?: ReactNode }[] = [
-    { id: 'incl', k: <>Một vòng bay · <Term id="incl">độ nghiêng</Term></>, v: `${fmt(periodMin(o.hKm), 1)} ph · ${fmt(m.inclDeg, 1)}°` },
-    { id: 'ecl', k: <>Thời gian trong <Term id="eclipse">bóng tối</Term></>, v: `${fmt(m.fEcl * 100, 1)}%` },
-    { id: 'n', k: 'Số vệ tinh N = P × k', v: String(m.satCount) },
+    { id: 'incl', k: <>One orbit · <Term id="incl">inclination</Term></>, v: `${fmt(periodMin(o.hKm), 1)} min · ${fmt(m.inclDeg, 1)}°` },
+    { id: 'ecl', k: <>Time in <Term id="eclipse">eclipse</Term></>, v: `${fmt(m.fEcl * 100, 1)}%` },
+    { id: 'n', k: 'Satellites N = P × k', v: String(m.satCount) },
     {
       id: 'r1',
-      k: 'Lúc chờ lâu nhất · R1',
+      k: 'Longest coverage gap · R1',
       v: cov ? `${fmt(cov.longestGapH, 1)} h` : '—',
       chip: state.tutorial ? undefined : <StatusChip status={r('R1').status} />,
     },
     { id: 'p1h', k: <Term id="p1h">{L_P1H}</Term>, v: cov ? `${fmt(cov.p1h, 0)}%` : '—' },
-    { id: 'contact', k: 'Phút liên lạc mỗi ngày (mỗi vệ tinh)', v: cov ? `${fmt(cov.contactMinPerDayPerSat, 0)} phút` : '—' },
+    { id: 'contact', k: 'Contact minutes per day (per satellite)', v: cov ? `${fmt(cov.contactMinPerDayPerSat, 0)} min` : '—' },
   ];
   if (state.tutorial && cov)
-    rows.push({ id: 'passes', k: 'Số lần qua trong ngày đầu', v: String(countPasses(cov.vis.slice(0, 1440))) });
+    rows.push({ id: 'passes', k: 'Passes on day 1', v: String(countPasses(cov.vis.slice(0, 1440))) });
   rows.push(
     {
       id: 'r4',
       k: (
         <>
-          <Term id="lifetime">Tuổi thọ quỹ đạo</Term> · R4{m.lifetimeExtrapolated ? ' (ngoại suy)' : ''}
+          <Term id="lifetime">Orbital lifetime</Term> · R4{m.lifetimeExtrapolated ? ' (extrapolated)' : ''}
         </>
       ),
-      v: `${fmt(m.lifetimeY, 1)} năm${m.residualY !== null ? ` · tồn lưu ${fmt(m.residualY, 1)}` : ''}`,
+      v: `${fmt(m.lifetimeY, 1)} years${m.residualY !== null ? ` · residual ${fmt(m.residualY, 1)}` : ''}`,
       chip: <StatusChip status={r('R4').status} />,
     },
     {
       id: 'launcher',
-      k: 'Tên lửa',
-      v: m.launch.compatible ? 'tương thích' : 'không hợp',
+      k: 'Launcher',
+      v: m.launch.compatible ? 'compatible' : 'not compatible',
       chip: <StatusChip status={m.launch.compatible ? 'DAT' : 'VUOT'} />,
     },
-    { id: 'r5', k: 'Tổng chi phí · R5', v: `${fmt(m.totalCostKusd, 0)}k`, chip: <StatusChip status={r('R5').status} /> },
+    { id: 'r5', k: 'Total cost · R5', v: `${fmt(m.totalCostKusd, 0)}k`, chip: <StatusChip status={r('R5').status} /> },
   );
 
   const HERO = ['r1', 'p1h', 'r4', 'r5'];
 
   const launcherCostText = (id: LauncherId) => {
     const l = m.launches.find((x) => x.launcher.id === id)!;
-    if (id === 'iss') return `${m.satCount} vệ tinh × ${l.launcher.pricePerSatKusd}k = ${fmt(l.costKusd, 0)}k`;
-    if (id === 'dedicated') return `${l.launches} chuyến × ${fmt(l.launcher.pricePerLaunchKusd!, 0)}k`;
+    if (id === 'iss') return `${m.satCount} satellites × ${l.launcher.pricePerSatKusd}k = ${fmt(l.costKusd, 0)}k`;
+    if (id === 'dedicated') return `${l.launches} launches × ${fmt(l.launcher.pricePerLaunchKusd!, 0)}k`;
     const per = l.costKusd / l.launches;
-    return `${l.launches} chuyến × ${fmt(per, 0)}k = ${fmt(l.costKusd, 0)}k`;
+    return `${l.launches} launches × ${fmt(per, 0)}k = ${fmt(l.costKusd, 0)}k`;
   };
 
   // R7 panel shows all three links at 10° (installed or not), as in HF-Orbit.
@@ -129,20 +129,20 @@ export function Orbit() {
   return (
     <div className="screen">
       <TopBar
-        subtitle={state.tutorial ? 'Tutorial · Mắt Biển' : data.scenario.name}
+        subtitle={state.tutorial ? 'Tutorial · Sea Eye' : data.scenario.name}
         step="orbit"
         right={
           <span className="turn">
-            Lượt: <strong>Kỹ sư Quỹ đạo &amp; Liên lạc</strong>
+            Turn: <strong>Orbit &amp; Comms Engineer</strong>
           </span>
         }
       />
       <main className="body orbit-body">
-        <section className="panel col" style={{ padding: 12, gap: 9 }} aria-label="Thiết lập quỹ đạo">
+        <section className="panel col" style={{ padding: 12, gap: 9 }} aria-label="Orbit settings">
           <span className="lbl">
-            <Term id="incl">Độ nghiêng</Term>
+            <Term id="incl">Inclination</Term>
           </span>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 6 }} role="group" aria-label="Độ nghiêng">
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 6 }} role="group" aria-label="Inclination">
             {PRESETS.map((p) => (
               <button
                 key={p.id}
@@ -155,7 +155,7 @@ export function Orbit() {
             ))}
           </div>
           <label htmlFor="alt" className="lbl" style={{ marginTop: 2 }}>
-            Độ cao ·{' '}
+            Altitude ·{' '}
             <span className="mono" style={{ color: 'var(--amber)', fontSize: 'calc(13rem / 16)' }}>
               {o.hKm} km
             </span>
@@ -171,33 +171,33 @@ export function Orbit() {
             aria-valuetext={`${o.hKm} km`}
             onChange={(e) => dispatch({ type: 'setOrbit', patch: { hKm: Number(e.target.value) } })}
           />
-          {iss && <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>ISS: cố định 400 km, 1 mặt phẳng</span>}
+          {iss && <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>ISS: fixed 400 km, 1 plane</span>}
           <div className="counters">
             <Counter
               label={
             <>
-              <Term id="plane">Mặt phẳng quỹ đạo</Term> P
+              <Term id="plane">Orbital planes</Term> P
             </>
           }
               value={o.planes}
               min={1}
               max={iss ? 1 : 6}
-              less="Bớt mặt phẳng"
-              more="Thêm mặt phẳng"
+              less="Fewer planes"
+              more="More planes"
               onChange={(v) => dispatch({ type: 'setOrbit', patch: { planes: v } })}
             />
             <Counter
-              label="Vệ tinh mỗi mặt phẳng k"
+              label="Satellites per plane k"
               value={o.perPlane}
               min={1}
               max={3}
-              less="Bớt vệ tinh"
-              more="Thêm vệ tinh"
+              less="Fewer satellites"
+              more="More satellites"
               onChange={(v) => dispatch({ type: 'setOrbit', patch: { perPlane: v } })}
             />
           </div>
           <span className="lbl" style={{ marginTop: 2 }}>
-            Tên lửa
+            Launcher
           </span>
           {m.launches.map((l) => (
             <button
@@ -211,21 +211,21 @@ export function Orbit() {
                 {launcherCostText(l.launcher.id)}
               </span>
               <span style={{ fontSize: 'calc(11rem / 16)', fontWeight: 700, color: l.compatible ? 'var(--ok)' : 'var(--bad)' }}>
-                {l.compatible ? 'TƯƠNG THÍCH' : `KHÔNG: ${l.reason}`}
+                {l.compatible ? 'COMPATIBLE' : `NO: ${l.reason}`}
               </span>
             </button>
           ))}
         </section>
 
         <div className="col">
-          <section className="panel col" style={{ padding: 10, gap: 6 }} aria-label="Bản đồ vết quỹ đạo">
+          <section className="panel col" style={{ padding: 10, gap: 6 }} aria-label="Ground track map">
             <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
-              <span className="lbl">Vết quỹ đạo 2 vòng · mỗi mặt phẳng một đường</span>
+              <span className="lbl">Ground track, 2 orbits · one line per plane</span>
               <span className="lbl" style={{ color: 'var(--soft)' }}>
-                vòng nét đứt: {targetName} nhìn thấy vệ tinh (ε ≥ {data.scenario.requirements.elevationDeg}°)
+                dashed circle: {targetName} can see the satellite (ε ≥ {data.scenario.requirements.elevationDeg}°)
               </span>
             </div>
-            <MapWorld label={`Bản đồ thế giới với vết quỹ đạo ${o.planes} mặt phẳng và vùng nhìn thấy ${targetName}`}>
+            <MapWorld label={`World map with the ground track of ${o.planes} plane(s) and the area that can see ${targetName}`}>
               <path d={tracks} fill="none" stroke="#F5A524" strokeWidth="1.4" strokeOpacity="0.9" />
               <ellipse
                 cx={tp.x}
@@ -244,18 +244,18 @@ export function Orbit() {
               </text>
             </MapWorld>
             <span style={{ fontSize: 'calc(10rem / 16)', color: 'var(--dim)' }}>
-              Bản đồ: Natural Earth (public domain) · Quỹ đạo tròn, nhiễu J2, chiếu equirectangular
+              Map: Natural Earth (public domain) · circular orbits, J2 drift, equirectangular projection
             </span>
           </section>
-          <section className="panel col" style={{ padding: '10px 12px', gap: 6 }} aria-label="Dòng thời gian liên lạc 72 giờ">
+          <section className="panel col" style={{ padding: '10px 12px', gap: 6 }} aria-label="72-hour contact timeline">
             <div className="row" style={{ justifyContent: 'space-between', flexWrap: 'wrap' }}>
-              <span className="lbl">72 giờ sau đổ bộ · thanh sáng = {targetName} có liên lạc</span>
+              <span className="lbl">72 hours after landfall · bright bar = {targetName} has contact</span>
               <span className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>
                 T0 → T0+72 h
               </span>
             </div>
             <svg width="100%" height="22" viewBox="0 0 288 22" preserveAspectRatio="none" role="img"
-              aria-label={cov ? `Lúc chờ lâu nhất ${fmt(cov.longestGapH, 1)} giờ, tin SOS tới nơi trong 1 giờ ${fmt(cov.p1h, 0)}%` : 'Đang tính'}>
+              aria-label={cov ? `Longest coverage gap ${fmt(cov.longestGapH, 1)} h, SOS delivered within 1 h ${fmt(cov.p1h, 0)}%` : 'Calculating'}>
               <rect width="288" height="22" fill="#141B2A" />
               <path d={bins} fill="#F3F5F8" fillOpacity="0.85" />
               <path d="M96 0 V22 M192 0 V22" stroke="#7F90AE" strokeWidth="0.6" />
@@ -271,7 +271,7 @@ export function Orbit() {
 
         <div className="col" style={{ gap: 8 }}>
           {/* Hero numbers: the four key metrics (same rows, same values; shown large) */}
-          <section className="hero-metrics" aria-label="Chỉ số chính">
+          <section className="hero-metrics" aria-label="Key numbers">
             {rows
               .filter((row) => HERO.includes(row.id))
               .map((row) => (
@@ -282,9 +282,9 @@ export function Orbit() {
                 </div>
               ))}
           </section>
-          <section className="panel col" style={{ padding: '10px 12px', gap: 0 }} aria-label="Chỉ số">
+          <section className="panel col" style={{ padding: '10px 12px', gap: 0 }} aria-label="Numbers">
             <span className="lbl" style={{ marginBottom: 4 }}>
-              Chỉ số (mô hình GDD mục 6)
+              Numbers (GDD model, section 6)
             </span>
             {rows.filter((row) => !HERO.includes(row.id)).map((row) => (
               <div key={row.id} className="metric">
@@ -298,16 +298,16 @@ export function Orbit() {
               </div>
             ))}
           </section>
-          <section className="panel" style={{ padding: '10px 12px' }} aria-label="Biên đường truyền">
+          <section className="panel" style={{ padding: '10px 12px' }} aria-label="Link margin">
             <span className="lbl">
-            <Term id="margin">Biên đường truyền</Term> tới Hòa Lạc (10°) · R7
+            <Term id="margin">Link margin</Term> to Hòa Lạc (10°) · R7
           </span>
             <div className="mono row" style={{ justifyContent: 'space-between', fontSize: 'calc(13rem / 16)', marginTop: 6, flexWrap: 'wrap' }}>
               {allLinks.map((l) => {
                 const s = statusMin(l.margin, data.scenario.requirements.linkMarginDb, 1);
                 return (
                   <span key={l.id} data-status={s} style={{ color: l.installed ? 'var(--text)' : 'var(--muted)' }}
-                    title={l.installed ? undefined : 'chưa lắp'}>
+                    title={l.installed ? undefined : 'not installed'}>
                     {l.id === 'uhf' ? 'UHF' : l.id === 's' ? 'S' : 'SOS'} {fmt(l.margin, 1)}
                     {l.id === 'sos' ? ' dB' : ''}
                   </span>
@@ -315,7 +315,7 @@ export function Orbit() {
               })}
             </div>
             <div style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)', marginTop: 4 }}>
-              R7 xét các đường đã lắp: <StatusChip status={r('R7').status} />
+              R7 checks the installed links: <StatusChip status={r('R7').status} />
             </div>
           </section>
           <div className="row" style={{ marginTop: 'auto' }}>
@@ -333,7 +333,7 @@ export function Orbit() {
           role="QD"
           count={state.players.count}
           names={state.players.names}
-          text="Những người khác đặt máy xuống. Bạn chọn độ nghiêng, độ cao, số mặt phẳng và tên lửa; HUD tổng vẫn hiện cho cả đội cùng xem."
+          text="Everyone else puts the device down. You choose the inclination, altitude, number of planes and the launcher; the team HUD stays visible for everyone."
           onStart={() => setPass(false)}
         />
       )}

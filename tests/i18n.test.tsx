@@ -11,7 +11,7 @@ import { DEFAULT_SETTINGS, SettingsProvider } from '../src/state/settings';
 import { SettingsDialog } from '../src/ui/SettingsDialog';
 import { data } from './fixtures';
 
-afterEach(() => setNumberLocale('vi'));
+afterEach(() => setNumberLocale('en'));
 
 describe('dictionaries', () => {
   it('every key exists in both vi and en, and no value is empty', () => {
@@ -44,6 +44,7 @@ describe('English quiz (keyed by question index; quiz.json unchanged)', () => {
 
 describe('number display', () => {
   it('VI is unchanged: comma decimal, dot thousands', () => {
+    setNumberLocale('vi');
     expect([fmt(3.04, 1), fmt(49.12, 1), kusd(2640), fmt(-0.04, 1)]).toEqual(['3,0', '49,1', '2.640k', '0,0']);
   });
   it('EN: point decimal, comma thousands — same rounding', () => {
@@ -52,8 +53,8 @@ describe('number display', () => {
   });
 });
 
-describe('English option while the translation is incomplete', () => {
-  it('Settings shows English as not yet available (no half-English UI)', () => {
+describe('English-only UI', () => {
+  it('English is complete and Settings has no language option', () => {
     const h = renderToString(
       <SettingsProvider initial={DEFAULT_SETTINGS}>
         <DataProvider initial={{ data, maps: { world: '', vn: '', globe: '', seaLand: '' } }}>
@@ -63,7 +64,7 @@ describe('English option while the translation is incomplete', () => {
         </DataProvider>
       </SettingsProvider>,
     );
-    if (EN_COMPLETE) expect(h).toMatch(/>English</);
-    else expect(h).toMatch(/disabled=""[^>]*>English \(sắp có\)</);
+    expect(EN_COMPLETE).toBe(true);
+    expect(h).not.toMatch(/Tiếng Việt|English/);
   });
 });

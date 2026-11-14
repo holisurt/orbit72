@@ -5,8 +5,8 @@ import type { Outcome } from '../sim/score';
 import type { LaunchRecord } from '../state/store';
 import { fmt } from './format';
 
-export const LEVEL_NAME: Record<DifficultyId, string> = { hoc_vien: 'HỌC VIÊN', ky_su: 'KỸ SƯ' };
-export const PHASES = ['Nhiệm vụ', 'Ráp', 'Quỹ đạo', 'Go/No-Go', 'Vận hành', 'Báo cáo'] as const;
+export const LEVEL_NAME: Record<DifficultyId, string> = { hoc_vien: 'CADET', ky_su: 'ENGINEER' };
+export const PHASES = ['Contract', 'Build', 'Orbit', 'Go/No-Go', 'Operations', 'Debrief'] as const;
 
 /** Star rating → colour class: ≥ 4 green (ĐẠT), 3 yellow (SÁT), ≤ 2 red (VƯỢT). */
 export function starStatus(stars: number): Status {
@@ -39,9 +39,9 @@ export function cardHeader(scenarioName: string, difficulty: DifficultyId): stri
   return `${scenarioName.toUpperCase()} · ${LEVEL_NAME[difficulty]}`;
 }
 
-/** One line from the run, e.g. "4 mặt phẳng → khoảng trống 3,0 h" (nominal design, R1). */
+/** One line from the run, e.g. "4 orbital planes → coverage gap 3.0 h" (nominal design, R1). */
 export function runLine(m: MissionResult): string {
   const o = m.orbit;
-  const planes = `${o.planes} mặt phẳng${o.perPlane > 1 ? ` × ${o.perPlane}` : ''}`;
-  return m.coverage ? `${planes} → khoảng trống ${fmt(m.coverage.longestGapH, 1)} h` : `${planes} · ${m.satCount} vệ tinh`;
+  const planes = `${o.planes} orbital plane${o.planes > 1 ? 's' : ''}${o.perPlane > 1 ? ` × ${o.perPlane}` : ''}`;
+  return m.coverage ? `${planes} → coverage gap ${fmt(m.coverage.longestGapH, 1)} h` : `${planes} · ${m.satCount} satellites`;
 }

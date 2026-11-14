@@ -1,4 +1,4 @@
-// CP4.2 Guide (Sổ tay): five tabs, [GA] assumptions, sources, segments + CML cards, reachable everywhere.
+// CP4.2 Guide (Handbook): five tabs, [GA] assumptions, sources, segments + CML cards, reachable everywhere.
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import type { ReactElement } from 'react';
@@ -33,55 +33,55 @@ const text = (i: number) => tabs[i].items.map((it) => `${it.t} ${it.d} ${it.s} $
 
 describe('Guide content', () => {
   it('five tabs in order', () => {
-    expect(tabs.map((t) => t.n)).toEqual(['Thuật ngữ', 'Công thức', 'Science · giả định', 'Hồ sơ Rồng', 'Nguồn']);
+    expect(tabs.map((t) => t.n)).toEqual(['Glossary', 'Formulas', 'Science · assumptions', 'Dragon files', 'Sources']);
   });
 
-  it('Thuật ngữ: segments card and CML card', () => {
+  it('Glossary: segments card and CML card', () => {
     const t = text(0);
-    expect(t).toContain('Bốn phân đoạn sứ mệnh');
-    expect(t).toContain('Launch = tên lửa · Space = vệ tinh · Ground = trạm Hòa Lạc · User = trung tâm cứu hộ và các xã SOS');
-    expect(t).toContain('Huy hiệu CML');
-    expect(t).toMatch(/CML4 phóng với r1–r8 đều đạt/i);
+    expect(t).toContain('Four mission segments');
+    expect(t).toContain('Launch = the rocket · Space = the satellite · Ground = the Hòa Lạc station · User = the rescue centre and the SOS villages');
+    expect(t).toContain('CML badge');
+    expect(t).toMatch(/CML4 launched with r1–r8 all passing/i);
   });
 
-  it('Công thức: worked values computed from the sim (SPEC §10 at 520 km)', () => {
+  it('Formulas: worked values computed from the sim (SPEC §10 at 520 km)', () => {
     const t = text(1);
-    expect(t).toContain('95,0 phút');
-    expect(t).toContain('37,6%');
-    expect(t).toContain('97,48°');
-    expect(t).toContain('6U: 9,8 W · cánh +12,1 W');
+    expect(t).toContain('95.0 min');
+    expect(t).toContain('37.6%');
+    expect(t).toContain('97.48°');
+    expect(t).toContain('6U: 9.8 W · wings +12.1 W');
   });
 
   it('Science: every [GA] assumption, incl. Hoa Lac station parameters', () => {
     const t = text(2);
     for (const s of [
-      'Trạm Hòa Lạc · UHF xuống', 'G_rx 14,0 dBi, T_sys 500 K', 'biên 9,7 dB',
-      'Trạm Hòa Lạc · S xuống', 'G_rx 34,2 dBi, T_sys 150 K', 'biên 8,4 dB',
-      'Trạm Hòa Lạc · SOS lên', 'phát 0,5 W', 'biên 9,3 dB',
-      'cao hơn 10°', 'η = 0,29', 'hệ số hướng 0,5', 'Độ xả sâu 0,3', '3U: 6 ô', 'tích hợp +4 tháng',
-      '250k/vệ tinh [GA]', 'mọi lần phóng đều thành công', 'Bung 0,5 m²', 'T0 = lúc bão đổ bộ',
-      'Học viên: ngân sách 3.500k, R1 ≤ 6,0 h', 'ĐẠT ≤ 80%', 'Năm sao', 'Thẻ ưu tiên co-op', 'Dữ liệu tạo ra ≤ 50%', 'Hiệu ứng thẻ sự cố',
+      'Hòa Lạc station · UHF down', 'G_rx 14.0 dBi, T_sys 500 K', 'link margin 9.7 dB',
+      'Hòa Lạc station · S down', 'G_rx 34.2 dBi, T_sys 150 K', 'link margin 8.4 dB',
+      'Hòa Lạc station · SOS up', 'transmit 0.5 W', 'link margin 9.3 dB',
+      'more than 10°', 'η = 0.29', 'pointing factor 0.5', 'Depth of discharge 0.3', '3U: 6 cells', 'integration +4 months',
+      '250k per satellite [GA]', 'every launch succeeds', 'Opens 0.5 m²', 'T0 = typhoon landfall',
+      'Cadet: budget 3,500k, R1 ≤ 6.0 h', 'PASS ≤ 80%', 'Five stars', 'Secret priority cards (co-op)', 'Data made ≤ 50%', 'Event card effects',
     ]) expect(t).toContain(s);
   });
 
-  it('Nguồn: NASA data, SOA, challenge resources, FACSAT-2, Natural Earth, VnEconomy, fonts', () => {
+  it('Sources: NASA data, SOA, challenge resources, FACSAT-2, Natural Earth, VnEconomy, fonts', () => {
     const t = text(4);
     for (const s of [
-      'NASA GPM IMERG V07 Final · 7–10/9/2024', 'https://doi.org/10.5067/GPM/IMERG/3B-HH/07', 'https://data.nasa.gov/dataset/gpm-imerg-final',
+      'NASA GPM IMERG V07 Final · 7–10 Sep 2024', 'https://doi.org/10.5067/GPM/IMERG/3B-HH/07', 'https://data.nasa.gov/dataset/gpm-imerg-final',
       'NASA DONKI', 'Kp 9', 'NASA Small Spacecraft SOA 2026',
       'Design and Develop Science Missions', 'GMAT', 'JPL Concept Maturity Levels', 'Mission Design Lab', 'NASA Mission Viz',
-      'kính thiên văn', 'CubeSat 101', 'CSA', 'arXiv:2609.24534', 'FACSAT-2', 'Natural Earth', 'VnEconomy', 'Be Vietnam Pro', 'IBM Plex Mono',
+      'telescope', 'CubeSat 101', 'CSA', 'arXiv:2609.24534', 'FACSAT-2', 'Natural Earth', 'VnEconomy', 'Be Vietnam Pro', 'IBM Plex Mono',
     ]) expect(t).toContain(s);
     expect(t).not.toMatch(/logo/i);
   });
 
   it('renders the HF-Guide layout: search, tablist, close, cards', () => {
     const h = render(<Guide initialTab={4} />);
-    expect(h).toContain('Tìm trong sổ tay');
+    expect(h).toContain('Search the Handbook');
     expect(h).toContain('role="tablist"');
     expect(h.match(/role="tab"/g)).toHaveLength(5);
     expect(h).toContain('aria-selected="true"');
-    expect(h).toContain('Đóng ✕');
+    expect(h).toContain('Close ✕');
     expect(h).toContain('href="https://doi.org/10.5067/GPM/IMERG/3B-HH/07"');
   });
 });
@@ -105,8 +105,8 @@ describe('Guide is reachable from every screen', () => {
     ['Debrief', <Debrief />, launched],
     ['Share', <Share />, launched],
   ];
-  it.each(screens)('%s has the "?" Sổ tay button', (_n, el, s) => {
-    expect(render(el, s)).toMatch(/<button class="tool-btn"[^>]*aria-label="Sổ tay"/);
+  it.each(screens)('%s has the "?" Handbook button', (_n, el, s) => {
+    expect(render(el, s)).toMatch(/<button class="tool-btn"[^>]*aria-label="Handbook"/);
   });
 
   it('openGuide remembers where to return; Science link opens tab 2', () => {

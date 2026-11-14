@@ -50,7 +50,7 @@ describe('E2-A generator (20k) vs remaining budget', () => {
 
   it('wings + env test (+90k × 4 → 3.000k, 0k left): E2-A disabled with the reason', () => {
     const r = probe(s1({ type: 'toggleWings' }, { type: 'toggleEnvTest' }));
-    expect(r.blocked).toEqual({ A: 'Không đủ ngân sách: còn 0k' });
+    expect(r.blocked).toEqual({ A: 'Not enough budget: 0k left' });
     expect(r.e2[0]).toMatchObject({ k: 'A', ok: false });
     expect(r.e2.filter((o: { ok: boolean }) => o.ok).map((o: { k: string }) => o.k)).toEqual(['B', 'C']);
   });

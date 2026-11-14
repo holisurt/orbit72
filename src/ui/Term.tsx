@@ -27,7 +27,7 @@ export function Term({ id, children }: { id: TermId; children: ReactNode }) {
         className="term-q"
         aria-expanded={open}
         aria-controls={pop}
-        aria-label={`Giải thích: ${typeof children === 'string' ? children : term.card}`}
+        aria-label={`Explain: ${typeof children === 'string' ? children : term.card}`}
         onClick={() => setOpen((v) => !v)}
       >
         ?
@@ -36,7 +36,7 @@ export function Term({ id, children }: { id: TermId; children: ReactNode }) {
         <span id={pop} className="term-pop" role="note">
           {term.text}{' '}
           <button type="button" className="link-btn term-link" onClick={() => dispatch({ type: 'openGuide', tab: term.tab, focus: term.card })}>
-            Xem trong Sổ tay →
+            See the Handbook →
           </button>
         </span>
       )}

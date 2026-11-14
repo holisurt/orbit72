@@ -38,26 +38,26 @@ describe('e2e checklist walk (solo Kỹ sư)', () => {
 
   it('1 · Home → Quiz(pre): "?" and ⚙ in the header; skip goes to Brief', () => {
     const h = render(<Home />, s);
-    expect(h).toContain('aria-label="Sổ tay"');
-    expect(h).toContain('aria-label="Cài đặt"');
+    expect(h).toContain('aria-label="Handbook"');
+    expect(h).toContain('aria-label="Settings"');
     s = play(s, { type: 'startMission' });
     expect(s.screen).toBe('quiz_pre');
-    expect(render(<Quiz phase="pre" />, s)).toContain('Bỏ qua');
+    expect(render(<Quiz phase="pre" />, s)).toContain('Skip');
     s = play(s, { type: 'answerQuiz', phase: 'pre', answers: 'skip' });
     expect(s.screen).toBe('brief');
   });
 
   it('2 · Brief: real IMERG 72 h map, accept contract → Build', () => {
-    expect(render(<Brief />, s)).toContain('NASA GPM IMERG V07 Final · 7–10/9/2024');
+    expect(render(<Brief />, s)).toContain('NASA GPM IMERG V07 Final · 7–10 Sep 2024');
     s = play(s, { type: 'acceptContract' });
     expect(s.screen).toBe('build');
   });
 
-  it('3 · GDD §12 #1: missing SOS payload locks "Chọn quỹ đạo" and says what is missing (R8)', () => {
+  it('3 · GDD §12 #1: missing SOS payload locks "Choose orbit" and says what is missing (R8)', () => {
     const noSos = play(s, { type: 'removePart', index: s.design.parts.indexOf('sos') });
     const h = render(<Build />, noSos);
-    expect(h).toContain('Thiếu Payload SOS.');
-    expect(h).toMatch(/aria-disabled="true"[^>]*>Chọn quỹ đạo →/);
+    expect(h).toContain('Missing the SOS relay payload.');
+    expect(h).toMatch(/aria-disabled="true"[^>]*>Choose orbit →/);
     expect(status(noSos, 'R8')).toBe('VUOT');
   });
 
@@ -66,7 +66,7 @@ describe('e2e checklist walk (solo Kỹ sư)', () => {
     while (canAddPart(data.components, full.design, 'bat')) full = play(full, { type: 'addPart', id: 'bat' });
     expect(mission(full).build.cellsUsed).toBe(12);
     expect(canAddPart(data.components, full.design, 'sos')).toBe(false);
-    expect(render(<Build />, full)).toMatch(/aria-disabled="true"[^>]*aria-label="Thêm /);
+    expect(render(<Build />, full)).toMatch(/aria-disabled="true"[^>]*aria-label="Add /);
     const small = play(full, { type: 'setChassis', chassis: '3U' });
     expect(mission(small).build.hardErrors.map((e) => e.code)).toContain('cells');
   });
@@ -77,12 +77,12 @@ describe('e2e checklist walk (solo Kỹ sư)', () => {
     expect(status(s, 'R2')).not.toBe('VUOT');
   });
 
-  it('6 · GDD §12 #5, #9, #16: incompatible launcher shows the reason and blocks launch; low orbit → R4 + "ngoại suy"', () => {
+  it('6 · GDD §12 #5, #9, #16: incompatible launcher shows the reason and blocks launch; low orbit → R4 + "extrapolated"', () => {
     const iss = play(s, { type: 'setOrbit', patch: { launcher: 'iss' } });
-    expect(render(<Orbit />, iss)).toContain('KHÔNG: Chỉ quỹ đạo ISS 51,6° · 400 km');
-    expect(render(<Review />, play(iss, ...allGo))).toContain('Tên lửa không tương thích');
+    expect(render(<Orbit />, iss)).toContain('NO: ISS orbit only (51.6° · 400 km)');
+    expect(render(<Review />, play(iss, ...allGo))).toContain('Launcher not compatible');
     const low = play(s, { type: 'setOrbit', patch: { preset: 'low20', hKm: 420, launcher: 'dedicated' } });
-    expect(render(<Orbit />, low)).toContain('(ngoại suy)');
+    expect(render(<Orbit />, low)).toContain('(extrapolated)');
     expect(status(low, 'R4')).toBe('VUOT');
   });
 
@@ -90,8 +90,8 @@ describe('e2e checklist walk (solo Kỹ sư)', () => {
     const spam = play(s, { type: 'setOrbit', patch: { planes: 6, perPlane: 3 } });
     expect(status(spam, 'R5')).toBe('VUOT');
     const h = render(<Review />, play(spam, ...allGo));
-    expect(h).toContain('Ràng buộc cứng chưa đạt: R5');
-    expect(h).toMatch(/aria-disabled="true"[^>]*>PHÓNG/);
+    expect(h).toContain('Hard requirements not met: R5');
+    expect(h).toMatch(/aria-disabled="true"[^>]*>LAUNCH/);
   });
 
   it('8 · GDD §12 #8: dev time > 18 months is unreachable with components.json (max 13 in v1.1) — sim path covered in ops.test', () => {
@@ -103,9 +103,9 @@ describe('e2e checklist walk (solo Kỹ sư)', () => {
     s = play(s, { type: 'go', screen: 'review' });
     expect(render(<Review />, s)).not.toMatch(/<button class="step"[^>]*>5 /); // Ops is not a jump target
     const noReason = play(s, { type: 'vote', role: 'FD', vote: 'no' });
-    expect(render(<Review />, noReason)).toContain('NO-GO cần ghi lý do (mã R).');
+    expect(render(<Review />, noReason)).toContain('A NO-GO needs a reason (an R code).');
     s = play(s, ...allGo);
-    expect(render(<Review />, s)).toContain('4/4 GO — Đồng thuận');
+    expect(render(<Review />, s)).toContain('4/4 GO — Unanimous');
     s = play(s, { type: 'launch', record: LAUNCH }, { type: 'go', screen: 'ops' });
     expect(s.screen).toBe('ops');
   });
@@ -130,9 +130,9 @@ describe('e2e checklist walk (solo Kỹ sư)', () => {
   });
 
   it('11 · Debrief → export → Share; GDD §12 #14: rerun keeps design + orbit, resets ops, run++', () => {
-    expect(render(<Debrief />, s)).toContain('THÀNH CÔNG — 8/8 yêu cầu đạt');
+    expect(render(<Debrief />, s)).toContain('MISSION SUCCESS — 8/8 requirements passed');
     s = play(s, { type: 'exportSpec' });
-    expect(render(<Debrief />, s)).toMatch(/aria-label="Huy hiệu CML"[\s\S]*?CML 4/);
+    expect(render(<Debrief />, s)).toMatch(/aria-label="CML badge"[\s\S]*?CML 4/);
     const r = play(s, { type: 'rerun' });
     expect(r).toMatchObject({ screen: 'build', run: 2, design: s.design, orbit: s.orbit, ops: { launch: null, choices: {} } });
   });

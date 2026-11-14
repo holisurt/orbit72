@@ -2,7 +2,7 @@
 import type { vi } from './vi';
 
 export const en = {
-  guide: "Guide",
+  guide: "Handbook",
   settings: "Settings",
   close: "Close",
   language: "Menu and button language",
@@ -19,7 +19,7 @@ export const en = {
   tab_science: "Science · assumptions",
   tab_dragon: "Dragon files",
   tab_sources: "Sources",
-  stepBrief: "Mission",
+  stepBrief: "Contract",
   stepBuild: "Build",
   stepOrbit: "Orbit",
   stepReview: "Go/No-Go",
@@ -45,7 +45,7 @@ export const en = {
   help: "Help",
   acceptContract: "Accept contract",
   acceptBuild: "Accept contract · Build satellite",
-  passScreen: "Show pass-the-device screen",
+  passScreen: "Show the pass-the-device screen",
   toOrbit: "Choose orbit",
   toReview: "Go/No-Go meeting",
   launch: "LAUNCH",
@@ -60,9 +60,9 @@ export const en = {
   confirm: "Confirm & continue",
   exportSpec: "Export spec sheet (PNG)",
   rerun: "Fix & rerun (keep design)",
-  postQuiz: "Take the after-quiz",
+  postQuiz: "Take the quiz again",
   toShare: "Make mission patch · Share",
-  toShareQuiz: "After-quiz · Mission patch",
+  toShareQuiz: "Quiz again · Mission patch",
   copy: "Copy result",
   dlCard: "Download card PNG (9:16)",
   dlPatch: "Download mission patch PNG",
@@ -70,8 +70,8 @@ export const en = {
   playAnother: "Play another mission",
   home_kicker: "NASA Space Apps Challenge 2026 · Space Mission Design Game",
   home_sub: "Keep Them Connected",
-  home_lead: "A super typhoon is about to hit. You have {months} months to build CubeSats, choose orbits and launch a constellation — and keep cut-off villages connected through the golden 72 hours.",
-  home_levelNote: "Budget {budget}k USD, contact gap ≤ {gap} h, events {events}",
+  home_lead: "A super typhoon is about to hit. You have {months} months to build Rồng Con (Little Dragon) CubeSats, choose orbits and launch a constellation — and keep cut-off villages connected through the 72 Golden Hours.",
+  home_levelNote: "Budget {budget}k USD, longest coverage gap ≤ {gap} h, events {events}",
   home_hints: ", with step-by-step hints",
   home_about: "About",
   home_footMaps: "Maps: Natural Earth (public domain) · Data: NASA GPM IMERG, NASA Small Spacecraft SOA",
@@ -92,7 +92,7 @@ export const en = {
   quiz_postOnly: "Quiz after: {post} / {n}",
 } as const satisfies Record<keyof typeof vi, string>;
 
-/** English quiz text, keyed by question index (public/data/quiz.json stays Vietnamese; answers keep their index). */
+/** English quiz text, keyed by question index (answers keep their index in public/data/quiz.json). */
 export const enQuiz: { q: string; options: string[] }[] = [
   {
     q: 'Why does adding more satellites to the same SSO rideshare barely shorten the contact gap?',

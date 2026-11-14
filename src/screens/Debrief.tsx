@@ -34,21 +34,21 @@ export function specRows(run: RunView, data: GameData, quizText = '—'): { k: s
   // Design cost is the nominal cost Star 3 uses; extra parts appear only when > 0.
   const events = run.ops.eventCostKusd;
   const cost = [
-    `${fmt(m.totalCostKusd, 0)}k thiết kế`,
-    events > 0 ? `${fmt(events, 0)}k sự cố` : '',
+    `${fmt(m.totalCostKusd, 0)}k design`,
+    events > 0 ? `${fmt(events, 0)}k events` : '',
   ].filter(Boolean);
   return [
-    { k: 'Quỹ đạo', v: `${preset} ${m.orbit.hKm} km · i ${fmt(m.inclDeg, 1)}°` },
-    { k: 'Chòm', v: `${m.orbit.planes} mặt phẳng × ${m.orbit.perPlane}` },
-    { k: 'Khung · khối lượng', v: `${b.chassis.id} · ${fmt(b.massKg, 2)} kg` },
-    { k: 'Công suất sinh · dùng', v: `${fmt(b.pGenW, 1)} · ${fmt(b.pUseW, 1)} W` },
-    { k: 'Pin', v: `${fmt(b.batteryHaveWh, 0)} Wh (cần ${fmt(b.batteryNeedWh, 1)})` },
-    { k: 'Tải xuống', v: tx ? tx.name : '—' },
-    { k: 'Biên đường truyền tới Hòa Lạc', v: Number.isFinite(minMargin) ? `${fmt(minMargin, 1)} dB (10°)` : '—' },
-    { k: 'Tuổi thọ quỹ đạo · tồn lưu', v: `${fmt(m.lifetimeY, 1)} · ${fmt(residual, 1)} năm` },
-    { k: 'Chi phí', v: cost.length > 1 ? `${cost.join(' + ')} = ${fmt(run.totalCostKusd, 0)}k` : cost[0] },
-    { k: 'Phát triển', v: `${b.devMonths} tháng` },
-    { k: 'Quiz trước → sau', v: quizText },
+    { k: 'Orbit', v: `${preset} ${m.orbit.hKm} km · i ${fmt(m.inclDeg, 1)}°` },
+    { k: 'Constellation', v: `${m.orbit.planes} plane(s) × ${m.orbit.perPlane}` },
+    { k: 'Chassis · mass', v: `${b.chassis.id} · ${fmt(b.massKg, 2)} kg` },
+    { k: 'Power generated · used', v: `${fmt(b.pGenW, 1)} · ${fmt(b.pUseW, 1)} W` },
+    { k: 'Battery', v: `${fmt(b.batteryHaveWh, 0)} Wh (need ${fmt(b.batteryNeedWh, 1)})` },
+    { k: 'Downlink', v: tx ? tx.name : '—' },
+    { k: 'Link margin to Hòa Lạc', v: Number.isFinite(minMargin) ? `${fmt(minMargin, 1)} dB (10°)` : '—' },
+    { k: 'Orbital lifetime · residual', v: `${fmt(m.lifetimeY, 1)} · ${fmt(residual, 1)} years` },
+    { k: 'Cost', v: cost.length > 1 ? `${cost.join(' + ')} = ${fmt(run.totalCostKusd, 0)}k` : cost[0] },
+    { k: 'Development', v: `${b.devMonths} months` },
+    { k: 'Quiz before → after', v: quizText },
   ];
 }
 
@@ -75,16 +75,16 @@ export function Debrief() {
       const blob = await svgToPng(specRef.current, 2);
       downloadBlob(blob, `orbit72-spec-sheet-run${state.run}.png`);
       dispatch({ type: 'exportSpec' });
-      setExportMsg('Đã xuất spec sheet.');
+      setExportMsg('Spec sheet exported.');
     } catch (e) {
-      setExportMsg(`Không xuất được: ${(e as Error).message}`);
+      setExportMsg(`Could not export: ${(e as Error).message}`);
     }
   };
 
   return (
     <div className="screen">
       <TopBar
-        subtitle={`Báo cáo sứ mệnh · lần chạy ${state.run}`}
+        subtitle={`Mission debrief · run ${state.run}`}
         step="debrief"
         right={
           <span className="mono" style={{ fontSize: 'calc(13rem / 16)', color: 'var(--muted)' }}>
@@ -103,14 +103,14 @@ export function Debrief() {
         </svg>
         <div style={{ flex: 1, minWidth: 200 }}>
           <div className="lbl" style={{ color: style.color }}>
-            Kết cục
+            Outcome
           </div>
           <div style={{ fontSize: 'clamp(20px, 3vw, 28px)', fontWeight: 800 }}>
-            {OUTCOME_LABEL[score.outcome]} — {score.passed}/8 yêu cầu đạt
+            {OUTCOME_LABEL[score.outcome]} — {score.passed}/8 requirements passed
           </div>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <div className="lbl">Điểm tổng (trung bình 5 sao)</div>
+          <div className="lbl">Overall score (average of 5 stars)</div>
           <div className="mono" style={{ fontSize: 'calc(34rem / 16)', fontWeight: 600, color: 'var(--amber)' }}>
             {fmt(score.overall, 1)} <span style={{ fontSize: 'calc(16rem / 16)', color: 'var(--muted)' }}>/ 5</span>
           </div>
@@ -118,9 +118,9 @@ export function Debrief() {
       </div>
 
       <main className="body debrief-body">
-        <section className="panel col" style={{ padding: '12px 16px', gap: 0 }} aria-label="5 sao">
+        <section className="panel col" style={{ padding: '12px 16px', gap: 0 }} aria-label="5 stars">
           <span className="lbl" style={{ marginBottom: 4 }}>
-            5 sao · GDD mục 10
+            5 stars · GDD section 10
           </span>
           {score.stars.map((s) => (
             <div key={s.n} style={{ padding: '8px 0', borderBottom: '1px solid var(--hairline)' }}>
@@ -128,7 +128,7 @@ export function Debrief() {
                 <span style={{ fontSize: 'calc(14rem / 16)', fontWeight: 800 }}>
                   {s.n} · {s.name}
                 </span>
-                <span className="stars" role="img" aria-label={`${s.stars} trên 5 sao`}>
+                <span className="stars" role="img" aria-label={`${s.stars} out of 5 stars`}>
                   {[...starGlyphs(s.stars)].map((g, q) => (
                     <span key={q} aria-hidden="true" className={g === '★' ? 'star on' : 'star'}>
                       {g}
@@ -144,27 +144,27 @@ export function Debrief() {
         </section>
 
         <div className="col">
-          <span className="lbl">Vì sao? · Nguyên nhân → Hệ quả → Thử lần sau</span>
+          <span className="lbl">Why? · Cause → Effect → Try next time</span>
           {why.length === 0 && (
             <div className="panel" style={{ padding: '10px 12px', fontSize: 'calc(13rem / 16)', color: 'var(--soft)' }}>
-              Không có yêu cầu nào SÁT hay VƯỢT, và mọi quyết định sự cố đều là phương án tốt nhất.
+              No requirement is NEAR or OVER, and every event decision was the best option.
             </div>
           )}
           {why.map((w, i) => (
             <div key={i} className="panel why-row" title={w.sentence}>
               <div style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45 }}>
-                <span className="lbl">Nguyên nhân</span>
+                <span className="lbl">Cause</span>
                 <br />
                 {w.cause}
               </div>
               <div style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45 }}>
-                <span className="lbl">Hệ quả</span>
+                <span className="lbl">Effect</span>
                 <br />
                 {w.effect}
               </div>
               <div style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45, borderLeft: '2px solid var(--amber)', paddingLeft: 10 }}>
                 <span className="lbl" style={{ color: 'var(--amber)' }}>
-                  Thử lần sau
+                  Try next time
                 </span>
                 <br />
                 {w.lever[0].toUpperCase() + w.lever.slice(1)}
@@ -172,18 +172,18 @@ export function Debrief() {
             </div>
           ))}
           <div className="panel" style={{ padding: '10px 12px', fontSize: 'calc(13rem / 16)', lineHeight: 1.5, color: 'var(--soft)' }}>
-            <span className="lbl">So với nhiệm vụ thật</span>
+            <span className="lbl">Compared with a real mission</span>
             <br />
-            NanoDragon (3U, 3,8 kg, SSO ~560 km, 2021) là một vệ tinh đơn lẻ; với mô hình này, một vệ tinh SSO chỉ cho Hà Nội 3 lượt/ngày
-            và khoảng trống ~12 giờ — lý do sứ mệnh cứu hộ cần một chòm.
+            NanoDragon (3U, 3.8 kg, SSO ~560 km, 2021) was a single satellite; in this model one SSO satellite gives Hà Nội only 3 passes a day
+            and gaps of ~12 hours — which is why a rescue mission needs a constellation.
           </div>
         </div>
 
         <div className="col">
-          <section className="panel col" style={{ padding: '12px 14px', gap: 4, fontSize: 'calc(12rem / 16)' }} aria-label="Huy hiệu CML">
+          <section className="panel col" style={{ padding: '12px 14px', gap: 4, fontSize: 'calc(12rem / 16)' }} aria-label="CML badge">
             <div className="row" style={{ justifyContent: 'space-between' }}>
               <span className="lbl" style={{ color: 'var(--amber)' }}>
-                Huy hiệu <Term id="cml">CML</Term> · JPL
+                <Term id="cml">CML</Term> badge · JPL
               </span>
               <span className={`mono cml-pill${cml ? ' on' : ''}`}>CML {cml}</span>
             </div>
@@ -227,7 +227,7 @@ export function Debrief() {
 
           <section className="panel row" style={{ padding: '10px 14px', justifyContent: 'space-between', flexWrap: 'wrap', fontSize: 'calc(13rem / 16)' }} aria-label="Quiz">
             <span>
-              Quiz trước → sau: <strong className="mono">{quizText}</strong>
+              Quiz before → after: <strong className="mono">{quizText}</strong>
             </span>
             {postPending && (
               <button className="link-btn" onClick={() => dispatch({ type: 'openPostQuiz', next: 'debrief' })}>
@@ -259,7 +259,7 @@ export function Debrief() {
             ORBIT 72 · Spec sheet · Rồng Con
           </text>
           <text x="30" y="78" fontFamily={EXPORT_FONT} fontSize="15" fill="#8E9BAE">
-            {data.scenario.name} · lần chạy {state.run} · {OUTCOME_LABEL[score.outcome]} {score.passed}/8 · CML {cmlOnExport}
+            {data.scenario.name} · run {state.run} · {OUTCOME_LABEL[score.outcome]} {score.passed}/8 · CML {cmlOnExport}
           </text>
           {rows.map((r, i) => (
             <g key={r.k} transform={`translate(30 ${118 + i * 36})`}>

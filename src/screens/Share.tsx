@@ -16,7 +16,7 @@ import { useT } from '../ui/i18n';
 const C: Record<Status, string> = { DAT: '#4ADE80', SAT: '#FBBF24', VUOT: '#F87171' };
 const EMOJI: Record<Status, string> = { DAT: '🟩', SAT: '🟨', VUOT: '🟥' };
 const OUTCOME_COLOR: Record<Outcome, string> = { THANH_CONG: '#4ADE80', MOT_PHAN: '#FBBF24', THAT_BAI: '#F87171' };
-const TEAM = 'ĐỘI RỒNG CON';
+const TEAM = 'TEAM BABY DRAGON';
 
 export function Share() {
   const data = useGameData();
@@ -32,23 +32,23 @@ export function Share() {
   const launch = state.ops.launch;
   // Six squares: Nhiệm vụ · Ráp · Quỹ đạo · Go/No-Go · Vận hành (Star 2) · Báo cáo (outcome)
   const squares = phaseSquares(m, launch, run.score.stars[1].stars, run.score.outcome);
-  const no = `lan${state.run}`; // file names: orbit72-lan1-the.png
+  const no = `run${state.run}`; // file names: orbit72-run1-card.png
   const header = cardHeader(data.scenario.name, state.difficulty);
   const p1hRain = Math.round(run.ops.p1hRain);
-  const p1hLabel = run.weightsSource === 'imerg' ? L_P1H_RAIN : `${L_P1H} (chưa có dữ liệu mưa)`;
+  const p1hLabel = run.weightsSource === 'imerg' ? L_P1H_RAIN : `${L_P1H} (no rain data yet)`;
   // Tile label on two lines (SVG has no wrapping): "Tin SOS tới nơi trong 1 giờ" / "(tính theo mưa NASA IMERG)"
-  const tileLines = run.weightsSource === 'imerg' ? [L_P1H, '(tính theo mưa NASA IMERG)'] : [L_P1H, '(chưa có dữ liệu mưa)'];
+  const tileLines = run.weightsSource === 'imerg' ? [L_P1H, '(weighted by NASA IMERG rain)'] : [L_P1H, '(no rain data yet)'];
   const stars = starGlyphs(run.score.overall);
   const line = runLine(m);
   const url = typeof window !== 'undefined' ? `${window.location.origin}${import.meta.env.BASE_URL}` : '';
-  const shareText = `ORBIT 72 · ${header}\n${squares.map((s) => EMOJI[s]).join('')} ${stars}\n${p1hLabel}: ${p1hRain}% · ${m.satCount} vệ tinh · ${OUTCOME_LABEL[run.score.outcome]} · CML ${run.cml}\n${url} #Orbit72`;
+  const shareText = `ORBIT 72 · ${header}\n${squares.map((s) => EMOJI[s]).join('')} ${stars}\n${p1hLabel}: ${p1hRain}% · ${m.satCount} satellites · ${OUTCOME_LABEL[run.score.outcome]} · CML ${run.cml}\n${url} #Orbit72`;
 
   const copy = async () => {
     try {
       await navigator.clipboard.writeText(shareText);
-      setMsg('Đã sao chép kết quả.');
+      setMsg('Result copied.');
     } catch {
-      setMsg('Trình duyệt không cho sao chép — hãy chọn và sao chép thủ công.');
+      setMsg('The browser blocked copying — select the text and copy it by hand.');
     }
   };
 
@@ -58,13 +58,13 @@ export function Share() {
       const blob = await svgToPng(ref, 3);
       if (!share) {
         downloadBlob(blob, name);
-        setMsg(`Đã tải ${name}.`);
+        setMsg(`Downloaded ${name}.`);
         return;
       }
       const how = await shareOrDownload(blob, name, shareText);
-      setMsg(how === 'shared' ? 'Đã mở bảng chia sẻ.' : `Thiết bị không hỗ trợ chia sẻ tệp — đã tải ${name}.`);
+      setMsg(how === 'shared' ? 'Share sheet opened.' : `This device cannot share files — downloaded ${name}.`);
     } catch (e) {
-      setMsg(`Không xuất được ảnh: ${(e as Error).message}`);
+      setMsg(`Could not export the image: ${(e as Error).message}`);
     }
   };
 
@@ -72,18 +72,18 @@ export function Share() {
     <div className="screen">
       <header className="topbar">
         <span className="brand">
-          ORBIT <span className="amber">72</span> <span className="sub">· Chia sẻ thành tích</span>
+          ORBIT <span className="amber">72</span> <span className="sub">· Share your result</span>
         </span>
-        <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--dim)' }}>Không chứa logo NASA · không chứa ảnh hay tên thật của người chơi</span>
+        <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--dim)' }}>No NASA logo · no photos or real names of players</span>
         <HeaderTools />
       </header>
       <main className="body share-body">
         <div className="col" style={{ alignItems: 'center', gap: 12 }}>
           <span className="lbl" style={{ alignSelf: 'flex-start' }}>
-            Mission patch tự sinh
+            Generated mission patch
           </span>
           <Patch ref={patchRef} theme={theme} team={TEAM} scenario={data.scenario.name} satCount={m.satCount} />
-          <div className="row" style={{ gap: 6, flexWrap: 'wrap', justifyContent: 'center' }} role="group" aria-label="Màu patch">
+          <div className="row" style={{ gap: 6, flexWrap: 'wrap', justifyContent: 'center' }} role="group" aria-label="Patch colour">
             {PATCH_THEMES.map((t, q) => (
               <button key={t.name} className="seg" aria-pressed={theme === q} onClick={() => setTheme(q)}>
                 {t.name}
@@ -91,13 +91,13 @@ export function Share() {
             ))}
           </div>
           <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)', textAlign: 'center' }}>
-            Ngôi sao 14 cánh của mặt trống đồng Đông Sơn · cánh sen · chấm trắng = số vệ tinh trong chòm
+            14-point star of the Đông Sơn bronze drum · lotus petals · white dots = satellites in the constellation
           </span>
         </div>
 
         <div className="row" style={{ justifyContent: 'center' }}>
           <svg ref={cardRef} viewBox="0 0 300 533" style={{ width: '100%', maxWidth: 300, height: 'auto' }} role="img"
-            aria-label={`Thẻ kết quả: ${header}, ${OUTCOME_LABEL[run.score.outcome]}, ${PHASES.map((p, q) => `${p} ${STATUS_LABEL[squares[q]]}`).join(', ')}, ${p1hLabel} ${p1hRain}%, ${m.satCount} vệ tinh, CML ${run.cml}, ${line}`}>
+            aria-label={`Result card: ${header}, ${OUTCOME_LABEL[run.score.outcome]}, ${PHASES.map((p, q) => `${p} ${STATUS_LABEL[squares[q]]}`).join(', ')}, ${p1hLabel} ${p1hRain}%, ${m.satCount} satellites, CML ${run.cml}, ${line}`}>
             <defs>
               <linearGradient id="card-bg" x1="0" y1="0" x2="0.3" y2="1">
                 <stop offset="0%" stopColor="#141B2A" />
@@ -136,7 +136,7 @@ export function Share() {
                 {p1hRain}%
               </text>
               <text x="244" y="57" textAnchor="end" fontFamily={EXPORT_MONO} fontSize="13" fill="#F3F5F8">
-                {m.satCount} vệ tinh
+                {m.satCount} satellites
               </text>
             </g>
             {/* CML badge + one line from the run (fills the band above the mascot) */}
@@ -161,26 +161,26 @@ export function Share() {
               <path d="M50 74 Q60 82 70 74" stroke="#0B1020" strokeWidth="3" fill="none" strokeLinecap="round" />
             </g>
             <text x="22" y="505" fontFamily={EXPORT_FONT} fontSize="11" fontWeight="700" fill="#F3F5F8">
-              Chơi thử: {url.replace(/^https?:\/\//, '')} · #Orbit72
+              Play: {url.replace(/^https?:\/\//, '')} · #Orbit72
             </text>
           </svg>
         </div>
 
         <div className="col" style={{ gap: 10, justifyContent: 'center' }}>
-          <span className="lbl">Chia sẻ</span>
+          <span className="lbl">Share</span>
           <pre className="panel mono" style={{ padding: 12, fontSize: 'calc(13rem / 16)', lineHeight: 1.6, margin: 0, whiteSpace: 'pre-wrap' }}>
             {shareText}
           </pre>
           <button className="btn-p" onClick={copy}>
-            {msg.startsWith('Đã sao chép') ? 'Đã sao chép ✓' : t('copy')}
+            {msg.startsWith('Result copied') ? 'Copied ✓' : t('copy')}
           </button>
-          <button className="btn-s" onClick={() => exportSvg(cardRef.current, `orbit72-${no}-the.png`, false)}>
+          <button className="btn-s" onClick={() => exportSvg(cardRef.current, `orbit72-${no}-card.png`, false)}>
             {t('dlCard')}
           </button>
           <button className="btn-s" onClick={() => exportSvg(patchRef.current, `orbit72-${no}-patch.png`, false)}>
             {t('dlPatch')}
           </button>
-          <button className="btn-s" onClick={() => exportSvg(cardRef.current, `orbit72-${no}-the.png`, true)}>
+          <button className="btn-s" onClick={() => exportSvg(cardRef.current, `orbit72-${no}-card.png`, true)}>
             {t('shareSocial')}
           </button>
           <span role="status" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>
@@ -194,7 +194,7 @@ export function Share() {
               {t('playAnother')}
             </button>
           </div>
-          <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--dim)' }}>{L_P1H} sau sự cố (chưa tính mưa): {fmt(run.ops.p1h, 1)}%.</span>
+          <span style={{ fontSize: 'calc(11rem / 16)', color: 'var(--dim)' }}>{L_P1H} after events (not rain-weighted): {fmt(run.ops.p1h, 1)}%.</span>
         </div>
       </main>
     </div>

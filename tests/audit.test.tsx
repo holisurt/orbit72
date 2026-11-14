@@ -59,7 +59,7 @@ describe('rounding rule: thresholds compared on displayed values', () => {
 describe('co-op priority cards (SPEC §8)', () => {
   const c = (cards: Parameters<typeof priorityCards>[0], mm = m) => priorityCards(cards, mm);
   it('KH (a) data ≤ 50 % of downlink: S-band 5 / 255 MB → met; UHF 5 / 1,22 MB → not met', () => {
-    expect(c({ FD: 'a', VT: 'a', KH: 'a', QD: 'a' })[2]).toMatchObject({ met: true, value: 'dữ liệu 2% dung lượng tải xuống' });
+    expect(c({ FD: 'a', VT: 'a', KH: 'a', QD: 'a' })[2]).toMatchObject({ met: true, value: 'data 2% of downlink capacity' });
     const uhf = evaluateMission(data, { difficulty: 'ky_su', design: { ...REF_DESIGN, parts: ['obc', 'eps', 'adcs', 'uhf', 'sos'] }, orbit: S1, orbitChosen: true });
     expect(c({ FD: 'a', VT: 'a', KH: 'a', QD: 'a' }, uhf)[2].met).toBe(false);
   });

@@ -24,7 +24,7 @@ export function Setup() {
   return (
     <div className="screen">
       <TopBar
-        subtitle="Thiết lập phòng điều khiển"
+        subtitle="Mission control setup"
         right={
           <button className="link-btn" onClick={() => dispatch({ type: 'go', screen: 'home' })}>
             ← {t('home')}
@@ -33,8 +33,8 @@ export function Setup() {
       />
       <main className="body setup-body">
         <div className="col" style={{ gap: 12 }}>
-          <div className="row" style={{ gap: 10, flexWrap: 'wrap' }} role="group" aria-label="Số người chơi">
-            <span className="lbl">Số người chơi</span>
+          <div className="row" style={{ gap: 10, flexWrap: 'wrap' }} role="group" aria-label="Number of players">
+            <span className="lbl">Number of players</span>
             {COUNTS.map((n) => (
               <button
                 key={n}
@@ -49,31 +49,31 @@ export function Setup() {
                 {n}
               </button>
             ))}
-            <span style={{ fontSize: 'calc(13rem / 16)', color: 'var(--muted)' }}>Chơi chung một máy, chuyền máy theo lượt</span>
+            <span style={{ fontSize: 'calc(13rem / 16)', color: 'var(--muted)' }}>One shared device, passed around in turns</span>
           </div>
           <div className="players" style={{ gridTemplateColumns: `repeat(${groups.length}, minmax(0, 1fr))` }}>
             {groups.map((g, q) => {
               const col = roleColor(ROLES[g[0]].color);
               return (
-                <section key={q} className="panel player" style={{ borderTop: `3px solid ${col}`, position: 'relative' }} aria-label={`Người chơi ${q + 1}`}>
+                <section key={q} className="panel player" style={{ borderTop: `3px solid ${col}`, position: 'relative' }} aria-label={`Player ${q + 1}`}>
                   <div className="row" style={{ gap: 10 }}>
                     <div className="avatar" style={{ background: col, color: 'var(--bg)', fontWeight: 800, fontSize: 'calc(13rem / 16)' }} aria-hidden="true">
                       {g.map((k) => ROLES[k].ab).join('+')}
                     </div>
                     <div>
-                      <div className="lbl" style={{ color: 'var(--muted)' }}>Người chơi {q + 1}</div>
+                      <div className="lbl" style={{ color: 'var(--muted)' }}>Player {q + 1}</div>
                       <div style={{ fontSize: 'calc(15rem / 16)', fontWeight: 800, lineHeight: 1.25, color: 'var(--text)' }}>
                         {g.map((k) => ROLES[k].name).join(' + ')}
                       </div>
                     </div>
                   </div>
                   <label className="lbl" htmlFor={`p${q}`}>
-                    Biệt danh (không cần tên thật)
+                    Nickname (no real names needed)
                   </label>
                   <input
                     id={`p${q}`}
                     type="text"
-                    placeholder="Ví dụ: Sao Mai"
+                    placeholder="e.g. Morning Star"
                     value={names[q] ?? ''}
                     autoComplete="off"
                     onChange={(e) => dispatch({ type: 'setPlayerName', index: q, name: e.target.value })}
@@ -83,17 +83,17 @@ export function Setup() {
                   </div>
                   <div className="subtle col" style={{ marginTop: 'auto', gap: 6 }}>
                     <span className="lbl" style={{ color: 'var(--amber)' }}>
-                      Thẻ ưu tiên bí mật
+                      Secret priority card
                     </span>
                     <span style={{ fontSize: 'calc(13rem / 16)', lineHeight: 1.45 }} aria-live="polite">
-                      {open[q] && cards ? g.map((k) => ROLES[k].cards[cards[k]]).join(' · ') : '▒▒▒▒▒▒▒▒ (đang úp)'}
+                      {open[q] && cards ? g.map((k) => ROLES[k].cards[cards[k]]).join(' · ') : '▒▒▒▒▒▒▒▒ (face down)'}
                     </span>
                     <button
                       className="flip"
                       aria-pressed={open[q]}
                       onClick={() => setOpen((o) => o.map((v, i) => (i === q ? !v : v)))}
                     >
-                      {open[q] ? 'Úp thẻ' : 'Lật thẻ (chỉ mình bạn xem)'}
+                      {open[q] ? 'Turn face down' : 'Flip card (only you look)'}
                     </button>
                   </div>
                 </section>
@@ -102,16 +102,16 @@ export function Setup() {
           </div>
         </div>
         <aside className="panel col" style={{ padding: 16, gap: 12 }}>
-          <span className="lbl">Luật chơi chung một máy</span>
+          <span className="lbl">Shared-device rules</span>
           <ol style={{ margin: 0, paddingLeft: 18, fontSize: 'calc(13rem / 16)', lineHeight: 1.6, color: 'var(--soft)' }}>
-            <li>Mỗi người lật thẻ ưu tiên khi không ai nhìn, rồi úp lại.</li>
-            <li>Khi màn hình báo “Đến lượt …”, chuyền máy cho người giữ vai đó.</li>
-            <li>Chỉ người giữ vai được thao tác; mọi người cùng nhìn HUD.</li>
-            <li>Trước khi phóng: Go/No-Go, mỗi vai trả lời GO hoặc NO-GO.</li>
-            <li>Tranh luận về số liệu, không tranh luận về người.</li>
+            <li>Each player flips their priority card when nobody is looking, then turns it face down.</li>
+            <li>When the screen says “Your turn …”, pass the device to the player with that role.</li>
+            <li>Only that role’s player touches the controls; everyone watches the HUD.</li>
+            <li>Before launch: Go/No-Go, every role answers GO or NO-GO.</li>
+            <li>Argue about the numbers, not about people.</li>
           </ol>
           <div className="subtle" style={{ fontSize: 'calc(12rem / 16)', lineHeight: 1.5, color: 'var(--muted)' }}>
-            Đạt thẻ ưu tiên: +20 điểm sao 5 mỗi thẻ · Go/No-Go đồng thuận: +20.
+            Each priority card met: +20 on star 5 · unanimous Go/No-Go: +20.
           </div>
           <button className="btn-p ghost" onClick={() => setPass(true)}>
             {t('passScreen')}
@@ -126,7 +126,7 @@ export function Setup() {
           role="QD"
           count={count}
           names={names}
-          text="Những người khác đặt máy xuống. Bạn chọn độ nghiêng, độ cao, số mặt phẳng và tên lửa; HUD tổng vẫn hiện cho cả đội cùng xem."
+          text="Everyone else puts the device down. You choose the inclination, altitude, number of planes and the launcher; the team HUD stays visible for everyone."
           onStart={() => setPass(false)}
         />
       )}

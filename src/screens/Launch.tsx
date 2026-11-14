@@ -6,12 +6,12 @@ import { useT } from '../ui/i18n';
 
 // Stage times are illustrative (design/HF-Launch: "thời gian minh họa, tùy tên lửa").
 const STAGES: [string, string][] = [
-  ['T−10 s', 'Đếm ngược tiếng Việt, Go/No-Go cuối'],
-  ['T+0', 'Rời bệ phóng'],
-  ['T+2:30', 'Tách tầng 1'],
-  ['T+8:40', 'Tắt động cơ tầng 2'],
-  ['T+55:00', 'Thả vệ tinh khỏi bộ tách'],
-  ['T+1:30:00', 'Tín hiệu đầu tiên qua Hòa Lạc'],
+  ['T−10 s', 'Countdown, final Go/No-Go'],
+  ['T+0', 'Liftoff'],
+  ['T+2:30', 'Stage 1 separation'],
+  ['T+8:40', 'Stage 2 engine cutoff'],
+  ['T+55:00', 'Satellite released from the dispenser'],
+  ['T+1:30:00', 'First signal via Hòa Lạc'],
 ];
 
 export function Launch() {
@@ -36,7 +36,7 @@ export function Launch() {
         <span className="brand">
           ORBIT <span className="amber">72</span>{' '}
           <span className="sub">
-            · Phóng · chuyến 1/{m.launch.launches} · mặt phẳng 1
+            · Launch · flight 1/{m.launch.launches} · plane 1
           </span>
         </span>
         <span className="mono" style={{ fontSize: 'calc(13rem / 16)', color: 'var(--muted)' }}>
@@ -46,7 +46,7 @@ export function Launch() {
       </header>
       <main className="body launch-body">
         <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', justifyContent: 'center', overflow: 'hidden', minHeight: 360 }}>
-          <svg width="100%" height="100%" viewBox="0 0 300 400" style={{ maxWidth: 420, maxHeight: 560 }} role="img" aria-label={`Tên lửa: ${STAGES[k][1]}`}>
+          <svg width="100%" height="100%" viewBox="0 0 300 400" style={{ maxWidth: 420, maxHeight: 560 }} role="img" aria-label={`Rocket: ${STAGES[k][1]}`}>
             <g className="rocket" transform={`translate(0 ${lift})`}>
               <path d="M150 40 C170 70 176 100 176 140 V300 H124 V140 C124 100 130 70 150 40Z" fill="#E8EEF8" />
               <path d="M124 270 L102 320 H124Z M176 270 L198 320 H176Z" fill="#F87171" />
@@ -74,10 +74,10 @@ export function Launch() {
         </div>
 
         <div className="col">
-          <span className="lbl">Các mốc phóng · thời gian minh họa, tùy tên lửa</span>
+          <span className="lbl">Launch milestones · illustrative times, depend on the rocket</span>
           <ol className="col" style={{ listStyle: 'none', margin: 0, padding: 0, gap: 8 }}>
             {STAGES.map(([t, n], q) => {
-              const st = q < k ? 'XONG' : q === k ? 'ĐANG' : 'CHỜ';
+              const st = q < k ? 'DONE' : q === k ? 'NOW' : 'NEXT';
               return (
                 <li
                   key={t}
@@ -99,8 +99,8 @@ export function Launch() {
 
           {k === last && rec && (
             <div className="panel" style={{ padding: 12, borderColor: 'var(--ok)', fontSize: 'calc(13rem / 16)', lineHeight: 1.5 }} role="status">
-              <strong style={{ color: 'var(--ok)' }}>Rồng Con-1 đã vào quỹ đạo.</strong> Tín hiệu đầu tiên qua trạm Hòa Lạc.
-              {m.launch.launches > 1 && ` ${m.launch.launches - 1} chuyến còn lại cho các mặt phẳng khác được mô phỏng tự động.`}
+              <strong style={{ color: 'var(--ok)' }}>Rồng Con-1 is in orbit.</strong> First signal via the Hòa Lạc station.
+              {m.launch.launches > 1 && ` ${m.launch.launches - 1} more flight(s) for the other planes are simulated automatically.`}
             </div>
           )}
           <div className="row" style={{ marginTop: 'auto', flexWrap: 'wrap' }}>

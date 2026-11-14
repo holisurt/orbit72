@@ -17,7 +17,7 @@ import { Guide } from './screens/Guide';
 import { SettingsProvider } from './state/settings';
 import { RotateHint } from './ui/RotateHint';
 
-export const APP_TITLE = 'ORBIT 72 - Bắt Sóng Cứu Hộ';
+export const APP_TITLE = 'ORBIT 72 - Keep Them Connected';
 
 function Router() {
   const { state, dispatch } = useStore();

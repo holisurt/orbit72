@@ -4,11 +4,11 @@
    "id": "E0",
    "atH": -1,
    "onlyIf": "noEnvTest",
-   "title": "Lỗi bung ăng-ten",
+   "title": "Antenna deployment failure",
    "options": [
     {
      "k": "A",
-     "text": "Gửi lệnh bung lại",
+     "text": "Send the deploy command again",
      "effect": {
       "sat": 0,
       "maskH": [
@@ -19,7 +19,7 @@
     },
     {
      "k": "B",
-     "text": "Bỏ vệ tinh lỗi",
+     "text": "Give up the faulty satellite",
      "effect": {
       "sat": 0,
       "lost": true
@@ -30,12 +30,12 @@
   {
    "id": "E1",
    "atH": 10,
-   "title": "Bão Mặt Trời mạnh",
+   "title": "Solar storm",
    "source": "NASA DONKI GST (record shown on card)",
    "options": [
     {
      "k": "A",
-     "text": "Chế độ an toàn 6 giờ",
+     "text": "Safe mode for 6 hours",
      "effect": {
       "maskH": [
        10,
@@ -45,14 +45,14 @@
     },
     {
      "k": "B",
-     "text": "Tiếp tục chuyển tiếp",
+     "text": "Keep relaying",
      "effect": {
       "loseNextWindowUnless": "shield"
      }
     },
     {
      "k": "C",
-     "text": "An toàn 2 giờ cao điểm",
+     "text": "Safe mode for the 2 peak hours",
      "effect": {
       "maskH": [
        10,
@@ -65,18 +65,18 @@
   {
    "id": "E2",
    "atH": 30,
-   "title": "Trạm Hòa Lạc mất điện lưới",
+   "title": "Hoa Lac station power cut",
    "options": [
     {
      "k": "A",
-     "text": "Máy phát diesel (−20k)",
+     "text": "Diesel generator (−20k)",
      "effect": {
       "costKusd": 20
      }
     },
     {
      "k": "B",
-     "text": "Chờ có điện (8 giờ)",
+     "text": "Wait for power (8 hours)",
      "effect": {
       "deferDeliveryToH": 38,
       "windowH": [
@@ -87,7 +87,7 @@
     },
     {
      "k": "C",
-     "text": "Chuyển qua trạm đối tác TP.HCM",
+     "text": "Relay via the partner station in Ho Chi Minh City",
      "effect": {
       "relayVia": "partnerStation",
       "windowH": [

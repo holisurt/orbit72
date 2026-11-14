@@ -45,18 +45,18 @@ export function Review() {
   const complete = go + no === 4;
 
   const blockers: string[] = [];
-  if (hardFail.length) blockers.push(`Ràng buộc cứng chưa đạt: ${hardFail.map((r) => r.id).join(', ')} — không thể ký hợp đồng phóng.`);
-  if (!m.launch.compatible) blockers.push(`Tên lửa không tương thích: ${m.launch.reason}.`);
-  if (!complete) blockers.push('Chờ đủ 4 câu trả lời GO / NO-GO.');
-  if (missingReason) blockers.push('NO-GO cần ghi lý do (mã R).');
+  if (hardFail.length) blockers.push(`Hard requirements not met: ${hardFail.map((r) => r.id).join(', ')} — the launch contract cannot be signed.`);
+  if (!m.launch.compatible) blockers.push(`Launcher not compatible: ${m.launch.reason}.`);
+  if (!complete) blockers.push('Waiting for all 4 GO / NO-GO answers.');
+  if (missingReason) blockers.push('A NO-GO needs a reason (an R code).');
   const canLaunch = blockers.length === 0;
 
   const summary =
     go === 4
-      ? { text: '4/4 GO — Đồng thuận. Sẵn sàng phóng.', color: 'var(--ok)' }
+      ? { text: '4/4 GO — Unanimous. Ready to launch.', color: 'var(--ok)' }
       : no
-        ? { text: `${go}/4 GO · ${no} NO-GO — phóng lúc này bị trừ 10 điểm sao 4.`, color: 'var(--bad)' }
-        : { text: `${go}/4 GO — đang chờ vai còn lại.`, color: 'var(--warn)' };
+        ? { text: `${go}/4 GO · ${no} NO-GO — launching now costs 10 points on star 4.`, color: 'var(--bad)' }
+        : { text: `${go}/4 GO — waiting for the other roles.`, color: 'var(--warn)' };
 
   const doLaunch = () => {
     if (!canLaunch) return;
@@ -77,7 +77,7 @@ export function Review() {
         step="review"
         right={
           <span className="turn">
-            Lượt: <strong>Flight Director</strong>
+            Turn: <strong>Flight Director</strong>
           </span>
         }
       />
@@ -86,7 +86,7 @@ export function Review() {
           <div className="row" style={{ justifyContent: 'space-between', marginBottom: 4, flexWrap: 'wrap' }}>
             <span className="lbl">Flight Readiness · R1–R8</span>
             <span className="mono" style={{ fontSize: 'calc(11rem / 16)', color: 'var(--muted)' }}>
-              {m.orbit.planes} MP × {m.orbit.perPlane} · {m.orbit.preset === 'sso' ? 'SSO' : `${fmt(m.inclDeg, 1)}°`} {m.orbit.hKm} km
+              {m.orbit.planes} planes × {m.orbit.perPlane} · {m.orbit.preset === 'sso' ? 'SSO' : `${fmt(m.inclDeg, 1)}°`} {m.orbit.hKm} km
             </span>
           </div>
           {m.reqs.map((r) => (
@@ -115,23 +115,23 @@ export function Review() {
             }}
           >
             <span className="lbl" style={{ color: vuot.length ? 'var(--bad)' : 'var(--warn)' }}>
-              Nút thắt cổ chai
+              Bottleneck
             </span>
             <br />
             {vuot.length
-              ? `${vuot.length} mục VƯỢT: ${vuot.map((r) => `${r.id} ${lowerFirst(r.name)} (${r.value})`).join('; ')}.`
+              ? `${vuot.length} item(s) OVER: ${vuot.map((r) => `${r.id} ${lowerFirst(r.name)} (${r.value})`).join('; ')}.`
               : sat.length
-                ? `Không có mục VƯỢT. Sát nhất: ${sat.map((r) => `${r.id} ${lowerFirst(r.name)} ${r.value}`).join('; ')}.`
-                : 'Không có mục VƯỢT hay SÁT — thiết kế còn dư địa ở mọi yêu cầu.'}
+                ? `Nothing OVER. Closest: ${sat.map((r) => `${r.id} ${lowerFirst(r.name)} ${r.value}`).join('; ')}.`
+                : 'Nothing OVER or NEAR — the design has room to spare on every requirement.'}
           </div>
         </section>
 
         <section
           className="panel review-pad"
           style={{ position: 'relative', overflow: 'hidden', background: 'radial-gradient(420px 360px at 50% 70%, var(--panel-elevated), var(--panel))' }}
-          aria-label="Bệ phóng"
+          aria-label="Launch pad"
         >
-          <svg width="100%" height="100%" viewBox="0 0 300 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Tên lửa trên bệ phóng chờ lệnh">
+          <svg width="100%" height="100%" viewBox="0 0 300 420" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Rocket on the pad, waiting for the command">
             <path d="M0 380 H300 V420 H0Z" fill="#0E131D" />
             <path d="M70 380 V150 H84 V380 M70 200 H120 M70 260 H120 M70 320 H120" stroke="#646971" strokeWidth="4" fill="none" />
             <path d="M150 60 C170 90 176 120 176 160 V330 H124 V160 C124 120 130 90 150 60Z" fill="#E8EEF8" />
@@ -145,7 +145,7 @@ export function Review() {
           </svg>
           <div style={{ position: 'absolute', top: 16, left: 0, right: 0, textAlign: 'center' }}>
             <div className="lbl" style={{ color: 'var(--amber)' }}>
-              {canLaunch ? 'Sẵn sàng · chờ lệnh phóng' : 'Đếm ngược tạm dừng chờ poll'}
+              {canLaunch ? 'Ready · waiting for the launch command' : 'Countdown on hold for the poll'}
             </div>
             <div className="mono" style={{ fontSize: 'calc(44rem / 16)', fontWeight: 600, letterSpacing: '0.04em' }}>
               T−00:10
@@ -181,14 +181,14 @@ export function Review() {
                 </div>
                 {v === 'no' && (
                   <label className="row" style={{ gap: 8, fontSize: 'calc(12rem / 16)', color: 'var(--muted)', paddingLeft: 50 }}>
-                    Lý do
+                    Reason
                     <select
                       className="select"
                       value={reasons[role] ?? ''}
                       onChange={(e) => dispatch({ type: 'reason', role, code: e.target.value as RCode })}
                     >
                       <option value="" disabled>
-                        chọn mã R…
+                        pick an R code…
                       </option>
                       {R_CODES.map((c) => {
                         const q = m.reqs.find((x) => x.id === c)!;
@@ -230,7 +230,7 @@ export function Review() {
           role="FD"
           count={state.players.count}
           names={state.players.names}
-          text="Flight Director gọi từng vai: POWER, SCIENCE, BUDGET, COMMS. Mỗi vai trả lời GO hoặc NO-GO; NO-GO phải nêu mã yêu cầu R."
+          text="The Flight Director calls each role: POWER, SCIENCE, BUDGET, COMMS. Each role answers GO or NO-GO; a NO-GO must name a requirement code R."
           onStart={() => setPass(false)}
         />
       )}

@@ -89,7 +89,7 @@ export function Home() {
                 </button>
               ))}
             </div>
-            <span style={{ fontSize: 'calc(13rem / 16)', color: 'var(--muted)', paddingLeft: 80 }} aria-live="polite">
+            <span style={{ fontSize: 'calc(13rem / 16)', color: 'var(--muted)', paddingLeft: 'calc(99rem / 16 + 8px)' }} aria-live="polite">
               {levelNote}
             </span>
           </div>

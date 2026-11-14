@@ -12,21 +12,21 @@ export const CAT_COLOR: Record<PartCat, string> = {
 };
 
 export const CAT_TABS: { id: PartCat; name: string }[] = [
-  { id: 'bus', name: 'Máy tính' },
-  { id: 'pow', name: 'Nguồn' },
-  { id: 'com', name: 'Liên lạc' },
+  { id: 'bus', name: 'Computer' },
+  { id: 'pow', name: 'Power' },
+  { id: 'com', name: 'Radio' },
   { id: 'pay', name: 'Payload' },
-  { id: 'ext', name: 'Phụ trợ' },
+  { id: 'ext', name: 'Extras' },
 ];
 
 /**
  * Downlink per day at the given contact minutes — same rule as the HUD Data bar
- * (2 decimals below 10 MB, else integer). E.g. "≈ 250 MB/ngày với 16,7 phút liên lạc".
+ * (2 decimals below 10 MB, else integer). E.g. "≈ 250 MB/day with 16.7 min of contact".
  */
 export function downlinkText(rbps: number, contactMinPerDay: number): string {
   const mb = downlinkBytesPerDay(rbps, contactMinPerDay) / 1e6;
   const min = Number.isInteger(contactMinPerDay) ? fmt(contactMinPerDay, 0) : fmt(contactMinPerDay, 1);
-  return `≈ ${fmt(mb, mb < 10 ? 2 : 0)} MB/ngày với ${min} phút liên lạc`;
+  return `≈ ${fmt(mb, mb < 10 ? 2 : 0)} MB/day with ${min} min of contact`;
 }
 
 /** Parts whose card shows a link margin, and the link they use. */
@@ -40,24 +40,24 @@ export function partWhy(p: Part, contactMinPerDay: number, hKm: number, elevDeg:
   let why = PART_INFO[p.id]?.why ?? '';
   if (p.rbps) why = why.replace('{dl}', downlinkText(p.rbps, contactMinPerDay));
   const link = PART_LINK[p.id];
-  if (link) why = why.replace('{m}', `${fmt(linkMarginFor(link, hKm, elevDeg), 1)} dB ở ${fmt(hKm, 0)} km, góc ngẩng ${fmt(elevDeg, 0)}°`);
+  if (link) why = why.replace('{m}', `${fmt(linkMarginFor(link, hKm, elevDeg), 1)} dB at ${fmt(hKm, 0)} km, ${fmt(elevDeg, 0)}° elevation`);
   return why;
 }
 
 export const PART_INFO: Record<string, { ab: string; why: string }> = {
-  obc: { ab: 'OBC', why: 'Máy tính chính: chạy phần mềm bay, lưu tin SOS chờ tải xuống.' },
-  adcs: { ab: 'ADC', why: 'Giữ hướng bằng từ trường Trái Đất, trỏ khoảng 10° — đủ cho UHF, S-band và SOS.' },
-  eps: { ab: 'EPS', why: 'Quản lý điện và nuôi vệ tinh khoảng 36 phút trong bóng Trái Đất mỗi vòng.' },
-  bat: { ab: 'BAT', why: 'Thêm dung lượng khi tải lớn.' },
+  obc: { ab: 'OBC', why: 'Main computer: runs the flight software and stores SOS messages until downlink.' },
+  adcs: { ab: 'ADC', why: 'Points the satellite using Earth’s magnetic field, to about 10° — enough for UHF, S-band and SOS.' },
+  eps: { ab: 'EPS', why: 'Manages power and keeps the satellite alive for about 36 minutes of eclipse each orbit.' },
+  bat: { ab: 'BAT', why: 'More stored energy for heavy loads.' },
   uhf: {
     ab: 'UHF',
-    why: 'Phát 1 W, dipole 0 dBi. Biên tới Hòa Lạc {m} — thông, nhưng chỉ {dl}.',
+    why: 'Transmits 1 W, dipole 0 dBi. Link margin to Hòa Lạc {m} — works, but only {dl}.',
   },
   sband: {
     ab: 'S',
-    why: 'Phát 2 W, patch 6 dBi; trạm dùng chảo 3 m. Biên {m}; {dl}.',
+    why: 'Transmits 2 W, patch 6 dBi; the station uses a 3 m dish. Link margin {m}; {dl}.',
   },
-  sos: { ab: 'SOS', why: 'Nhận tin 300 bps từ máy cầm tay 0,5 W (biên {m}). Tạo 5 MB/ngày.' },
-  sail: { ab: 'SAIL', why: 'Bung 0,5 m² khi hết nhiệm vụ: tồn lưu = (L − 3) × 0,047 / 0,547.' },
-  shield: { ab: 'SH', why: 'Miễn nhiễm mất lượt do bão Mặt Trời (E1-B).' },
+  sos: { ab: 'SOS', why: 'Receives 300 bps messages from 0.5 W handsets (link margin {m}). Makes 5 MB/day.' },
+  sail: { ab: 'SAIL', why: 'Opens 0.5 m² when the mission ends: residual = (L − 3) × 0.047 / 0.547.' },
+  shield: { ab: 'SH', why: 'No lost pass from the solar storm (E1-B).' },
 };

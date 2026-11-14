@@ -69,8 +69,8 @@ describe('quiz flow', () => {
     const h = render(<Quiz phase="pre" />, play(initialState, { type: 'startMission' }));
     expect(h.match(/<fieldset/g)).toHaveLength(5);
     expect(h.match(/type="radio"/g)).toHaveLength(data.quiz.questions.reduce((n, q) => n + q.options.length, 0));
-    expect(h).toContain('Bỏ qua');
-    expect(h).toContain('Nộp bài (0/5)');
+    expect(h).toContain('Skip');
+    expect(h).toContain('Submit (0/5)');
     expect(h).not.toContain('type="text"');
   });
 });
@@ -84,21 +84,21 @@ describe('Debrief shows the quiz result', () => {
   it('both taken: panel + spec sheet row show "x → y / 5 (+gain)"', () => {
     const s = { ...launched, quiz: { pre: [...right.slice(0, 3), ...wrong.slice(3)], post: right } };
     const h = render(<Debrief />, s);
-    expect(h).toContain('Quiz trước → sau: <strong class="mono">3 → 5 / 5 (+2)</strong>');
-    expect(h).toMatch(/Quiz trước → sau<\/text><text[^>]*>3 → 5 \/ 5 \(\+2\)</); // exported spec sheet row
-    expect(h).toContain('Tạo mission patch · Chia sẻ →');
+    expect(h).toContain('Quiz before → after: <strong class="mono">3 → 5 / 5 (+2)</strong>');
+    expect(h).toMatch(/Quiz before → after<\/text><text[^>]*>3 → 5 \/ 5 \(\+2\)</); // exported spec sheet row
+    expect(h).toContain('Make mission patch · Share →');
   });
 
   it('post not taken yet: "—", CTA goes through the post quiz', () => {
     const h = render(<Debrief />, { ...launched, quiz: { pre: right, post: null } });
-    expect(h).toContain('Quiz trước → sau: <strong class="mono">—</strong>');
-    expect(h).toContain('Làm quiz sau');
-    expect(h).toContain('Quiz sau · Tạo mission patch →');
+    expect(h).toContain('Quiz before → after: <strong class="mono">—</strong>');
+    expect(h).toContain('Take the quiz again');
+    expect(h).toContain('Quiz again · Mission patch →');
   });
 
   it('skipped: "—" and no re-ask', () => {
     const h = render(<Debrief />, { ...launched, quiz: { pre: 'skip', post: 'skip' } });
-    expect(h).toContain('Quiz trước → sau: <strong class="mono">—</strong>');
-    expect(h).not.toContain('Làm quiz sau');
+    expect(h).toContain('Quiz before → after: <strong class="mono">—</strong>');
+    expect(h).not.toContain('Take the quiz again');
   });
 });
