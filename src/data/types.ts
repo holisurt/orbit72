@@ -1,0 +1,159 @@
+// Types for public/data/*.json.
+import type { LifetimeTable } from '../sim/lifetime';
+
+export type ChassisId = '3U' | '6U' | '12U';
+
+export interface Chassis {
+  id: ChassisId;
+  cells: number;
+  cols: number;
+  baseKg: number;
+  limitKg: number;
+  kusd: number;
+  months: number;
+  areaM2: number;
+}
+
+export type PartCat = 'bus' | 'pow' | 'com' | 'pay' | 'ext';
+
+export interface Part {
+  id: string;
+  cat: PartCat;
+  name: string;
+  cells: number;
+  kg: number;
+  w: number;
+  kusd: number;
+  months: number;
+  wh?: number;
+  txW?: number;
+  band?: 'uhf' | 's' | 'x';
+  rbps?: number;
+  mbPerDay?: number;
+  cameraDataFactor?: number;
+  pointingDeg?: number;
+  needsPreciseAdcs?: boolean;
+  required?: boolean;
+  sailAreaM2?: number;
+  enablesE4A?: boolean;
+  e1Immune?: boolean;
+  dutyNote?: string;
+  thrustW?: number;
+}
+
+export interface Components {
+  chassis: Chassis[];
+  wings: { kg: number; kusd: number; months: number; areaM2: number; orientation: number };
+  envTest: { kusd: number; months: number };
+  parts: Part[];
+}
+
+export type LauncherId = 'rideshare' | 'iss' | 'dedicated';
+
+export interface Launcher {
+  id: LauncherId;
+  name: string;
+  incl: 'SSO' | 'any' | number;
+  hMin?: number;
+  hMax?: number;
+  hFixed?: number;
+  maxChassis?: ChassisId;
+  price?: { baseKusd: number; baseKg: number; perKgKusd: number };
+  pricePerSatKusd?: number;
+  pricePerLaunchKusd?: number;
+  planesPerLaunch?: number;
+  planesMax?: number;
+  tag: string;
+}
+
+export interface Preset {
+  id: 'sso' | 'iss' | 'low20' | 'leo53';
+  name: string;
+  incl: 'SSO' | number;
+  h?: number;
+}
+
+export interface Launchers {
+  launchers: Launcher[];
+  presets: Preset[];
+}
+
+export type DifficultyId = 'hoc_vien' | 'ky_su' | 'giam_doc';
+
+export interface DifficultyRules {
+  budget: number;
+  gapMaxH: number;
+  lifetime: 'avg' | 'max';
+  events: string[];
+  launchFail: number;
+}
+
+export interface Scenario {
+  id: string;
+  name: string;
+  t0Local: string;
+  hours: number;
+  target: { name: string; lat: number; lon: number };
+  partnerStation: { name: string; lat: number; lon: number };
+  rainBox: { lonMin: number; lonMax: number; latMin: number; latMax: number };
+  cloudRainThresholdMmH: number;
+  opsYears: number;
+  difficulty: Record<DifficultyId, DifficultyRules>;
+  requirements: {
+    devMonthsMax: number;
+    powerMargin: number;
+    dod: number;
+    linkMarginDb: number;
+    lifetimeMinY: number;
+    lifetimeMaxY: number;
+    residualMaxY: number;
+    elevationDeg: number;
+  };
+  tutorial: { id: string; target: { lat: number; lon: number }; minPassesPerDay: number };
+}
+
+export interface EventOption {
+  k: string;
+  text: string;
+  requires?: string;
+  effect: Record<string, unknown>;
+}
+
+export interface GameEvent {
+  id: string;
+  atH: number;
+  onlyIf?: string;
+  title: string;
+  source?: string;
+  options: EventOption[];
+}
+
+export interface Events {
+  events: GameEvent[];
+}
+
+export interface QuizQuestion {
+  q: string;
+  options: string[];
+  answer: number;
+}
+
+export interface Quiz {
+  questions: QuizQuestion[];
+}
+
+export interface Maps {
+  world: string;
+  vn: string;
+  globe: string;
+  seaLand: string;
+}
+
+export interface GameData {
+  components: Components;
+  launchers: Launchers;
+  scenario: Scenario;
+  lifetime: LifetimeTable;
+  events: Events;
+  quiz: Quiz;
+}
