@@ -49,11 +49,11 @@ describe('plain language in the UI', () => {
 
   it('Ops: SOS labels in plain words', () => {
     const h = render(<Ops />, s);
-    expect(h).toContain('Tin SOS tới nơi trong 1 giờ</div>');
-    expect(h).toContain('Tin SOS tới nơi trong 1 giờ (tính theo mưa NASA IMERG)</div>');
+    expect(h).toContain('SOS delivered within 1 h</div>');
+    expect(h).toContain('SOS delivered within 1 h (weighted by NASA IMERG rain)</div>');
   });
 
-  it('Debrief: star 3 is "Hiệu quả chi phí"', () => expect(render(<Debrief />, s)).toContain('Hiệu quả chi phí = '));
+  it('Debrief: star 3 is "Cost efficiency"', () => expect(render(<Debrief />, s)).toContain('Cost efficiency = '));
 
   it('R1–R8 keep their codes and read as plain sentences (Brief + Review)', () => {
     const b = render(<Brief />, s);
@@ -74,23 +74,23 @@ describe('"?" term explainers', () => {
     }
   });
 
-  it('Orbit has explainers for độ nghiêng, mặt phẳng quỹ đạo, bóng tối, biên đường truyền, tuổi thọ quỹ đạo', () => {
+  it('Orbit has explainers for inclination, orbital plane, eclipse, link margin, orbital lifetime', () => {
     const h = render(<Orbit />, s);
-    for (const w of ['độ nghiêng', 'Mặt phẳng quỹ đạo', 'bóng tối', 'Biên đường truyền', 'Tuổi thọ quỹ đạo'])
-      expect(h, w).toMatch(new RegExp(`aria-label="Giải thích: ${w}"`));
+    for (const w of ['inclination', 'Orbital planes', 'eclipse', 'Link margin', 'Orbital lifetime'])
+      expect(h, w).toMatch(new RegExp(`aria-label="Explain: ${w}"`));
   });
 
-  it('Debrief CML badge has an explainer', () => expect(render(<Debrief />, s)).toContain('aria-label="Giải thích: CML"'));
+  it('Debrief CML badge has an explainer', () => expect(render(<Debrief />, s)).toContain('aria-label="Explain: CML"'));
 
   it('"?" is a disclosure button with a 44 px touch area', () => {
-    const h = render(<Term id="incl">độ nghiêng</Term>, s);
-    expect(h).toMatch(/<button type="button" class="term-q" aria-expanded="false" aria-controls="[^"]+" aria-label="Giải thích: độ nghiêng">\?<\/button>/);
+    const h = render(<Term id="incl">inclination</Term>, s);
+    expect(h).toMatch(/<button type="button" class="term-q" aria-expanded="false" aria-controls="[^"]+" aria-label="Explain: inclination">\?<\/button>/);
     expect(appCss).toMatch(/\.term-q \{[^}]*width: 18px;[^}]*height: 18px;/);
     expect(appCss).toMatch(/\.term-q::before \{[^}]*inset: -13px;/); // 18 + 2 × 13 = 44
   });
 
   it('the Guide link opens the card', () => {
     const g = reducer({ ...initialState, screen: 'orbit' }, { type: 'openGuide', tab: TERMS.margin.tab, focus: TERMS.margin.card });
-    expect(g).toMatchObject({ screen: 'guide', guideTab: 0, guideFocus: 'Biên đường truyền · Link margin', returnTo: 'orbit' });
+    expect(g).toMatchObject({ screen: 'guide', guideTab: 0, guideFocus: 'Link margin', returnTo: 'orbit' });
   });
 });

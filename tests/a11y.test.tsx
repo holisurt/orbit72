@@ -164,9 +164,9 @@ describe('layout', () => {
   it('portrait hint on phones', () => {
     expect(appCss).toContain('@media (orientation: portrait) and (max-width: 600px)');
     const h = render(<RotateHint />);
-    expect(h).toContain('Xoay ngang để chơi tốt hơn');
+    expect(h).toContain('Turn your phone sideways for a better view');
     expect(h).toContain('role="note"');
-    expect(h).toContain('aria-label="Ẩn gợi ý xoay ngang"');
+    expect(h).toContain('aria-label="Hide the rotate hint"');
   });
 
   it('reduced motion: system preference and Settings switch', () => {

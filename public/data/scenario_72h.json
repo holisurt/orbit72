@@ -1,6 +1,6 @@
 {
  "id": "golden72",
- "name": "72 Giờ Vàng",
+ "name": "72 Golden Hours",
  "t0Local": "2024-09-07T14:00:00+07:00",
  "hours": 72,
  "target": {
@@ -9,7 +9,7 @@
   "lon": 105.85
  },
  "partnerStation": {
-  "name": "TP.HCM",
+  "name": "Ho Chi Minh City",
   "lat": 10.82,
   "lon": 106.63
  },

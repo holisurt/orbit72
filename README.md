@@ -2,22 +2,22 @@ Play: https://holisurt.github.io/orbit72/ · About: https://holisurt.github.io/o
 
 # ORBIT 72: Keep Them Connected
 
-ORBIT 72 (“Bắt Sóng Cứu Hộ”) is a browser game built for NASA Space Apps Challenge 2026 (Hanoi), in the Space Mission Design Game category. A Typhoon-Yagi-like super typhoon makes landfall over northern Vietnam (T0 = 2024-09-07 14:00 ICT). Players have 18 months to design, cost and launch a CubeSat constellation that relays SOS messages from cut-off villages to the Hòa Lạc ground station during the “72 Golden Hours”. The UI is Vietnamese; Settings switches menus and buttons to English.
+ORBIT 72 (“Bắt Sóng Cứu Hộ”) is a browser game built for NASA Space Apps Challenge 2026 (Hanoi), in the Space Mission Design Game category. A Typhoon-Yagi-like super typhoon makes landfall over northern Vietnam (T0 = 2024-09-07 14:00 ICT). Players have 18 months to design, cost and launch a CubeSat constellation that relays SOS messages from cut-off villages to the Hòa Lạc ground station during the “72 Golden Hours”. The whole game is in English (since v1.3); place names such as Hà Nội, Hòa Lạc and Đông Sơn keep their Vietnamese spelling.
 
 ## How to play
 
-1. **Mission** – accept the contract: eight requirements (R1 coverage gap, R2 data, R3 power, R4 orbital lifetime, R5 budget, R6 development time, R7 link margin, R8 mandatory subsystems).
+1. **Contract** – accept the contract: eight requirements (R1 coverage gap, R2 data, R3 power, R4 orbital lifetime, R5 budget, R6 development time, R7 link margin, R8 mandatory subsystems).
 2. **Build** – fit OBC, EPS, ADCS, radio and the SOS payload into a 3U/6U/12U CubeSat; a live HUD shows mass, power, battery, data, cost and time.
 3. **Orbit** – choose inclination, altitude, planes × satellites and a rocket; see ground tracks, coverage gaps and link margins.
 4. **Go/No-Go** – every role answers GO or NO-GO (a NO-GO needs an R code).
-5. **Operations** – 72 hours after landfall with real NASA rain data and three event cards: antenna deployment failure (only without an environmental test), a geomagnetic storm (real NASA DONKI record) and a ground-station power cut.
+5. **Operations** – 72 hours after landfall with real NASA rain data and three event cards: E0 antenna deployment failure (only without environmental testing), E1 solar storm (real NASA DONKI geomagnetic-storm record) and E2 Hoa Lac station power cut.
 6. **Debrief** – five stars, a why-chain, a spec sheet, a CML badge, a quiz before/after, and a shareable mission patch.
 
-Solo or pass-the-device co-op (2–4 players), two difficulty levels (Học viên, Kỹ sư), a 3-minute tutorial. Every technical term in the game has a “?” explainer that links to the in-game Guide.
+Solo or pass-the-device co-op (2–4 players), two difficulty levels (Cadet, Engineer), a 3-minute tutorial. Every technical term in the game has a “?” explainer that links to the in-game Handbook.
 
 ### Simplified in v1.1
 
-For a high-school / first-year audience, v1.1 removed: the Giám đốc difficulty (launch failures, replacement launches, debris event E4, solar-max lifetimes), the Daily mission, the camera payload and flood-imaging bonus, the cloud event E3, and the parts X-band, AIS receiver, edge-processing OBC, small electric thruster and precise ADCS. The remaining 9 parts (+ deployable wings), 3 events, 3 chassis sizes and 4 inclination presets keep every SPEC §10 reference value unchanged.
+For a high-school / first-year audience, v1.1 removed: the Director difficulty (launch failures, replacement launches, debris event E4, solar-max lifetimes), the daily mission, the camera payload and flood-imaging bonus, the cloud event E3, and the parts X-band, AIS receiver, edge-processing OBC, small electric thruster and precise ADCS. The remaining 9 parts (+ deployable wings), 3 events, 3 chassis sizes and 4 inclination presets keep every SPEC §10 reference value unchanged.
 
 ## Screenshots
 
@@ -25,16 +25,16 @@ Laptop, 1440 × 900, 100 % text (S1 solution: 6U with S-band, SSO 520 km, 4 plan
 
 | | |
 |---|---|
-| ![Home: choose mode and difficulty](docs/screens/home-1440x900-100.png) **Home** | ![Brief: contract, 72 h NASA IMERG rain map, R1–R8](docs/screens/brief-1440x900-100.png) **Mission brief** |
-| ![Build: CubeSat bay and live HUD](docs/screens/build-1440x900-100.png) **Build** | ![Orbit: ground tracks, coverage and link margins](docs/screens/orbit-1440x900-100.png) **Orbit** |
-| ![Review: R1–R8 checklist and Go/No-Go poll](docs/screens/review-1440x900-100.png) **Go/No-Go** | ![Ops: Mission Control with the E1 geomagnetic-storm card](docs/screens/ops-1440x900-100.png) **Operations** |
-| ![Debrief: five stars, why-chain, CML badge, spec sheet](docs/screens/debrief-1440x900-100.png) **Debrief** | ![Share: mission patch and result card](docs/screens/share-1440x900-100.png) **Share** |
+| ![Home: choose mode and difficulty](docs/screens-en/home-1440x900-100.png) **Home** | ![Contract: 72 h NASA IMERG rain map, R1–R8](docs/screens-en/brief-1440x900-100.png) **Contract** |
+| ![Build: CubeSat bay and live HUD](docs/screens-en/build-1440x900-100.png) **Build** | ![Orbit: ground tracks, coverage and link margins](docs/screens-en/orbit-1440x900-100.png) **Orbit** |
+| ![Review: R1–R8 checklist and Go/No-Go poll](docs/screens-en/review-1440x900-100.png) **Go/No-Go** | ![Ops: Mission Control with the E1 solar-storm card](docs/screens-en/ops-e1-1440x900-100.png) **Operations** |
+| ![Debrief: five stars, why-chain, CML badge, spec sheet](docs/screens-en/debrief-1440x900-100.png) **Debrief** | ![Share: mission patch and result card](docs/screens-en/share-1440x900-100.png) **Share** |
 
 ## Science & validation
 
-All constants come from [`docs/SPEC.md`](docs/SPEC.md) (derived from the GDD) and carry a provenance tag: [CT] physics, [NG] sourced, [GA] game assumption. Every [GA] assumption is listed in the in-game Guide → Science tab.
+All constants come from [`docs/SPEC.md`](docs/SPEC.md) (derived from the GDD) and carry a provenance tag: [CT] physics, [NG] sourced, [GA] game assumption. Every [GA] assumption is listed in the in-game Handbook → Science tab.
 
-**302 automated tests** (Vitest) cover the simulation and the screens. Reference values from SPEC §10 they check include:
+**346 automated tests** (Vitest) cover the simulation and the screens. Reference values from SPEC §10 they check include:
 
 | Quantity | Value |
 |---|---|
@@ -42,10 +42,10 @@ All constants come from [`docs/SPEC.md`](docs/SPEC.md) (derived from the GDD) an
 | Eclipse fraction at 520 km | 37.6 % |
 | SSO inclination at 520 km | 97.48° |
 | Link margins at 520 km, 10° (UHF / S / SOS) | 9.7 / 8.4 / 9.3 dB |
-| Longest gap / SOS messages delivered within 1 h (P1h), SSO 520 km, 4 planes × 1 | 3.0 h / 49.1 % |
+| Longest coverage gap / SOS delivered within 1 h (P1h), SSO 520 km, 4 planes × 1 | 3.0 h / 49.1 % |
 | Orbital lifetime at 520 km (6U, average Sun) | 6.5 years |
 | Cost of the reference solution S1 | 2,640 kUSD |
-| Event E1 / E2 options A / B / C (S1) | 46 / 48 / 48 % · 49 / 45 / 48 % |
+| Event E1 (solar storm) / E2 (Hoa Lac station power cut) options A / B / C (S1) | 46 / 48 / 48 % · 49 / 45 / 48 % |
 | Same, weighted by NASA IMERG rain (P1h_rain), S1 | 48.1 % (equals P1h when w = 1) |
 
 ## NASA data

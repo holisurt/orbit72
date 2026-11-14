@@ -18,9 +18,9 @@ export interface LinkParams {
 }
 
 export const LINKS: Record<LinkId, LinkParams> = {
-  uhf: { id: 'uhf', label: 'UHF xuống', fMHz: 437, pW: 1, gTx: 0, lLine: 1, lMisc: 3, gRx: 14, tSysK: 500, rbps: 9600, reqDb: 12 },
-  s: { id: 's', label: 'S xuống', fMHz: 2200, pW: 2, gTx: 6, lLine: 1, lMisc: 1, gRx: 34.2, tSysK: 150, rbps: 2e6, reqDb: 12.5 },
-  sos: { id: 'sos', label: 'SOS lên', fMHz: 437, pW: 0.5, gTx: 2, lLine: 0, lMisc: 3, gRx: 0, tSysK: 700, rbps: 300, reqDb: 12 },
+  uhf: { id: 'uhf', label: 'UHF down', fMHz: 437, pW: 1, gTx: 0, lLine: 1, lMisc: 3, gRx: 14, tSysK: 500, rbps: 9600, reqDb: 12 },
+  s: { id: 's', label: 'S down', fMHz: 2200, pW: 2, gTx: 6, lLine: 1, lMisc: 1, gRx: 34.2, tSysK: 150, rbps: 2e6, reqDb: 12.5 },
+  sos: { id: 'sos', label: 'SOS up', fMHz: 437, pW: 0.5, gTx: 2, lLine: 0, lMisc: 3, gRx: 0, tSysK: 700, rbps: 300, reqDb: 12 },
 };
 
 const BOLTZMANN_DB = 228.6;

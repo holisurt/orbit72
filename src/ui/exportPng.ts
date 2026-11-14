@@ -16,17 +16,17 @@ export async function svgToPng(svg: SVGSVGElement, scale = 2): Promise<Blob> {
     img.decoding = 'async';
     await new Promise<void>((resolve, reject) => {
       img.onload = () => resolve();
-      img.onerror = () => reject(new Error('SVG không vẽ được'));
+      img.onerror = () => reject(new Error('could not draw the SVG'));
       img.src = url;
     });
     const canvas = document.createElement('canvas');
     canvas.width = w;
     canvas.height = h;
     const ctx = canvas.getContext('2d');
-    if (!ctx) throw new Error('canvas 2D không khả dụng');
+    if (!ctx) throw new Error('2D canvas not available');
     ctx.drawImage(img, 0, 0, w, h);
     return await new Promise<Blob>((resolve, reject) =>
-      canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob thất bại'))), 'image/png'),
+      canvas.toBlob((b) => (b ? resolve(b) : reject(new Error('toBlob failed'))), 'image/png'),
     );
   } finally {
     URL.revokeObjectURL(url);

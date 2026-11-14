@@ -28,6 +28,6 @@ describe('About page', () => {
         </StoreProvider>
       </DataProvider>,
     );
-    expect(h).toMatch(/href="\/orbit72\/about\.html"[^>]*>Giới thiệu \/ About/);
+    expect(h).toMatch(/href="\/orbit72\/about\.html"[^>]*>About/);
   });
 });

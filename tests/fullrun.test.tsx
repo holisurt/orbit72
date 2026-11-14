@@ -36,12 +36,12 @@ describe('full run S1 Kỹ sư (solo)', () => {
   it('Review: 8 rows, no VƯỢT, launch enabled after 4/4 GO', () => {
     expect(s.design.parts).toEqual(['obc', 'eps', 'adcs', 'sos', 'sband']);
     const before = render(<Review />, s);
-    expect(before).toContain('Chờ đủ 4 câu trả lời');
+    expect(before).toContain('Waiting for all 4 GO / NO-GO answers');
     s = play(s, ...(['FD', 'VT', 'KH', 'QD'] as const).map((role) => ({ type: 'vote', role, vote: 'go' }) as Action));
     const h = render(<Review />, s);
-    expect(h).toContain('4/4 GO — Đồng thuận');
+    expect(h).toContain('4/4 GO — Unanimous');
     expect(h).not.toContain('class="status VUOT"');
-    expect(h).not.toMatch(/aria-disabled="true"[^>]*>PHÓNG/);
+    expect(h).not.toMatch(/aria-disabled="true"[^>]*>LAUNCH/);
   });
 
   it('Launch → Ops → Debrief → Share', () => {
@@ -50,7 +50,7 @@ describe('full run S1 Kỹ sư (solo)', () => {
       record: { launchedWithVuot: false, launchedWithNoGo: false, unanimousGo: true },
     });
     expect(s.screen).toBe('launch');
-    expect(render(<Launch />, s)).toContain('Rời bệ phóng');
+    expect(render(<Launch />, s)).toContain('Liftoff');
 
     s = play(s, { type: 'go', screen: 'ops' });
     const ops = render(<Ops />, s);
@@ -66,28 +66,28 @@ describe('full run S1 Kỹ sư (solo)', () => {
     );
     expect(s.screen).toBe('debrief');
     const d = render(<Debrief />, s);
-    expect(d).toContain('THÀNH CÔNG — 8/8 yêu cầu đạt');
-    expect(d).toContain('Hiệu quả chi phí = 49,1 / 2,64'); // star 3 uses the nominal cost (events affect only stars 2, 4)
+    expect(d).toContain('MISSION SUCCESS — 8/8 requirements passed');
+    expect(d).toContain('Cost efficiency = 49.1 / 2.64'); // star 3 uses the nominal cost (events affect only stars 2, 4)
     // spec sheet cost: nominal design cost (Star 3) + E2-A generator (+20k)
-    expect(d).toContain('2.640k thiết kế + 20k sự cố = 2.660k');
-    expect(d).toContain('11 tháng');
-    expect(d).toMatch(/aria-label="Huy hiệu CML"[\s\S]*?CML 3/); // UHF→S-band swap satisfies CML3
+    expect(d).toContain('2,640k design + 20k events = 2,660k');
+    expect(d).toContain('11 months');
+    expect(d).toMatch(/aria-label="CML badge"[\s\S]*?CML 3/); // UHF→S-band swap satisfies CML3
 
     s = play(s, { type: 'exportSpec' });
-    expect(render(<Debrief />, s)).toMatch(/aria-label="Huy hiệu CML"[\s\S]*?CML 4/); // SPEC §10: S1 + swap + export → CML4
+    expect(render(<Debrief />, s)).toMatch(/aria-label="CML badge"[\s\S]*?CML 4/); // SPEC §10: S1 + swap + export → CML4
 
     s = play(s, { type: 'go', screen: 'share' });
     const sh = render(<Share />, s);
-    expect(sh).toContain('Tải thẻ PNG (9:16)');
-    expect(sh).toContain('THÀNH CÔNG');
+    expect(sh).toContain('Download card PNG (9:16)');
+    expect(sh).toContain('MISSION SUCCESS');
     expect((sh.match(/<polygon points="([^"]+)"/)?.[1].split(' ') ?? []).length).toBe(28); // 14-ray star
   });
 
   it('cost line without events shows the design cost only', () => {
     const quiet = play({ ...s, ops: { ...s.ops, choices: {} } }, { type: 'go', screen: 'debrief' });
     const h = render(<Debrief />, quiet);
-    expect(h).toContain('>2.640k thiết kế<');
-    expect(h).not.toContain('k sự cố');
+    expect(h).toContain('>2,640k design<');
+    expect(h).not.toContain('k events');
   });
 
   it('exported spec sheet PNG prints the CML level reached by exporting (CML 4), before and after export', () => {
@@ -95,13 +95,13 @@ describe('full run S1 Kỹ sư (solo)', () => {
     const before = play({ ...s, specExported: false }, { type: 'go', screen: 'debrief' });
     const header = (h: string) => {
       const svg = h.match(/<svg[^>]*data-testid="spec-sheet"[\s\S]*?<\/svg>/)?.[0] ?? '';
-      return svg.match(/<text[^>]*>([^<]*lần chạy[^<]*)<\/text>/)?.[1] ?? '';
+      return svg.match(/<text[^>]*>([^<]*· run [^<]*)<\/text>/)?.[1] ?? '';
     };
-    const badge = (h: string) => h.match(/aria-label="Huy hiệu CML"[\s\S]*?(CML \d)/)?.[1];
+    const badge = (h: string) => h.match(/aria-label="CML badge"[\s\S]*?(CML \d)/)?.[1];
 
     const h0 = render(<Debrief />, before);
     expect(badge(h0)).toBe('CML 3'); // on-screen badge: not exported yet
-    expect(header(h0)).toContain('THÀNH CÔNG 8/8');
+    expect(header(h0)).toContain('MISSION SUCCESS 8/8');
     expect(header(h0)).toContain('CML 4'); // the PNG is rendered before exportSpec fires
 
     const h1 = render(<Debrief />, play(before, { type: 'exportSpec' }));

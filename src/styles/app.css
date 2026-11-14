@@ -505,7 +505,9 @@ button.step:hover {
   flex-wrap: wrap;
 }
 .home-opt .lbl {
-  width: 72px;
+  flex: none;
+  width: 9em; /* fits "DIFFICULTY" on one line at every text size */
+  white-space: nowrap;
 }
 .home-globe {
   display: flex;

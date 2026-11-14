@@ -1,16 +1,16 @@
 {
  "questions": [
   {
-   "q": "Vì sao thêm vệ tinh vào cùng một chuyến rideshare SSO gần như không rút ngắn khoảng trống liên lạc?",
+   "q": "Why does adding more satellites to the same SSO rideshare barely shorten the contact gap?",
    "options": [
-    "Vì tên lửa phóng chậm",
-    "Vì chúng cùng mặt phẳng quỹ đạo nên qua Hà Nội cùng khung giờ",
-    "Vì pin không đủ"
+    "Because the rocket launches slowly",
+    "Because they share one orbital plane, so they pass over Hanoi at the same times",
+    "Because the battery is too small"
    ],
    "answer": 1
   },
   {
-   "q": "Ở 520 km, khoảng bao nhiêu phần trăm mỗi vòng vệ tinh nằm trong bóng Trái Đất?",
+   "q": "At 520 km, roughly what share of each orbit does a satellite spend in Earth’s shadow (eclipse)?",
    "options": [
     "≈ 10%",
     "≈ 38%",
@@ -19,29 +19,29 @@
    "answer": 1
   },
   {
-   "q": "Bay ở 600 km mà không có cánh hãm vi phạm điều gì?",
+   "q": "Flying at 600 km without a drag sail breaks which rule?",
    "options": [
-    "Tồn lưu sau nhiệm vụ quá 5 năm",
-    "Chi phí phóng",
-    "Không có gì"
+    "It stays in orbit more than 5 years after the mission",
+    "The launch cost",
+    "Nothing"
    ],
    "answer": 0
   },
   {
-   "q": "UHF 9,6 kbps với 17 phút liên lạc mỗi ngày tải xuống được khoảng bao nhiêu?",
+   "q": "With UHF at 9.6 kbps and 17 minutes of contact per day, about how much data comes down?",
    "options": [
-    "≈ 1,2 MB",
+    "≈ 1.2 MB",
     "≈ 120 MB",
-    "≈ 1,2 GB"
+    "≈ 1.2 GB"
    ],
    "answer": 0
   },
   {
-   "q": "Biên đường truyền 8 dB nghĩa là gì?",
+   "q": "What does an 8 dB link margin mean?",
    "options": [
-    "Mất 8% dữ liệu",
-    "Tín hiệu mạnh hơn mức tối thiểu khoảng 6 lần",
-    "Cần thêm 8 W"
+    "8% of the data is lost",
+    "The signal is about 6 times stronger than the minimum needed",
+    "You need 8 W more"
    ],
    "answer": 1
   }

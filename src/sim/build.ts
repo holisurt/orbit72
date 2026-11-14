@@ -94,18 +94,18 @@ export function summariseBuild(comp: Components, d: DesignInput, orbit: OrbitCon
   const has = (pred: (p: Part) => boolean) => parts.some(pred);
   const hardErrors: HardError[] = [];
   if (!has((p) => p.id === 'obc'))
-    hardErrors.push({ code: 'missing_obc', message: 'Thiếu máy tính OBC.' });
-  if (!has((p) => p.id === 'eps')) hardErrors.push({ code: 'missing_eps', message: 'Thiếu hệ nguồn EPS.' });
+    hardErrors.push({ code: 'missing_obc', message: 'Missing the OBC computer.' });
+  if (!has((p) => p.id === 'eps')) hardErrors.push({ code: 'missing_eps', message: 'Missing the EPS power system.' });
   if (!has((p) => p.id === 'adcs'))
-    hardErrors.push({ code: 'missing_adcs', message: 'Thiếu hệ điều khiển tư thế ADCS.' });
-  if (!has((p) => p.cat === 'com')) hardErrors.push({ code: 'missing_tx', message: 'Thiếu máy phát (UHF hoặc S-band).' });
-  if (!has((p) => p.id === 'sos')) hardErrors.push({ code: 'missing_sos', message: 'Thiếu Payload SOS.' });
+    hardErrors.push({ code: 'missing_adcs', message: 'Missing the ADCS attitude control.' });
+  if (!has((p) => p.cat === 'com')) hardErrors.push({ code: 'missing_tx', message: 'Missing a transmitter (UHF or S-band).' });
+  if (!has((p) => p.id === 'sos')) hardErrors.push({ code: 'missing_sos', message: 'Missing the SOS relay payload.' });
   if (cellsUsed > chassis.cells)
-    hardErrors.push({ code: 'cells', message: `Quá số ô: ${cellsUsed}/${chassis.cells} ô của khung ${chassis.id}.` });
+    hardErrors.push({ code: 'cells', message: `Too many cells: ${cellsUsed}/${chassis.cells} cells in the ${chassis.id} chassis.` });
   if (massKg > chassis.limitKg + 1e-9)
     hardErrors.push({
       code: 'mass',
-      message: `Quá khối lượng: ${fmt1(massKg)}/${fmt1(chassis.limitKg)} kg.`,
+      message: `Too heavy: ${fmt1(massKg)}/${fmt1(chassis.limitKg)} kg.`,
     });
 
   return {
@@ -129,7 +129,7 @@ export function summariseBuild(comp: Components, d: DesignInput, orbit: OrbitCon
 }
 
 function fmt1(x: number): string {
-  return x.toFixed(1).replace('.', ',');
+  return x.toFixed(1).replace('.', '.');
 }
 
 /** Can this part be added without breaking cells? (mass is checked on the summary) */

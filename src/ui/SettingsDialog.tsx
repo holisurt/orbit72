@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { EN_COMPLETE } from '../i18n';
+import { useState } from 'react';
 import { useSettings, type TextScale } from '../state/settings';
 import { useStore } from '../state/store';
 import { useT } from './i18n';
@@ -7,16 +6,12 @@ import { Modal } from './Modal';
 
 const SCALES: TextScale[] = [100, 125, 150];
 
-/** Settings (gear in the header): VI/EN menus, text size, high contrast, reduced motion, reset progress. */
+/** Settings (gear in the header): text size, high contrast, reduced motion, reset progress. */
 export function SettingsDialog({ onClose }: { onClose: () => void }) {
   const { settings, update } = useSettings();
   const { dispatch } = useStore();
   const t = useT();
   const [confirming, setConfirming] = useState(false);
-  // A player who picked English before it was complete goes back to Vietnamese (no half-English UI).
-  useEffect(() => {
-    if (settings.lang === 'en' && !EN_COMPLETE) update({ lang: 'vi' });
-  }, [settings.lang, update]);
   const [done, setDone] = useState(false);
 
   return (
@@ -28,31 +23,6 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
         <button className="chip" onClick={onClose}>
           {t('close')} ✕
         </button>
-      </div>
-
-      <div className="settings-row" role="group" aria-labelledby="set-lang">
-        <span id="set-lang" className="lbl">
-          {t('language')}
-        </span>
-        <div className="row" style={{ gap: 6 }}>
-          {(['vi', 'en'] as const).map((l) => {
-            // English is offered only once every screen is translated (src/i18n EN_COMPLETE).
-            const unavailable = l === 'en' && !EN_COMPLETE;
-            return (
-              <button
-                key={l}
-                className="seg"
-                lang={l}
-                aria-pressed={settings.lang === l}
-                aria-disabled={unavailable || undefined}
-                disabled={unavailable}
-                onClick={() => !unavailable && update({ lang: l })}
-              >
-                {l === 'vi' ? 'Tiếng Việt' : unavailable ? 'English (sắp có)' : 'English'}
-              </button>
-            );
-          })}
-        </div>
       </div>
 
       <div className="settings-row" role="group" aria-labelledby="set-size">
@@ -85,7 +55,7 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
           {settings.reduceMotion ? t('on') : t('off')}
         </button>
       </div>
-      <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--dim)' }}>Tự giảm chuyển động khi thiết bị đã bật “giảm chuyển động”.</span>
+      <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--dim)' }}>Motion is reduced automatically when your device asks for it.</span>
 
       <div className="settings-row" style={{ borderTop: '1px solid var(--line)', paddingTop: 12 }}>
         <span className="lbl" style={{ color: 'var(--bad)' }}>
@@ -98,7 +68,7 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
         ) : (
           <div className="col" style={{ gap: 8 }} role="alertdialog" aria-labelledby="reset-q">
             <span id="reset-q" style={{ fontSize: 'calc(13rem / 16)' }}>
-              Xóa thiết kế, kết quả các lần chạy và quiz trên máy này? Không thể hoàn tác. Cài đặt hiển thị được giữ lại.
+              Delete the design, run results and quiz answers on this device? This cannot be undone. Display settings are kept.
             </span>
             <div className="row" style={{ gap: 8 }}>
               <button className="btn-s" onClick={() => setConfirming(false)} autoFocus>
@@ -119,7 +89,7 @@ export function SettingsDialog({ onClose }: { onClose: () => void }) {
         )}
       </div>
       <span role="status" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)' }}>
-        {done ? 'Đã xóa tiến trình.' : ''}
+        {done ? 'Progress deleted.' : ''}
       </span>
     </Modal>
   );

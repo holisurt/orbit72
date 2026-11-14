@@ -107,7 +107,7 @@ export function useRun(): RunView {
       out[ev.id] = {};
       for (const o of ev.options) {
         const cost = Number(o.effect.costKusd ?? 0);
-        if (cost > 0 && cost > remaining) out[ev.id][o.k] = `Không đủ ngân sách: còn ${fmt(Math.max(0, remaining), 0)}k`;
+        if (cost > 0 && cost > remaining) out[ev.id][o.k] = `Not enough budget: ${fmt(Math.max(0, remaining), 0)}k left`;
       }
     }
     return out;

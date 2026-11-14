@@ -71,9 +71,9 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
   <div class="wrap">
     <span class="lbl">NASA Space Apps Challenge 2026 · Space Mission Design Game</span>
     <h1>Build a satellite.<br>Beat the storm.<br><em>Keep everyone connected.</em></h1>
-    <p class="lead">You have 18 months before typhoon season. Design CubeSats, choose orbits and rockets, then run Mission Control through the golden 72 hours after a super typhoon makes landfall in northern Vietnam.</p>
+    <p class="lead">You have 18 months before typhoon season. Design CubeSats, choose orbits and rockets, then run Mission Control through the 72 Golden Hours after a super typhoon makes landfall in northern Vietnam.</p>
     <div class="chips" style="gap:12px"><a class="btnP" href="./">Play in your browser</a><a class="btnS" href="#how">How it works</a></div>
-    <div class="chips"><span>Free</span><span>No install · phone or PC</span><span>1–4 players</span><span>About 10 minutes per mission</span><span>Vietnamese UI · English menus option</span></div>
+    <div class="chips"><span>Free</span><span>No install · phone or PC</span><span>1–4 players</span><span>About 10 minutes per mission</span><span>English</span></div>
   </div>
 </div>
 
@@ -83,7 +83,7 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     <h2 id="why-h">When the towers go dark, satellites keep the line open.</h2>
     <div class="grid">
       <div class="panel"><div class="big mono">6,285</div><p class="soft">telecom stations lost contact during Typhoon Yagi (September 2024) because of power cuts in 15 provinces and cities.</p><p class="muted">Source: Ministry of Information and Communications via VnEconomy, 13/09/2024</p></div>
-      <div class="panel"><h3>A strategic technology</h3><p class="soft">Satellite technology is on Vietnam's list of strategic technologies (Decision 1131/QĐ-TTg, 2025; 21/2026/QĐ-TTg). ORBIT 72 lets students feel the real trade-offs behind a rescue constellation.</p></div>
+      <div class="panel"><h3>A strategic technology</h3><p class="soft">Satellite technology is on Vietnam's list of strategic technologies (Prime Minister’s Decision 1131, 2025; Decision 21/2026). ORBIT 72 lets students feel the real trade-offs behind a rescue constellation.</p></div>
       <div class="panel"><h3>Store-and-forward rescue</h3><p class="soft">Each CubeSat picks up SOS messages from cut-off villages, stores them, and drops them at the Hòa Lạc ground station. The score is how often a message gets through in under an hour.</p></div>
     </div>
   </div>
@@ -94,7 +94,7 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     <span class="lbl">How to play</span>
     <h2 id="how-h">From idea to orbit in six phases</h2>
     <ol class="steps grid">
-      <li class="panel"><h3>Mission</h3><p class="soft">Accept the “72 Giờ Vàng” contract: eight requirements, a budget and an 18-month deadline.</p></li>
+      <li class="panel"><h3>Mission</h3><p class="soft">Accept the “72 Golden Hours” contract: eight requirements, a budget and an 18-month deadline.</p></li>
       <li class="panel"><h3>Build</h3><p class="soft">Fit computer, power, attitude control, radio and SOS payload into a 3U/6U/12U CubeSat. A live HUD shows mass, power, battery, data, cost and time.</p></li>
       <li class="panel"><h3>Orbit</h3><p class="soft">Pick inclination, altitude, planes and satellites per plane, and a rocket. See ground tracks, coverage gaps and link margins update.</p></li>
       <li class="panel"><h3>Go/No-Go</h3><p class="soft">Every role answers GO or NO-GO against requirements R1–R8. A NO-GO needs a reason.</p></li>
@@ -133,10 +133,10 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
     <span class="lbl">FAQ</span>
     <h2 id="faq-h">Questions</h2>
     <details><summary>Do I need to install anything?</summary><p>No. It runs in any modern browser on a phone, tablet or PC. Landscape works best on phones.</p></details>
-    <details><summary>Is it in English?</summary><p>The game text is Vietnamese. Settings (gear icon) switches menus and buttons to English.</p></details>
-    <details><summary>Can several people play together?</summary><p>Yes — co-op for 2–4 players on one device, with roles (Flight Director, Satellite, Science, Orbit &amp; Comms) and a pass-the-device screen.</p></details>
+    <details><summary>Is it in English?</summary><p>Yes. The whole game is in English; place names such as Hà Nội and Hòa Lạc keep their Vietnamese spelling.</p></details>
+    <details><summary>Can several people play together?</summary><p>Yes — co-op for 2–4 players on one device, with roles (Flight Director, Spacecraft Engineer, Mission Scientist, Orbit &amp; Comms Engineer) and a pass-the-device screen.</p></details>
     <details><summary>Does it collect data?</summary><p>No accounts and no tracking. Progress and quiz answers are saved only in your browser (localStorage), without names.</p></details>
-    <details><summary>Is it too hard for my class?</summary><p>Version 1.1 is simplified for high-school and first-year students: two difficulty levels, nine parts, three event cards, and a “?” next to every technical term with a one-sentence explanation.</p></details>
+    <details><summary>Is it too hard for my class?</summary><p>The game is simplified for high-school and first-year students: two difficulty levels, nine parts, three event cards, and a “?” next to every technical term with a one-sentence explanation.</p></details>
     <details><summary>Are the numbers real?</summary><p>Physics uses standard formulas; rain and space-weather data come from NASA; prices and some parameters are game assumptions, all listed in the Guide.</p></details>
   </div>
 </section>
@@ -153,7 +153,7 @@ footer .wrap{display:flex;flex-direction:column;gap:6px}
 <script>
 // Hide the download button if the guidebook PDF is not deployed yet.
 fetch('docs/guidebook.pdf', { method: 'HEAD' }).then(function (r) {
-  if (!r.ok) document.getElementById('guide-link').innerHTML = '<span class="muted">The PDF guidebook is being finalised — the in-game Guide (Sổ tay) has the same content.</span>';
+  if (!r.ok) document.getElementById('guide-link').innerHTML = '<span class="muted">The in-game Handbook (the “?” button) has the same content as the guidebook.</span>';
 }).catch(function () {});
 </script>
 </body>

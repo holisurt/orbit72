@@ -53,7 +53,7 @@ export function Guide({ initialTab = 0, focus = null }: { initialTab?: number; f
     <div className="screen">
       <header className="topbar">
         <span className="brand">
-          ORBIT <span className="amber">72</span> <span className="sub">· Sổ tay Đội Rồng Con</span>
+          ORBIT <span className="amber">72</span> <span className="sub">· Team Rồng Con Handbook</span>
         </span>
         <button ref={closeRef} className="link-btn" onClick={close}>
           {t('close')} ✕
@@ -62,10 +62,10 @@ export function Guide({ initialTab = 0, focus = null }: { initialTab?: number; f
       <main className="body guide-body">
         <div className="col guide-side">
           <label htmlFor="guide-q" className="lbl">
-            Tìm trong sổ tay
+            Search the Handbook
           </label>
-          <input id="guide-q" type="text" value={q} placeholder="bóng tối, mặt phẳng, link budget…" onChange={(e) => setQ(e.target.value)} />
-          <div className="guide-tabs" role="tablist" aria-label="Mục sổ tay" aria-orientation="vertical">
+          <input id="guide-q" type="text" value={q} placeholder="eclipse, plane, link margin…" onChange={(e) => setQ(e.target.value)} />
+          <div className="guide-tabs" role="tablist" aria-label="Handbook sections" aria-orientation="vertical">
             {tabs.map((tb, i) => (
               <button
                 key={tb.id}
@@ -90,9 +90,9 @@ export function Guide({ initialTab = 0, focus = null }: { initialTab?: number; f
             <span style={{ fontSize: 'calc(12rem / 16)', color: 'var(--muted)', lineHeight: 1.4 }}>{cur.tip}</span>
           </div>
         </div>
-        <section id="guide-panel" role="tabpanel" aria-labelledby={query ? undefined : `guide-tab-${tab}`} aria-label={query ? 'Kết quả tìm' : undefined} className="col" style={{ gap: 10 }}>
+        <section id="guide-panel" role="tabpanel" aria-labelledby={query ? undefined : `guide-tab-${tab}`} aria-label={query ? 'Search results' : undefined} className="col" style={{ gap: 10 }}>
           <span className="lbl" style={{ color: 'var(--amber)' }} aria-live="polite">
-            {query ? `${items.length} kết quả cho “${q.trim()}”` : cur.head}
+            {query ? `${items.length} results for “${q.trim()}”` : cur.head}
           </span>
           <div className="guide-grid">
             {items.map((it) => (
@@ -122,7 +122,7 @@ export function Guide({ initialTab = 0, focus = null }: { initialTab?: number; f
                 </span>
               </article>
             ))}
-            {query && items.length === 0 && <p style={{ color: 'var(--muted)' }}>Không tìm thấy. Thử “pin”, “SSO”, “IMERG”…</p>}
+            {query && items.length === 0 && <p style={{ color: 'var(--muted)' }}>Nothing found. Try “battery”, “SSO”, “IMERG”…</p>}
           </div>
         </section>
       </main>

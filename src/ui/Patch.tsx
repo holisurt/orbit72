@@ -2,9 +2,9 @@ import { forwardRef } from 'react';
 import { EXPORT_FONT } from './exportPng';
 
 export const PATCH_THEMES = [
-  { name: 'Đêm xanh', c1: '#0B1F45', c2: '#13285A', acc: '#F5A524' },
-  { name: 'Đồng thau', c1: '#2A1B0B', c2: '#3B2711', acc: '#E9B44C' },
-  { name: 'Sơn mài', c1: '#3A0D12', c2: '#56141B', acc: '#F2C14E' },
+  { name: 'Night blue', c1: '#0B1F45', c2: '#13285A', acc: '#F5A524' },
+  { name: 'Brass', c1: '#2A1B0B', c2: '#3B2711', acc: '#E9B44C' },
+  { name: 'Lacquer', c1: '#3A0D12', c2: '#56141B', acc: '#F2C14E' },
 ];
 
 /** 14-ray star of the Đông Sơn bronze drum face: 28 alternating points (design/HF-Share). */
@@ -41,7 +41,7 @@ export const Patch = forwardRef<SVGSVGElement, Props>(function Patch({ theme, te
       ref={ref}
       viewBox="0 0 400 400"
       role="img"
-      aria-label={`Mission patch: ngôi sao 14 cánh mặt trống đồng, cánh sen và quỹ đạo ${satCount} vệ tinh`}
+      aria-label={`Mission patch: the 14-ray star of the Đông Sơn bronze drum, lotus petals and the orbits of ${satCount} satellites`}
       style={{ width: '100%', maxWidth: 380, height: 'auto' }}
     >
       <defs>

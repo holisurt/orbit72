@@ -16,17 +16,17 @@ import { lifetimeYears, sailResidualYears } from './lifetime';
 export type Status = 'DAT' | 'SAT' | 'VUOT';
 /** R1–R8 as plain sentences (codes stay). Shared by Brief, Review, Debrief and the why-chain. */
 export const REQ_LABEL: Record<Requirement['id'], string> = {
-  R1: 'Lúc chờ lâu nhất không có vệ tinh nào nghe được Hà Nội',
-  R2: 'Dữ liệu tạo ra mỗi ngày phải tải hết về trạm',
-  R3: 'Đủ điện, kể cả khi vệ tinh nằm trong bóng Trái Đất',
-  R4: 'Vệ tinh bay đủ lâu nhưng không thành rác vũ trụ',
-  R5: 'Tổng chi phí không vượt ngân sách',
-  R6: 'Chế tạo xong trước mùa bão',
-  R7: 'Tín hiệu vẫn đủ mạnh khi vệ tinh thấp trên chân trời',
-  R8: 'Có đủ bộ phận bắt buộc và vừa khung vệ tinh',
+  R1: 'Longest coverage gap: no satellite can hear Hà Nội',
+  R2: 'All data made each day reaches the ground station',
+  R3: 'Enough power, even during eclipse',
+  R4: 'Stays up long enough, but does not become space debris',
+  R5: 'Total cost within budget',
+  R6: 'Built before typhoon season',
+  R7: 'Signal still strong when the satellite is low in the sky',
+  R8: 'All required parts on board, and they fit the chassis',
 };
 
-export const STATUS_LABEL: Record<Status, string> = { DAT: 'ĐẠT', SAT: 'SÁT', VUOT: 'VƯỢT' };
+export const STATUS_LABEL: Record<Status, string> = { DAT: 'PASS', SAT: 'NEAR', VUOT: 'OVER' };
 
 /** Round as displayed (SPEC §7). */
 export function roundTo(x: number, decimals: number): number {
@@ -89,7 +89,7 @@ export function launchOptions(
       return {
         launcher: l,
         compatible: ok,
-        reason: ok ? '' : `Chỉ SSO ${l.hMin}–${l.hMax} km`,
+        reason: ok ? '' : `SSO only, ${l.hMin}–${l.hMax} km`,
         launches: o.planes,
         costKusd: Math.round(o.planes * perLaunch),
       };
@@ -100,7 +100,7 @@ export function launchOptions(
       return {
         launcher: l,
         compatible: ok,
-        reason: ok ? '' : o.preset !== 'iss' ? 'Chỉ quỹ đạo ISS 51,6° · 400 km' : `Khung tối đa ${l.maxChassis}`,
+        reason: ok ? '' : o.preset !== 'iss' ? 'ISS orbit only (51.6° · 400 km)' : `Chassis up to ${l.maxChassis}`,
         launches: 1,
         costKusd: N * l.pricePerSatKusd!,
       };
@@ -165,8 +165,8 @@ export interface MissionResult {
 
 export const DEFAULT_ORBIT_H = 520;
 
-const vn1 = (x: number) => roundTo(x, 1).toFixed(1).replace('.', ',');
-const vn0 = (x: number) => Math.round(x).toLocaleString('vi-VN');
+const vn1 = (x: number) => roundTo(x, 1).toFixed(1).replace('.', '.');
+const vn0 = (x: number) => Math.round(x).toLocaleString('en-US');
 
 export function evaluateMission(data: GameData, input: MissionInput): MissionResult {
   const rules = data.scenario.difficulty[input.difficulty];
@@ -222,8 +222,8 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   reqs.push({
     id: 'R2',
     name: REQ_LABEL.R2,
-    value: `${vn1(build.dataProducedMB)} / ${vn1(build.dataDownlinkMB)} MB/ngày`,
-    limit: 'tải hết, không tồn đọng',
+    value: `${vn1(build.dataProducedMB)} / ${vn1(build.dataDownlinkMB)} MB/day`,
+    limit: 'all sent, no backlog',
     status: down > 0 ? statusFromRatio(prod / down) : 'VUOT',
     hard: false,
   });
@@ -233,8 +233,8 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   reqs.push({
     id: 'R3',
     name: REQ_LABEL.R3,
-    value: `${vn1(build.pGenW)} / ${vn1(build.pUseW)} W · pin ${vn1(build.batteryHaveWh)}/${vn1(build.batteryNeedWh)} Wh`,
-    limit: `P ≥ ${vn1(req.powerMargin)}× · pin đủ`,
+    value: `${vn1(build.pGenW)} / ${vn1(build.pUseW)} W · battery ${vn1(build.batteryHaveWh)}/${vn1(build.batteryNeedWh)} Wh`,
+    limit: `P ≥ ${vn1(req.powerMargin)}× · battery OK`,
     status: worst(
       pGen > 0 ? statusFromRatio(pNeed / pGen) : 'VUOT',
       batt > 0 ? statusFromRatio(roundTo(build.batteryNeedWh, 1) / batt) : 'VUOT',
@@ -246,13 +246,13 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
     id: 'R4',
     name: REQ_LABEL.R4,
     value:
-      `${vn1(lt.years)} năm` +
-      (lt.extrapolated ? ' (ngoại suy)' : '') +
-      (residualY !== null ? ` · tồn lưu ${vn1(residualY)} năm` : ''),
+      `${vn1(lt.years)} years` +
+      (lt.extrapolated ? ' (extrapolated)' : '') +
+      (residualY !== null ? ` · residual ${vn1(residualY)} years` : ''),
     limit:
       residualY !== null
-        ? `L ≥ ${req.lifetimeMinY} · tồn lưu ≤ ${req.residualMaxY} năm`
-        : `${req.lifetimeMinY}–${req.lifetimeMaxY} năm`,
+        ? `L ≥ ${req.lifetimeMinY} · residual ≤ ${req.residualMaxY} years`
+        : `${req.lifetimeMinY}–${req.lifetimeMaxY} years`,
     status: worst(
       lowStatus,
       residualY !== null
@@ -272,8 +272,8 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   reqs.push({
     id: 'R6',
     name: REQ_LABEL.R6,
-    value: `${build.devMonths} tháng`,
-    limit: `≤ ${req.devMonthsMax} tháng`,
+    value: `${build.devMonths} months`,
+    limit: `≤ ${req.devMonthsMax} months`,
     status: statusMax(build.devMonths, req.devMonthsMax, 0),
     hard: false,
   });
@@ -289,8 +289,8 @@ export function evaluateMission(data: GameData, input: MissionInput): MissionRes
   reqs.push({
     id: 'R8',
     name: REQ_LABEL.R8,
-    value: build.hardErrors.length ? `${build.hardErrors.length} lỗi` : 'đủ',
-    limit: 'OBC · EPS · ADCS · máy phát · SOS',
+    value: build.hardErrors.length ? `${build.hardErrors.length} issues` : 'complete',
+    limit: 'OBC · EPS · ADCS · transmitter · SOS',
     status: build.hardErrors.length ? 'VUOT' : 'DAT',
     hard: true,
   });

@@ -34,7 +34,7 @@ export function PassScreen({ role, count, names, text, onStart }: Props) {
   return (
     <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="pass-title">
       <span className="lbl" style={{ color: 'var(--amber)' }}>
-        Chuyền máy
+        Pass the device
       </span>
       <div
         className="avatar"
@@ -43,15 +43,15 @@ export function PassScreen({ role, count, names, text, onStart }: Props) {
       >
         {ab}
       </div>
-      <h2 id="pass-title">Đến lượt {r.name}</h2>
+      <h2 id="pass-title">{r.name}’s turn</h2>
       {nick && (
         <div style={{ fontSize: 'calc(15rem / 16)', color: 'var(--muted)' }}>
-          Người chơi {idx + 1} · {nick}
+          Player {idx + 1} · {nick}
         </div>
       )}
       <div style={{ fontSize: 'calc(17rem / 16)', color: 'var(--soft)', maxWidth: 640, lineHeight: 1.6 }}>{text}</div>
       <button ref={btn} className="btn-p" style={{ minWidth: 'min(320px, 100%)' }} onClick={onStart}>
-        Tôi là {r.name} — bắt đầu lượt
+        I am the {r.name} — start my turn
       </button>
     </div>
   );

@@ -3,7 +3,7 @@
 import type { Imerg } from '../data/types';
 import { projVN } from './MapVN';
 
-export const IMERG_LABEL = 'NASA GPM IMERG V07 Final · 7–10/9/2024';
+export const IMERG_LABEL = 'NASA GPM IMERG V07 Final · 7–10 Sep 2024';
 
 export interface RainBin {
   min: number;
@@ -66,5 +66,6 @@ export function ictLabel(iso: string | undefined): string {
   const d = new Date(Date.parse(iso) + 7 * 3600_000);
   if (Number.isNaN(d.getTime())) return '';
   const p = (n: number) => String(n).padStart(2, '0');
-  return `${p(d.getUTCDate())}/${p(d.getUTCMonth() + 1)} ${p(d.getUTCHours())}:00`;
+  const mon = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getUTCMonth()];
+  return `${d.getUTCDate()} ${mon} ${p(d.getUTCHours())}:00`;
 }

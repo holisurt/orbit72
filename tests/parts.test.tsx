@@ -18,14 +18,14 @@ describe('part card link margins', () => {
   });
 
   it('520 km reproduces SPEC §10: UHF 9,7 · S 8,4 · SOS 9,3 dB', () => {
-    expect(partWhy(part('uhf'), 17, 520, EPS)).toContain('Biên tới Hòa Lạc 9,7 dB ở 520 km, góc ngẩng 10°');
-    expect(partWhy(part('sband'), 17, 520, EPS)).toContain('Biên 8,4 dB ở 520 km');
-    expect(partWhy(part('sos'), 17, 520, EPS)).toContain('biên 9,3 dB ở 520 km');
+    expect(partWhy(part('uhf'), 17, 520, EPS)).toContain('Link margin to Hòa Lạc 9.7 dB at 520 km, 10° elevation');
+    expect(partWhy(part('sband'), 17, 520, EPS)).toContain('Link margin 8.4 dB at 520 km');
+    expect(partWhy(part('sos'), 17, 520, EPS)).toContain('link margin 9.3 dB at 520 km');
   });
 
   it.each([400, 480, 600, 800])('follows the altitude (%i km)', (h) => {
     for (const [id, link] of [['uhf', 'uhf'], ['sband', 's'], ['sos', 'sos']] as const)
-      expect(partWhy(part(id), 17, h, EPS)).toContain(`${fmt(linkMarginFor(link, h, EPS), 1)} dB ở ${h} km`);
+      expect(partWhy(part(id), 17, h, EPS)).toContain(`${fmt(linkMarginFor(link, h, EPS), 1)} dB at ${h} km`);
     expect(linkMarginFor('uhf', h, EPS)).not.toBeCloseTo(linkMarginFor('uhf', 520, EPS), 1);
   });
 
@@ -40,6 +40,6 @@ describe('part card link margins', () => {
     );
     const uhf = fmt(linkMarginFor('uhf', 600, EPS), 1);
     expect(h).toContain(uhf);
-    expect(partWhy(part('uhf'), 17, 600, EPS)).toContain(`${uhf} dB ở 600 km`);
+    expect(partWhy(part('uhf'), 17, 600, EPS)).toContain(`${uhf} dB at 600 km`);
   });
 });

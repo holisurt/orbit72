@@ -1,45 +1,45 @@
 // Plain-language labels for students (formulas unchanged; internal names stay p1h / p1hRain / vfm).
-export const L_P1H = 'Tin SOS tới nơi trong 1 giờ';
-export const L_P1H_RAIN = 'Tin SOS tới nơi trong 1 giờ (tính theo mưa NASA IMERG)';
-export const L_VFM = 'Hiệu quả chi phí';
+export const L_P1H = 'SOS delivered within 1 h';
+export const L_P1H_RAIN = 'SOS delivered within 1 h (weighted by NASA IMERG rain)';
+export const L_VFM = 'Cost efficiency';
 
 export type TermId = 'incl' | 'plane' | 'eclipse' | 'margin' | 'lifetime' | 'cml' | 'p1h';
 
 /** One-sentence explanation + the Guide card it links to (tab index, card title). */
 export const TERMS: Record<TermId, { text: string; tab: number; card: string }> = {
   incl: {
-    text: 'Góc nghiêng của đường bay so với đường xích đạo — nghiêng càng nhiều, vệ tinh càng bay lên gần hai cực.',
+    text: 'The tilt of the orbit against the equator — the bigger it is, the closer the satellite flies to the poles.',
     tab: 0,
-    card: 'Độ nghiêng · Inclination',
+    card: 'Inclination',
   },
   plane: {
-    text: 'Một “vòng đường bay” quanh Trái Đất; vệ tinh cùng vòng qua Hà Nội cùng giờ, nên muốn phủ cả ngày cần nhiều vòng khác nhau.',
+    text: 'One ring of flight paths around Earth: satellites in the same plane pass Hà Nội at the same times, so all-day coverage needs several planes.',
     tab: 0,
-    card: 'Mặt phẳng quỹ đạo · Orbital plane',
+    card: 'Orbital plane',
   },
   eclipse: {
-    text: 'Phần mỗi vòng bay vệ tinh nằm sau Trái Đất, không có nắng, nên phải sống bằng pin.',
+    text: 'The part of each orbit spent in Earth’s shadow, with no sunlight, so the satellite runs on its battery.',
     tab: 0,
-    card: 'Bóng tối · Eclipse',
+    card: 'Eclipse',
   },
   margin: {
-    text: 'Tín hiệu mạnh hơn mức tối thiểu bao nhiêu dB; còn dư từ 3 dB trở lên là trạm nghe rõ.',
+    text: 'How many dB the signal is above the minimum needed; 3 dB or more means the station hears it clearly.',
     tab: 0,
-    card: 'Biên đường truyền · Link margin',
+    card: 'Link margin',
   },
   lifetime: {
-    text: 'Số năm vệ tinh còn bay trước khi lớp khí quyển mỏng kéo nó rơi xuống và cháy.',
+    text: 'How many years the satellite stays up before the thin upper air drags it down to burn up.',
     tab: 0,
-    card: 'Tuổi thọ quỹ đạo',
+    card: 'Orbital lifetime',
   },
   cml: {
-    text: 'Thang đo ý tưởng sứ mệnh đã “chín” tới đâu: từ nhận hợp đồng (CML 1) tới phóng đạt mọi yêu cầu và có hồ sơ (CML 4).',
+    text: 'A scale for how mature a mission idea is, from accepting the contract (CML 1) to launching with every requirement met and the spec sheet done (CML 4).',
     tab: 0,
-    card: 'Huy hiệu CML · Concept Maturity Level',
+    card: 'CML badge · Concept Maturity Level',
   },
   p1h: {
-    text: 'Phần trăm thời gian mà một tin SOS gửi lúc đó tới được trạm trong vòng 1 giờ.',
+    text: 'The share of the time when an SOS message sent at that moment reaches the station within 1 hour.',
     tab: 0,
-    card: 'Tin SOS tới nơi trong 1 giờ',
+    card: 'SOS delivered within 1 h',
   },
 };

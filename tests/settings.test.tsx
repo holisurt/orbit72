@@ -1,4 +1,4 @@
-// CP4.3 Settings: VI/EN menus + buttons, text size, high contrast, reduced motion, reset progress.
+// CP4.3 Settings (English-only since v1.3): menus + buttons, text size, high contrast, reduced motion, reset progress.
 import { describe, expect, it } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import type { ReactElement } from 'react';
@@ -30,19 +30,19 @@ describe('language (menu labels and buttons only)', () => {
     expect(translate('en', 'start')).toBe('Start mission');
   });
 
-  it('EN switches Home menu + buttons; body copy stays Vietnamese', () => {
+  it('Home menu, buttons and body copy are English', () => {
     const h = render(<Home />, { ...DEFAULT_SETTINGS, lang: 'en' });
-    for (const s of ['Start mission', '3-minute tutorial', 'Engineer', 'Difficulty', 'Mode', 'Guide', 'Settings']) expect(h).toContain(s);
-    expect(h).toContain('Siêu bão sắp đổ bộ'); // lead paragraph not translated
+    for (const s of ['Start mission', '3-minute tutorial', 'Engineer', 'Difficulty', 'Mode', 'Handbook', 'Settings']) expect(h).toContain(s);
+    expect(h).toContain('A super typhoon is about to hit'); // lead paragraph is English too
     expect(h).not.toContain('Bắt đầu sứ mệnh');
   });
 
-  it('EN switches the stepper and screen buttons', () => {
+  it('stepper and screen buttons are English whatever the stored setting', () => {
     const s = reducer(reducer(initialState, { type: 'startMission' }), { type: 'acceptContract' });
     const h = render(<Build />, { ...DEFAULT_SETTINGS, lang: 'en' }, s);
-    expect(h).toContain('1 Mission');
+    expect(h).toContain('1 Contract');
     expect(h).toContain('Choose orbit →');
-    expect(render(<Build />, DEFAULT_SETTINGS, s)).toContain('Chọn quỹ đạo →');
+    expect(render(<Build />, DEFAULT_SETTINGS, s)).toContain('Choose orbit →');
   });
 });
 
@@ -69,15 +69,16 @@ describe('display settings', () => {
 
 describe('Settings dialog', () => {
   const h = render(<SettingsDialog onClose={() => {}} />);
-  it('modal dialog with all controls', () => {
+  it('modal dialog with all controls, no language option', () => {
     expect(h).toContain('role="dialog"');
     expect(h).toContain('aria-modal="true"');
-    for (const s of ['Tiếng Việt', 'English', '100%', '125%', '150%', 'Tương phản cao', 'Giảm chuyển động', 'Xóa tiến trình…']) expect(h).toContain(s);
+    for (const s of ['100%', '125%', '150%', 'High contrast', 'Reduce motion', 'Reset progress…']) expect(h).toContain(s);
+    expect(h).not.toMatch(/Tiếng Việt|English/);
     expect(h.match(/role="switch"/g)).toHaveLength(2);
   });
 
   it('gear button in every header next to "?"', () => {
-    expect(render(<Home />)).toMatch(/aria-label="Cài đặt" aria-haspopup="dialog"/);
+    expect(render(<Home />)).toMatch(/aria-label="Settings" aria-haspopup="dialog"/);
   });
 
   it('reset clears progress back to a fresh game', () => {

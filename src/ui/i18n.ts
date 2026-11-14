@@ -1,5 +1,4 @@
-// Menu labels and buttons (VI/EN) — kept for existing callers; the dictionaries now live in src/i18n.
-import { useSettings } from '../state/settings';
+// UI strings for older callers — English-only build; the dictionaries live in src/i18n.
 import { en } from '../i18n/en';
 import { vi } from '../i18n/vi';
 
@@ -17,6 +16,5 @@ export function translate(lang: Lang, key: TKey): string {
 }
 
 export function useT(): (key: TKey) => string {
-  const { settings } = useSettings();
-  return (key) => translate(settings.lang, key);
+  return (key) => translate('en', key);
 }

@@ -15,7 +15,7 @@ export function Stepper({ current }: { current: ScreenId }) {
   const { state, dispatch } = useStore();
   const t = useT();
   return (
-    <nav aria-label="Tiến trình sứ mệnh">
+    <nav aria-label="Mission progress">
       <ol className="stepper">
         {STEPS.map((s) => {
           const active = s.screen === current;

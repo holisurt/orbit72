@@ -47,7 +47,7 @@
   {
    "id": "obc",
    "cat": "bus",
-   "name": "OBC cơ bản",
+   "name": "OBC (basic)",
    "cells": 1,
    "kg": 0.1,
    "w": 0.4,
@@ -57,7 +57,7 @@
   {
    "id": "eps",
    "cat": "pow",
-   "name": "EPS + pin 20 Wh",
+   "name": "EPS + 20 Wh battery",
    "cells": 1,
    "kg": 0.3,
    "w": 0.2,
@@ -68,7 +68,7 @@
   {
    "id": "bat",
    "cat": "pow",
-   "name": "Pin bổ sung +40 Wh",
+   "name": "Extra battery +40 Wh",
    "cells": 1,
    "kg": 0.35,
    "w": 0,
@@ -79,7 +79,7 @@
   {
    "id": "adcs",
    "cat": "bus",
-   "name": "ADCS cơ bản",
+   "name": "ADCS (basic)",
    "cells": 1,
    "kg": 0.2,
    "w": 0.6,
@@ -90,7 +90,7 @@
   {
    "id": "uhf",
    "cat": "com",
-   "name": "UHF 437 MHz · 9,6 kbps",
+   "name": "UHF 437 MHz · 9.6 kbps",
    "cells": 1,
    "kg": 0.1,
    "w": 0,
@@ -103,7 +103,7 @@
   {
    "id": "sband",
    "cat": "com",
-   "name": "S-band 2,2 GHz · 2 Mbps",
+   "name": "S-band 2.2 GHz · 2 Mbps",
    "cells": 1,
    "kg": 0.25,
    "w": 0,
@@ -116,7 +116,7 @@
   {
    "id": "sos",
    "cat": "pay",
-   "name": "Payload SOS",
+   "name": "SOS relay payload",
    "cells": 1,
    "kg": 0.2,
    "w": 2,
@@ -128,7 +128,7 @@
   {
    "id": "sail",
    "cat": "ext",
-   "name": "Cánh hãm khí quyển",
+   "name": "Drag sail",
    "cells": 1,
    "kg": 0.3,
    "w": 0,
@@ -139,7 +139,7 @@
   {
    "id": "shield",
    "cat": "ext",
-   "name": "Che chắn bức xạ",
+   "name": "Radiation shielding",
    "cells": 1,
    "kg": 0.5,
    "w": 0,
