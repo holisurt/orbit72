@@ -571,9 +571,9 @@ button.step:hover {
 }
 .card {
   border-radius: 14px;
-  border: 1.5px solid var(--line);
+  border: 1px solid rgba(241, 245, 249, 0.12);
   background: var(--panel);
-  padding: 14px 16px;
+  padding: 16px;
   text-align: left;
   cursor: pointer;
   display: flex;
@@ -581,9 +581,20 @@ button.step:hover {
   gap: 6px;
   color: var(--text);
   min-height: 44px;
+  transition: transform 0.16s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.16s ease, background-color 0.16s ease, box-shadow 0.16s ease;
+}
+.card:hover:not(:disabled) {
+  border-color: rgba(241, 245, 249, 0.28);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.card:active:not(:disabled) {
+  transform: translateY(1px) scale(0.99);
 }
 .card[aria-pressed='true'] {
   border-color: var(--amber);
+  background: rgba(245, 165, 36, 0.05);
+  box-shadow: 0 0 0 1px var(--amber), 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 .card:disabled {
   opacity: 0.55;
@@ -604,8 +615,8 @@ button.step:hover {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 6px 0;
-  border-bottom: 1px solid #1a2647;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(241, 245, 249, 0.07);
 }
 .req-list > div:last-child {
   border-bottom: 0;

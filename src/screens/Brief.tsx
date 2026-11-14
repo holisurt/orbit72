@@ -154,11 +154,11 @@ export function Brief() {
           <div className="panel req-list" style={{ padding: '6px 12px' }}>
             {reqs.map((r) => (
               <div key={r.id}>
-                <span className="mono" style={{ fontSize: 'calc(12rem / 16)', fontWeight: 600, color: 'var(--amber)', width: 22 }}>
+                <span className="mono" style={{ fontSize: 'calc(12rem / 16)', fontWeight: 700, color: 'var(--amber)', width: 24 }}>
                   {r.id}
                 </span>
-                <span style={{ flex: 1, fontSize: 'calc(13rem / 16)' }}>{r.t}</span>
-                <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--cyan)', textAlign: 'right' }}>
+                <span style={{ flex: 1, fontSize: 'calc(13rem / 16)', color: 'var(--soft)' }}>{r.t}</span>
+                <span className="mono" style={{ fontSize: 'calc(12rem / 16)', color: 'var(--text)', fontWeight: 600, textAlign: 'right' }}>
                   {r.v}
                 </span>
               </div>
