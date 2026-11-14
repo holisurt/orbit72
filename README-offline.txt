@@ -1,8 +1,8 @@
-ORBIT 72 — Bắt Sóng Cứu Hộ · offline build (v1.1 Hanoi, simplified)
+ORBIT 72 — Bắt Sóng Cứu Hộ · offline build (v1.1.1 Hanoi)
 
 Use this when there is no Wi-Fi. Everything (game, NASA data, maps) is inside this folder.
 
-1. Unzip orbit72-v1.1-hanoi-offline.zip.
+1. Unzip orbit72-v1.1.1-hanoi-offline.zip.
 2. Open a terminal in the unzipped folder, then run:
 
      npx serve .
